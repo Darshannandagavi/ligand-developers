@@ -528,7 +528,7 @@ export default function AdminExamAttempts() {
                       <td>
                         <FaUserGraduate /> {attempt.student?.name || "Unknown"}
                       </td>
-                      <td>{attempt.student?.email || "Unknown"}</td>
+                      <td>{attempt.student?.email || "Unknown "}</td>
                       <td>
                         <span className="score">{attempt.score}</span>/
                         <span className="total">{attempt.totalQuestions}</span>
