@@ -340,7 +340,7 @@ const styles = {
     transition: "all 0.3s ease",
   },
   legalSeparator: {
-    color: "#bdc3c7",
+    color: "#cdd1d4ff",
     fontSize: "0.8rem",
   },
 };
