@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const notesSchema = new mongoose.Schema(
   {
-    collegeName: { type: String, required: true },
+    collegeName: { type: String, required: false,default:null },
     visibleTo: { type: [String], default: [] },
     title: {
       type: String,

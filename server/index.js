@@ -14,13 +14,10 @@ import attendanceRoutes from "./routes/attendanceRoutes.js";
 import feePaymentRoutes from "./routes/feePaymentRoutes.js";
 import feeGroupRoutes from "./routes/feeGroupRoutes.js";
 
-
-
-
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({
-  origin: "https://liganddevelopers.vercel.app",
+  origin:  "https://ligand-software-solutions-workshop-2.onrender.com" ,
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
