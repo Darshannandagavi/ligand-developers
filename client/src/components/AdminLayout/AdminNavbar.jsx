@@ -60,6 +60,32 @@ const AdminNavbar = () => {
       ]
     },
     {
+      name: "Teacher",
+     
+      icon: FaChartBar,
+      
+       dropdown: "Teacher",
+      links: [
+        {
+          name: "Home-Work",
+          to: "/admin/student/homework",
+          icon: FaUser
+        },
+        {
+          name: "Add Teacher",
+          to: "/admin/add-teacher",
+          icon: FaChartBar
+        },
+        ,
+        {
+          name: "Manage Teacher",
+          to: "/admin/manage-teacher",
+          icon: FaChartBar
+        }
+       
+      ]
+    },
+    {
       name: "Payments",
       icon: FaMoneyCheck,
       dropdown: "payments",
