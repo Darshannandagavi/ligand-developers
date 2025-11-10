@@ -40,6 +40,15 @@ import AdminPayments from "./components/AdminLayout/AdminPayments";
 import AdminPaymentsMark from "./components/AdminLayout/AdminPaymentsMark";
 import AdminPaymentsDashboard from "./components/AdminLayout/AdminPaymentsDashboard";
 import AdminNewDashboard from "./components/AdminLayout/AdminNewDashboard";
+import TeacherChangePassword from "./components/TeacherLayout/TeacherChangePassword";
+import TeacherStudent from "./components/TeacherLayout/TeacherStudent";
+import TeacherEditProfile from "./components/TeacherLayout/TeacherEditProfile";
+import ManageTeachers from "./components/TeacherLayout/ManageTeachers";
+import TeacherLayout from "./components/TeacherLayout/TeacherLayout";
+import TeacherRegister from "./components/TeacherLayout/TeacherRegister";
+import TeacherLogin from "./components/TeacherLayout/TeacherLogin";
+import Homework from "./components/AdminLayout/Homework";
+import TeacherHomework from "./components/TeacherLayout/TeacherHomeWork";
 
 function App() {
   return (
@@ -50,6 +59,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/ForgotPassword" element={<ForgotPassword />} />
+          <Route path='/teacher-login' element={<TeacherLogin/>}/>
         </Route>
 
         <Route path="/user" element={<UserLayout />}>
@@ -91,8 +101,20 @@ function App() {
           <Route path="/admin/changepassword" element={<ChangePassword />} />
           <Route path="/admin/manageexamsvisibility" element={<ManageExamVisibility />} />
           <Route path="/admin/interviewcontrol" element={<InterviewControl/>} />
+          <Route path="/admin/add-teacher" element={<TeacherRegister/>}/>
+          <Route path="/admin/manage-teacher" element={<ManageTeachers/>}/>
+          <Route path="/admin/student/homework" element={<Homework/>}/>
         </Route>
 
+        <Route path="/teacher" element={<TeacherLayout />}>
+          <Route path="/teacher/students" element={<TeacherStudent/>}/>
+          <Route index  element={<TeacherHomework/>}/>
+          <Route path="/teacher/homeworks" element={<TeacherHomework/>}/>
+          <Route path="/teacher/change-password" element={<TeacherChangePassword/>}/>
+          <Route path="/teacher/edit-profile" element={<TeacherEditProfile/>}/>
+          <Route path="/teacher/students" element={<TeacherStudent/>}/>
+          
+        </Route>
       
       </Routes>
     </div>

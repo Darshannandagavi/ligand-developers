@@ -13,11 +13,14 @@ import topicrouter from "./routes/topicRoutes.js";
 import attendanceRoutes from "./routes/attendanceRoutes.js";
 import feePaymentRoutes from "./routes/feePaymentRoutes.js";
 import feeGroupRoutes from "./routes/feeGroupRoutes.js";
+import TeacherRouter from "./routes/TeacherRouter.js";
+import homeworkRoutes from "./routes/homeworkRoutes.js";
+import homeworkstatusRouter from "./routes/homeworkStatusRoutes.js";
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({
-  origin:  "https://ligand-software-solutions-workshop-2.onrender.com" ,
+  origin: "https://ligand-software-solutions-workshop-2.onrender.com",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
@@ -32,10 +35,12 @@ app.use("/api/attempts", examAttemptRouter);
 app.use("/api/notes",notesrouter);
 app.use("/api/options",optionsRouter);
 app.use("/api/topics",topicrouter);
+app.use("/api/assignments", homeworkRoutes);
 app.use("/api/attendance", attendanceRoutes);
 app.use("/api/fee-payment", feePaymentRoutes);
 app.use("/api/fee-groups", feeGroupRoutes);
-
+app.use("/api/teacher", TeacherRouter);
+app.use("/api/homeworkstatus", homeworkstatusRouter);
 dotenv.config();
 const PORT = process.env.PORT || 7000;
 const URL = process.env.MONGOURL;
