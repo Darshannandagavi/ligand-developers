@@ -8,7 +8,7 @@ if (!GROQ_API_KEY) {
   console.warn("REACT_APP_GROQ_API_KEY is not set. Groq API calls will fail.");
 }
 
-// --- Groq call for checking answers ---
+
 const checkAnswerWithGroq = async (question, answer) => {
   try {
     const res = await axios.post(
