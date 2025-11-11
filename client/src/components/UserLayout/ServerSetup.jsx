@@ -105,7 +105,7 @@ MONGOURL="mongodb+srv://username:password@cluster0.ofadrht.mongodb.net/dbname?re
   "version": "1.0.0",
   "main": "index.js",
       "scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1"
+  "test": "echo "Error: no test specified" && exit 1"
 }`,
       codeAfter: `{
   "name": "bank",

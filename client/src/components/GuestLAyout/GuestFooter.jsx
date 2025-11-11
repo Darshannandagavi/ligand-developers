@@ -16,7 +16,7 @@ const GuestFooter = () => {
               industries in Karnataka.
             </p>
             <div style={styles.socialIcons}>
-              <a href="#" style={styles.socialIcon} aria-label="Facebook">
+              <a href="www.facebook.com" style={styles.socialIcon} aria-label="Facebook">
                 <svg
                   width="24"
                   height="24"
@@ -30,7 +30,7 @@ const GuestFooter = () => {
                   />
                 </svg>
               </a>
-              <a href="#" style={styles.socialIcon} aria-label="Twitter">
+              <a href="www.twitter.com" style={styles.socialIcon} aria-label="Twitter">
                 <svg
                   width="24"
                   height="24"
@@ -44,7 +44,7 @@ const GuestFooter = () => {
                   />
                 </svg>
               </a>
-              <a href="#" style={styles.socialIcon} aria-label="LinkedIn">
+              <a href="www.linkedin.com" style={styles.socialIcon} aria-label="LinkedIn">
                 <svg
                   width="24"
                   height="24"
