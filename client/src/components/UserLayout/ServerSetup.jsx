@@ -98,9 +98,8 @@ MONGOURL="mongodb+srv://username:password@cluster0.ofadrht.mongodb.net/dbname?re
     },
     {
       title: "Step 10: Update Package.json",
-      content: "Open package.json and update the scripts section",
       content:
-        " in package.json file, bellow main add type as module and in scripts add start command",
+        "Open package.json and update the scripts section in package.json file, bellow main add type as module and in scripts add start command",
       codeBefore: `{
   "name": "bank",
   "version": "1.0.0",

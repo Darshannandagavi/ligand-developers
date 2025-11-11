@@ -166,31 +166,31 @@ export default function ExamHistory() {
   // Only include attempts with visible results in summary charts
   const visibleAttempts = attempts.filter(a => !a.resultsHidden);
 
-  const chartData = {
-    labels: visibleAttempts.map((a, i) => a.exam?.examTitle || `Exam #${a.exam?.examNumber}`),
-    datasets: [
-      {
-        label: "Score (%)",
-        data: visibleAttempts.map(a => a.percentage ?? 0),
-        backgroundColor: visibleAttempts.map(a =>
-          (a.percentage ?? 0) >= 80 ? "#4CAF50" : (a.percentage ?? 0) >= 60 ? "#FF9800" : "#F44336"
-        ),
-      },
-    ],
-  };
+  // const chartData = {
+  //   labels: visibleAttempts.map((a, i) => a.exam?.examTitle || `Exam #${a.exam?.examNumber}`),
+  //   datasets: [
+  //     {
+  //       label: "Score (%)",
+  //       data: visibleAttempts.map(a => a.percentage ?? 0),
+  //       backgroundColor: visibleAttempts.map(a =>
+  //         (a.percentage ?? 0) >= 80 ? "#4CAF50" : (a.percentage ?? 0) >= 60 ? "#FF9800" : "#F44336"
+  //       ),
+  //     },
+  //   ],
+  // };
 
-  const pieData = {
-    labels: ["Correct", "Incorrect"],
-    datasets: [
-      {
-        data: [
-          visibleAttempts.reduce((sum, a) => sum + (a.score || 0), 0),
-          visibleAttempts.reduce((sum, a) => sum + ((a.totalQuestions || 0) - (a.score || 0)), 0),
-        ],
-        backgroundColor: ["#4CAF50", "#F44336"],
-      },
-    ],
-  };
+  // const pieData = {
+  //   labels: ["Correct", "Incorrect"],
+  //   datasets: [
+  //     {
+  //       data: [
+  //         visibleAttempts.reduce((sum, a) => sum + (a.score || 0), 0),
+  //         visibleAttempts.reduce((sum, a) => sum + ((a.totalQuestions || 0) - (a.score || 0)), 0),
+  //       ],
+  //       backgroundColor: ["#4CAF50", "#F44336"],
+  //     },
+  //   ],
+  // };
 
   if (loading)
     return (

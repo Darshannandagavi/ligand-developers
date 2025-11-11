@@ -59,7 +59,7 @@ const InterviewPage = () => {
   const [typedAnswer, setTypedAnswer] = useState("");
 
   const user = localStorage.getItem("username") || "Candidate";
-  const videoRef = useRef(null);
+  
 
   // Fetch topics from backend
   useEffect(() => {
