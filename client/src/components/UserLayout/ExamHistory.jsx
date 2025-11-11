@@ -34,7 +34,7 @@ export default function ExamHistory() {
   const [attempts, setAttempts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expandedAttempt, setExpandedAttempt] = useState(null);
-  const [selectedAttemptForTradingChart, setSelectedAttemptForTradingChart] = useState(null);
+  // const [selectedAttemptForTradingChart, setSelectedAttemptForTradingChart] = useState(null);
 
   const studentId = localStorage.getItem("userId");
   const student = localStorage.getItem("username");
@@ -164,7 +164,7 @@ export default function ExamHistory() {
   };
 
   // Only include attempts with visible results in summary charts
-  const visibleAttempts = attempts.filter(a => !a.resultsHidden);
+  // const visibleAttempts = attempts.filter(a => !a.resultsHidden);
 
   // const chartData = {
   //   labels: visibleAttempts.map((a, i) => a.exam?.examTitle || `Exam #${a.exam?.examNumber}`),
