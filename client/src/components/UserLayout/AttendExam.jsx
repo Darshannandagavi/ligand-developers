@@ -26,11 +26,13 @@ export default function AttendExam() {
   useEffect(() => {
     async function fetchExams() {
       try {
+        console.log(studentId);
         setLoading((prev) => ({ ...prev, exams: true }));
         const res = await axios.get(
-          `https://ligand-software-solutions-workshop-2.onrender.com/api/exams/foruser/${collegeName}`
+          `http://localhost:8000/api/exams/foruser/${collegeName}/${studentId}`
         );
-        setExams(res.data);
+        console.log(res.data);
+        setExams(res.data.exams || []);
       } catch (err) {
         console.error("Error fetching exams:", err);
       } finally {
@@ -74,7 +76,7 @@ export default function AttendExam() {
       });
     }
     setIsFullScreen(true);
-    if (isFullScreen) console.log('Full screen active');
+    if (isFullScreen) console.log("Full screen active");
   };
 
   const exitFullScreen = () => {
@@ -87,7 +89,9 @@ export default function AttendExam() {
   };
 
   const handleAutoSubmit = () => {
-    setTimeoutMessage("Time's up! Your answers have been submitted automatically.");
+    setTimeoutMessage(
+      "Time's up! Your answers have been submitted automatically."
+    );
     handleSubmit();
   };
 
@@ -180,7 +184,16 @@ export default function AttendExam() {
   if (loading.exams) {
     return (
       <div className="exam-container">
-        <div className="loading-container" style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
+        <div
+          className="loading-container"
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <div className="spinner"></div>
           <p className="mt-3">Loading exams...</p>
         </div>
@@ -195,7 +208,7 @@ export default function AttendExam() {
           <h1>Available Exams</h1>
           <p>Welcome, {studentName}</p>
         </div>
-        
+
         <div className="exam-grid">
           {exams.length === 0 ? (
             <div className="no-exams-card">
@@ -208,9 +221,11 @@ export default function AttendExam() {
               <div key={exam._id} className="exam-card">
                 <div className="exam-card-header">
                   <h3>{exam.examTitle || `Exam #${exam.examNumber}`}</h3>
-                  <span className="exam-badge">{exam.questions.length} Questions</span>
+                  <span className="exam-badge">
+                    {exam.questions.length} Questions
+                  </span>
                 </div>
-                
+
                 <div className="exam-card-body">
                   <div className="exam-info">
                     <div className="info-item">
@@ -219,17 +234,23 @@ export default function AttendExam() {
                     </div>
                     <div className="info-item">
                       <span className="info-icon">📅</span>
-                      <span>{new Date(exam.createdAt).toLocaleDateString()}</span>
+                      <span>
+                        {new Date(exam.createdAt).toLocaleDateString()}
+                      </span>
                     </div>
                   </div>
-                  
+
                   <div className="exam-description">
-                    <p>Prepare yourself for this important assessment. Make sure you have a stable internet connection and enough time to complete the exam.</p>
+                    <p>
+                      Prepare yourself for this important assessment. Make sure
+                      you have a stable internet connection and enough time to
+                      complete the exam.
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="exam-card-footer">
-                  <button 
+                  <button
                     className="start-exam-btn"
                     onClick={() => startExam(exam)}
                   >
@@ -240,7 +261,7 @@ export default function AttendExam() {
             ))
           )}
         </div>
-        
+
         <style>{`
           .exam-home-container {
             padding: 2rem;
@@ -420,7 +441,10 @@ export default function AttendExam() {
           <div className="result-card">
             <div className="result-icon">🔒</div>
             <h3>Results Hidden</h3>
-            <p>The exam results are currently hidden by the administrator. Please check back later.</p>
+            <p>
+              The exam results are currently hidden by the administrator. Please
+              check back later.
+            </p>
             {timeoutMessage && <div className="alert">{timeoutMessage}</div>}
             <button className="back-to-exams-btn" onClick={backToList}>
               Back to Exams
@@ -454,28 +478,32 @@ export default function AttendExam() {
     <div id="exam-container" className="fullscreen-exam">
       <div className="exam-topbar">
         <div className="exam-title">
-          <h4>{selectedExam.examTitle || `Exam #${selectedExam.examNumber}`}</h4>
+          <h4>
+            {selectedExam.examTitle || `Exam #${selectedExam.examNumber}`}
+          </h4>
           <span className="student-name">{studentName}</span>
         </div>
-        
+
         <div className="exam-controls">
           <div className="timer-container">
             <div className="timer-icon">⏱️</div>
             <div className="timer">{formatTime(timeLeft)}</div>
           </div>
-          
+
           <div className="progress-container">
             <div className="progress-text">
               {answeredQuestions}/{totalQuestions} Answered
             </div>
             <div className="progress-bar">
-              <div 
-                className="progress-fill" 
-                style={{width: `${(answeredQuestions/totalQuestions) * 100}%`}}
+              <div
+                className="progress-fill"
+                style={{
+                  width: `${(answeredQuestions / totalQuestions) * 100}%`,
+                }}
               ></div>
             </div>
           </div>
-          
+
           <button className="submit-exam-btn" onClick={handleSubmit}>
             Submit Exam
           </button>
@@ -497,7 +525,7 @@ export default function AttendExam() {
               </div>
             </div>
           </div>
-          
+
           <div className="questions-grid">
             {selectedExam.questions.map((q, index) => {
               const isAnswered = answers[q._id] !== undefined;
@@ -520,20 +548,22 @@ export default function AttendExam() {
               );
             })}
           </div>
-          
-          <button 
+
+          <button
             className="mark-review-btn"
             onClick={() => markForReview(currentQ._id)}
           >
-            {reviewQuestions.includes(currentQ._id) 
-              ? "Unmark for Review" 
+            {reviewQuestions.includes(currentQ._id)
+              ? "Unmark for Review"
               : "Mark for Review"}
           </button>
         </div>
 
         <div className="question-area">
           <div className="question-header">
-            <h5>Question {currentQuestion + 1} of {totalQuestions}</h5>
+            <h5>
+              Question {currentQuestion + 1} of {totalQuestions}
+            </h5>
             <div className="question-status">
               {answers[currentQ._id] !== undefined ? (
                 <span className="status-badge answered">Answered</span>
@@ -545,23 +575,33 @@ export default function AttendExam() {
               )}
             </div>
           </div>
-          
+
           <div className="question-text">
             <p>{currentQ.questionText}</p>
           </div>
 
           <div className="options-container">
             {currentQ.options.map((opt, optIndex) => (
-              <div 
-                key={optIndex} 
-                className={`option-item ${answers[currentQ._id] === optIndex ? 'selected' : ''}`}
+              <div
+                key={optIndex}
+                className={`option-item ${
+                  answers[currentQ._id] === optIndex ? "selected" : ""
+                }`}
                 onClick={() => handleAnswerChange(currentQ._id, optIndex)}
               >
                 <div className="option-selector">
-                  <div className={`option-circle ${answers[currentQ._id] === optIndex ? 'selected' : ''}`}>
-                    {answers[currentQ._id] === optIndex && <div className="option-dot"></div>}
+                  <div
+                    className={`option-circle ${
+                      answers[currentQ._id] === optIndex ? "selected" : ""
+                    }`}
+                  >
+                    {answers[currentQ._id] === optIndex && (
+                      <div className="option-dot"></div>
+                    )}
                   </div>
-                  <span className="option-letter">{String.fromCharCode(65 + optIndex)}</span>
+                  <span className="option-letter">
+                    {String.fromCharCode(65 + optIndex)}
+                  </span>
                 </div>
                 <div className="option-text">{opt}</div>
               </div>
@@ -571,30 +611,27 @@ export default function AttendExam() {
       </div>
 
       <div className="exam-nav">
-        <button 
+        <button
           className="nav-btn prev-btn"
           onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
           disabled={currentQuestion === 0}
         >
           ← Previous
         </button>
-        
+
         <div className="nav-page-info">
           Page {currentQuestion + 1} of {totalQuestions}
         </div>
-        
+
         {!isLastQuestion ? (
-          <button 
+          <button
             className="nav-btn next-btn"
             onClick={() => setCurrentQuestion(currentQuestion + 1)}
           >
             Next →
           </button>
         ) : (
-          <button 
-            className="nav-btn submit-btn"
-            onClick={handleSubmit}
-          >
+          <button className="nav-btn submit-btn" onClick={handleSubmit}>
             Submit Exam
           </button>
         )}

@@ -10,7 +10,6 @@ export const updateHomeworkStatus = async (req, res) => {
     if (!homeworkId || !records || !records.length)
       return res.status(400).json({ message: "Invalid request data." });
 
-    // verify homework exists
     const hw = await Homework.findById(homeworkId);
     if (!hw) return res.status(404).json({ message: "Homework not found." });
 
@@ -69,3 +68,28 @@ export const getStudentHomeworkStatus = async (req, res) => {
     res.status(500).json({ message: "Server error while fetching homework status." });
   }
 };
+
+// export const getUnlockedExams = async (studentId) => {
+//   // Step 1: Find ALL homeworks marked "done" for this student
+//   const completedHomeworks = await HomeworkStatus.find({
+//     student: studentId,
+//     status: "done"              // ← Only count "done" ones
+//   });
+
+//   const completedCount = completedHomeworks.length;
+//   // completedCount = 5, 10, 15, or 20?
+
+//   // Step 2: Unlock exams based on count
+//   const unlockedExams = [];
+
+//   if (completedCount >= 5)  unlockedExams.push("Week 1");   // 5+ homeworks
+//   if (completedCount >= 10) unlockedExams.push("Week 2");   // 10+ homeworks
+//   if (completedCount >= 15) unlockedExams.push("Week 3");   // 15+ homeworks
+//   if (completedCount >= 20) unlockedExams.push("Week 4");   // 20+ homeworks
+
+//   // Step 3: Return result
+//   return {
+//     completedHomeworks: 5,           // "You completed 5 homeworks"
+//     unlockedExams: ["Week 1"]        // "Week 1 Exam is available"
+//   };
+// };

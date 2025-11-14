@@ -11,6 +11,7 @@ router.put("/:id", updateExam);
 router.delete("/:id", deleteExam);
 router.put("/exams/:id/college", toggleCollegeAccess);
 router.put("/:id/show-result", toggleShowResult);
-router.get("/foruser/:collegeName", getExamsForUser);
+router.get("/foruser/:collegeName/:studentId", getExamsForUser);
+
 
 export default router;

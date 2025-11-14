@@ -4,7 +4,10 @@ import Homework from "../models/homework.js";
 export const addHomework = async (req, res) => {
   try {
     const { chapterNumber, chapterName, description } = req.body;
-
+    const chapter=await Homework.findOne({chapterNumber});
+    if(chapter){
+      return res.status(400).json({ message: "Chapter number already exists." });
+    }
     if (!chapterNumber || !chapterName || !description) {
       return res.status(400).json({ message: "All fields are required." });
     }

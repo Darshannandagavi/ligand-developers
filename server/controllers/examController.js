@@ -1,5 +1,6 @@
 // controllers/examController.js
 import Exam from "../models/exam.js";
+import user from "../models/user.js";
 
 // Create a new exam
 export async function createExam(req, res) {
@@ -125,15 +126,66 @@ export async function toggleCollegeAccess(req, res) {
   }
 }
 
+// export async function getExamsForUser(req, res) {
+//   try {
+//     const { collegeName } = req.params;
+//     const exams = await Exam.find({
+//       visibility: "public",
+//       visibleTo: collegeName
+//     });
+//     console.log(exams)
+//     res.json(exams);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// }
+
+
 export async function getExamsForUser(req, res) {
   try {
-    const { collegeName } = req.params;
-    const exams = await Exam.find({
+    const { studentId, collegeName } = req.params;
+
+    const student = await user.findById(studentId);
+    if (!student) return res.status(404).json({ message: "Student not found" });
+
+    // Count completed homework
+    const completed = student.homeworkStatus.filter(
+      (h) => h.status === "done"
+    ).length;
+
+    // Weekly exam numbers
+    const weeklyExams = [201, 202, 203, 204];
+
+    // Determine which weekly exams are unlocked
+    let unlockedWeekly = [];
+    if (completed >= 4) unlockedWeekly.push(201);
+    if (completed >= 8) unlockedWeekly.push(202);
+    if (completed >= 12) unlockedWeekly.push(203);
+    if (completed >= 16) unlockedWeekly.push(204);
+
+    // 1. Fetch ALL exams except 201–204  (always visible)
+    const regularExams = await Exam.find({
       visibility: "public",
-      visibleTo: collegeName
+      visibleTo: collegeName,
+      examNumber: { $nin: weeklyExams }
     });
-    console.log(exams)
-    res.json(exams);
+
+    // 2. Fetch ONLY unlocked weekly exams
+    const unlockedWeeklyExams = await Exam.find({
+      visibility: "public",
+      visibleTo: collegeName,
+      examNumber: { $in: unlockedWeekly }
+    });
+
+    // Final output
+    const allExams = [...regularExams, ...unlockedWeeklyExams];
+
+    res.json({
+      exams: allExams,
+      completedHomework: completed,
+      unlockedWeeklyCount: unlockedWeekly.length
+    });
+
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
