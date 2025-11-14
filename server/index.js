@@ -15,7 +15,7 @@ import feePaymentRoutes from "./routes/feePaymentRoutes.js";
 import feeGroupRoutes from "./routes/feeGroupRoutes.js";
 import TeacherRouter from "./routes/TeacherRouter.js";
 import homeworkRoutes from "./routes/homeworkRoutes.js";
-import homeworkstatusRouter from "./routes/homeworkStatusRoutes.js";
+import homeworkstatusRouter from "./routes/homeworkstatusroutes.js";
 
 const app = express();
 app.use(bodyParser.json());
