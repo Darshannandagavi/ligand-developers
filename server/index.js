@@ -15,7 +15,7 @@ import feePaymentRoutes from "./routes/feePaymentRoutes.js";
 import feeGroupRoutes from "./routes/feeGroupRoutes.js";
 import TeacherRouter from "./routes/TeacherRouter.js";
 import homeworkRoutes from "./routes/homeworkRoutes.js";
-import homeworkstatusRouter from "./routes/homeworkstatusroutes.js";
+import homeworkstatusRouter from "./routes/homeworkStatusRoutes.js";
 
 const app = express();
 app.use(bodyParser.json());
@@ -28,18 +28,7 @@ app.use(cors({
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 
-app.use("/api/users", userrouter);
-app.use("/api/exams", router);
-app.use("/api/attempts", examAttemptRouter);
-app.use("/api/notes",notesrouter);
-app.use("/api/options",optionsRouter);
-app.use("/api/topics",topicrouter);
-app.use("/api/assignments", homeworkRoutes);
-app.use("/api/attendance", attendanceRoutes);
-app.use("/api/fee-payment", feePaymentRoutes);
-app.use("/api/fee-groups", feeGroupRoutes);
-app.use("/api/teacher", TeacherRouter);
-app.use("/api/homeworkstatus", homeworkstatusRouter);
+
 dotenv.config();
 const PORT = process.env.PORT || 7000;
 const URL = process.env.MONGOURL;
@@ -53,3 +42,18 @@ mongoose
     });
   })
   .catch((error) => console.log(error));
+
+
+  
+app.use("/api/users", userrouter);
+app.use("/api/exams", router);
+app.use("/api/attempts", examAttemptRouter);
+app.use("/api/notes",notesrouter);
+app.use("/api/options",optionsRouter);
+app.use("/api/topics",topicrouter);
+app.use("/api/assignments", homeworkRoutes);
+app.use("/api/attendance", attendanceRoutes);
+app.use("/api/fee-payment", feePaymentRoutes);
+app.use("/api/fee-groups", feeGroupRoutes);
+app.use("/api/teacher", TeacherRouter);
+app.use("/api/homeworkstatus",homeworkstatusRouter);
