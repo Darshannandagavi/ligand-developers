@@ -52,7 +52,7 @@ const Login = () => {
     }
     setIsLoading(true);
     try {
-      const res = await axios.post("https://ligand-dev-4.onrender.com/api/users/login", formData);
+      const res = await axios.post("https://ligand-dev-7.onrender.com/api/users/login", formData);
       setMessage({ text: res.data.message, type: "success" });
       // Save user details in localStorage (optional)
       localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -231,7 +231,7 @@ export default Login;`
   }
   setIsLoading(true);
   try {
-    const res = await axios.post("https://ligand-dev-4.onrender.com/api/users/login", formData);
+    const res = await axios.post("https://ligand-dev-7.onrender.com/api/users/login", formData);
     setMessage({ text: res.data.message, type: "success" });
     // Save user details in localStorage (optional)
     localStorage.setItem("user", JSON.stringify(res.data.user));

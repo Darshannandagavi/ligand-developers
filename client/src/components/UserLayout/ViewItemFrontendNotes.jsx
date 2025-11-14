@@ -50,7 +50,7 @@ const ViewItem = () => {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get("https://ligand-dev-4.onrender.com/item");
+      const response = await axios.get("https://ligand-dev-7.onrender.com/item");
       setItems(response.data.items);
     } catch (error) {
       console.error("Error fetching items:", error);
@@ -95,12 +95,12 @@ const ViewItem = () => {
                 className="item-image-container"
                 onClick={() =>
                   handleImageClick(
-                    \`https://ligand-dev-4.onrender.com/uploads/\${item.itemImage}\`
+                    \`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`
                   )
                 }
               >
                 <img
-                  src={\`https://ligand-dev-4.onrender.com/uploads/\${item.itemImage}\`}
+                  src={\`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`}
                   alt={item.itemName}
                   className="item-image"
                 />
@@ -402,7 +402,7 @@ const [showModal, setShowModal] = useState(false);`,
       explanation: "This asynchronous function makes a GET request to retrieve items from the server.",
       code: `const fetchItems = async () => {
   try {
-    const response = await axios.get("https://ligand-dev-4.onrender.com/item");
+    const response = await axios.get("https://ligand-dev-7.onrender.com/item");
     setItems(response.data.items);
   } catch (error) {
     console.error("Error fetching items:", error);
@@ -513,12 +513,12 @@ const [showModal, setShowModal] = useState(false);`,
   className="item-image-container"
   onClick={() =>
     handleImageClick(
-      \`https://ligand-dev-4.onrender.com/uploads/\${item.itemImage}\`
+      \`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`
     )
   }
 >
   <img
-    src={\`https://ligand-dev-4.onrender.com/uploads/\${item.itemImage}\`}
+    src={\`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`}
     alt={item.itemName}
     className="item-image"
   />

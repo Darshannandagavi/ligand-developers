@@ -80,7 +80,7 @@ const TeacherRegister = () => {
     setLoading(true);
 
     try {
-      const apiUrl = "https://ligand-dev-4.onrender.com/api/teacher/register";
+      const apiUrl = "https://ligand-dev-7.onrender.com/api/teacher/register";
 
       const res = await axios.post(apiUrl, formData, {
         headers: { "Content-Type": "application/json" },

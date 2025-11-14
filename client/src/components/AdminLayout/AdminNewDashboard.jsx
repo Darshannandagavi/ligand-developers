@@ -84,13 +84,13 @@ const AdminNewDashboard = () => {
       setLoading(true);
       const token = localStorage.getItem('token');
       const [usersRes, collegesRes, attendanceRes, feePaymentsRes, feeGroupsRes, examsRes, notesRes] = await Promise.all([
-        axios.get('https://ligand-dev-4.onrender.com/api/users', { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get('https://ligand-dev-4.onrender.com/api/options/collegeName', { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get('https://ligand-dev-4.onrender.com/api/attendance', { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get('https://ligand-dev-4.onrender.com/api/fee-payment', { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get('https://ligand-dev-4.onrender.com/api/fee-groups', { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get('https://ligand-dev-4.onrender.com/api/exams/examsforadmin', { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get('https://ligand-dev-4.onrender.com/api/notes/admin', { headers: { Authorization: `Bearer ${token}` } })
+        axios.get('https://ligand-dev-7.onrender.com/api/users', { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get('https://ligand-dev-7.onrender.com/api/options/collegeName', { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get('https://ligand-dev-7.onrender.com/api/attendance', { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get('https://ligand-dev-7.onrender.com/api/fee-payment', { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get('https://ligand-dev-7.onrender.com/api/fee-groups', { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get('https://ligand-dev-7.onrender.com/api/exams/examsforadmin', { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get('https://ligand-dev-7.onrender.com/api/notes/admin', { headers: { Authorization: `Bearer ${token}` } })
       ]);
 
       const users = usersRes.data;

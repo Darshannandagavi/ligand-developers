@@ -91,7 +91,7 @@ export default function AdminExamAttempts() {
     async function fetchExams() {
       try {
         const res = await axios.get(
-          "https://ligand-dev-4.onrender.com/api/exams/examsforadmin"
+          "https://ligand-dev-7.onrender.com/api/exams/examsforadmin"
         );
         setExams(res.data);
       } catch (err) {
@@ -107,7 +107,7 @@ export default function AdminExamAttempts() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `https://ligand-dev-4.onrender.com/api/attempts/exam/${exam._id}`
+        `https://ligand-dev-7.onrender.com/api/attempts/exam/${exam._id}`
       );
       console.log(res.data)
       setAttempts(res.data);

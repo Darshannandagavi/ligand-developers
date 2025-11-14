@@ -197,7 +197,7 @@ export default function AdminPaymentsMark() {
     const fetch = async () => {
       try {
         const res = await axios.get(
-          "https://ligand-dev-4.onrender.com/api/options/collegeName"
+          "https://ligand-dev-7.onrender.com/api/options/collegeName"
         );
         setCollegeOptions(res.data || []);
       } catch (err) {
@@ -222,7 +222,7 @@ export default function AdminPaymentsMark() {
     (async () => {
       try {
         const res = await axios.get(
-          "https://ligand-dev-4.onrender.com/api/attendance/options/batches",
+          "https://ligand-dev-7.onrender.com/api/attendance/options/batches",
           {
             params: { collegeName: filters.collegeName },
             headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -244,7 +244,7 @@ export default function AdminPaymentsMark() {
     (async () => {
       try {
         const res = await axios.get(
-          "https://ligand-dev-4.onrender.com/api/attendance/options/programs",
+          "https://ligand-dev-7.onrender.com/api/attendance/options/programs",
           {
             params: { collegeName: filters.collegeName, batch: filters.batch },
             headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -266,7 +266,7 @@ export default function AdminPaymentsMark() {
     (async () => {
       try {
         const res = await axios.get(
-          "https://ligand-dev-4.onrender.com/api/attendance/options/technologies",
+          "https://ligand-dev-7.onrender.com/api/attendance/options/technologies",
           {
             params: {
               collegeName: filters.collegeName,
@@ -354,7 +354,7 @@ export default function AdminPaymentsMark() {
     try {
       setLoading(true);
       const res = await axios.get(
-        "https://ligand-dev-4.onrender.com/api/fee-groups/students",
+        "https://ligand-dev-7.onrender.com/api/fee-groups/students",
         {
           params: filters,
           headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -389,13 +389,13 @@ export default function AdminPaymentsMark() {
     try {
       setActionLoading(true);
       await axios.post(
-        `https://ligand-dev-4.onrender.com/api/fee-groups/${groupId}/students/${studentId}/payment`,
+        `https://ligand-dev-7.onrender.com/api/fee-groups/${groupId}/students/${studentId}/payment`,
         { amount, installmentIndex },
         { headers: { Authorization: token ? `Bearer ${token}` : "" } }
       );
 
       const res = await axios.get(
-        "https://ligand-dev-4.onrender.com/api/fee-groups/students",
+        "https://ligand-dev-7.onrender.com/api/fee-groups/students",
         {
           params: filters,
           headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -654,7 +654,7 @@ export default function AdminPaymentsMark() {
                       <img
                         src={
                           r.student.profilePic
-                            ? `https://ligand-dev-4.onrender.com/uploads/${r.student.profilePic}`
+                            ? `https://ligand-dev-7.onrender.com/uploads/${r.student.profilePic}`
                             : "/default_user.jpeg"
                         }
                         onError={(e) => {

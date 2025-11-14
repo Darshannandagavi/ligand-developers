@@ -36,7 +36,7 @@ const TeacherLogin = () => {
     }
 
     try {
-      const apiUrl = "https://ligand-dev-4.onrender.com/api/teacher/login";
+      const apiUrl = "https://ligand-dev-7.onrender.com/api/teacher/login";
 
       const res = await axios.post(apiUrl, formData, {
         headers: { "Content-Type": "application/json" },
