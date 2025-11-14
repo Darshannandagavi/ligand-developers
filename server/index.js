@@ -28,7 +28,6 @@ app.use(cors({
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 
-
 app.use("/api/users", userrouter);
 app.use("/api/exams", router);
 app.use("/api/attempts", examAttemptRouter);
@@ -44,7 +43,7 @@ app.use("/api/homeworkstatus", homeworkstatusRouter);
 dotenv.config();
 const PORT = process.env.PORT || 7000;
 const URL = process.env.MONGOURL;
-// console.log(" DB link is here",process.env.MONGOURL)
+
 mongoose
   .connect(URL)
   .then(() => {
