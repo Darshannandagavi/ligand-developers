@@ -83,7 +83,7 @@ const TeacherChangePassword = () => {
       const token = localStorage.getItem("teacherToken");
 
       const res = await axios.post(
-        "https://ligand-software-solutions-workshop-2.onrender.com/api/teacher/change-password",
+        "https://ligand-dev-7.onrender.com/api/teacher/change-password",
         {
           oldPassword: formData.oldPassword,
           newPassword: formData.newPassword

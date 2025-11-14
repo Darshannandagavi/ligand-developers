@@ -29,7 +29,7 @@ const TeacherEditProfile = () => {
       // Set profile picture - using the provided image as default
       setProfilePic(
         savedTeacher.profilePic 
-          ? `https://ligand-software-solutions-workshop-2.onrender.com/uploads/${savedTeacher.profilePic}`
+          ? `https://ligand-dev-7.onrender.com/uploads/${savedTeacher.profilePic}`
           : "https://img.freepik.com/premium-vector/female-teacher-cute-woman-stands-with-pointer-book-school-learning-concept-teacher-s-day_335402-428.jpg"
       );
     } else {
@@ -54,7 +54,7 @@ const TeacherEditProfile = () => {
         return;
       }
 
-      const apiUrl = `https://ligand-software-solutions-workshop-2.onrender.com/api/teacher/update/${savedTeacher._id}`;
+      const apiUrl = `https://ligand-dev-7.onrender.com/api/teacher/update/${savedTeacher._id}`;
 
       const res = await axios.put(apiUrl, formData, {
         headers: {

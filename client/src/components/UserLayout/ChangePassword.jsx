@@ -35,7 +35,7 @@ const ChangePassword = () => {
 
         try {
             const res = await axios.put(
-                "https://ligand-software-solutions-workshop-2.onrender.com/api/users/change-password",
+                "https://ligand-dev-7.onrender.com/api/users/change-password",
                 { oldPassword, newPassword },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

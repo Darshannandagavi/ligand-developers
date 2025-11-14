@@ -17,7 +17,7 @@ const Profile = () => {
                 const decodedToken = JSON.parse(atob(token.split(".")[1])); // decode JWT
                 const userId = decodedToken.id;
 
-                const res = await axios.get(`https://ligand-software-solutions-workshop-2.onrender.com/api/users/${userId}`, {
+                const res = await axios.get(`https://ligand-dev-7.onrender.com/api/users/${userId}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
 
@@ -56,7 +56,7 @@ const Profile = () => {
             }
             if (profilePic) data.append("profilePic", profilePic);
 
-            const res = await axios.put(`https://ligand-software-solutions-workshop-2.onrender.com/api/users/${userId}`, data, {
+            const res = await axios.put(`https://ligand-dev-7.onrender.com/api/users/${userId}`, data, {
                 headers: { 
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "multipart/form-data"
@@ -79,7 +79,7 @@ const Profile = () => {
             {message && <p>{message}</p>}
 
             <img
-                src={`https://ligand-software-solutions-workshop-2.onrender.com/uploads/${user.profilePic}`}
+                src={`https://ligand-dev-7.onrender.com/uploads/${user.profilePic}`}
                 alt="Profile"
                 style={{ width: "150px", height: "150px", borderRadius: "50%" }}
             />

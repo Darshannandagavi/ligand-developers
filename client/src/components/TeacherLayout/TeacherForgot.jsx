@@ -27,7 +27,7 @@ const TeacherForgot = () => {
 
     setLoading(true);
     try {
-      const apiUrl = "https://ligand-software-solutions-workshop-2.onrender.com/api/teacher/forgot-password";
+      const apiUrl = "https://ligand-dev-7.onrender.com/api/teacher/forgot-password";
       const res = await axios.post(apiUrl, { email }, {
         headers: { "Content-Type": "application/json" },
       });

@@ -23,7 +23,7 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://ligand-software-solutions-workshop-2.onrender.com/api/users", {
+      const res = await axios.get("https://ligand-dev-7.onrender.com/api/users", {
         headers: { Authorization: token ? `Bearer ${token}` : "" },
       });
       setStudents(res.data || []);
@@ -43,7 +43,7 @@ const AdminDashboard = () => {
         const types = ["batch", "collegeName"];
         const responses = await Promise.all(
           types.map((type) =>
-            axios.get(`https://ligand-software-solutions-workshop-2.onrender.com/api/options/${type}`)
+            axios.get(`https://ligand-dev-7.onrender.com/api/options/${type}`)
           )
         );
         setBatchOptions(responses[0].data || []);
@@ -102,7 +102,7 @@ const AdminDashboard = () => {
       if (batchToPassout) payload.batch = batchToPassout;
 
       const res = await axios.post(
-        "https://ligand-software-solutions-workshop-2.onrender.com/api/users/make-passout",
+        "https://ligand-dev-7.onrender.com/api/users/make-passout",
         payload,
         { headers: { Authorization: token ? `Bearer ${token}` : "" } }
       );
@@ -124,7 +124,7 @@ const AdminDashboard = () => {
       <img
         src={
           student.profilePic
-            ? `https://ligand-software-solutions-workshop-2.onrender.com/uploads/${student.profilePic}`
+            ? `https://ligand-dev-7.onrender.com/uploads/${student.profilePic}`
             : "/default_user.jpeg"
         }
         alt="Profile"

@@ -20,7 +20,7 @@ import homeworkstatusRouter from "./routes/homeworkStatusRoutes.js";
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({
-  origin: "https://ligand-software-solutions-workshop-2.onrender.com",
+  origin: "https://ligand-dev-7.onrender.com",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
@@ -44,7 +44,7 @@ mongoose
   .catch((error) => console.log(error));
 
 
-  
+
 app.use("/api/users", userrouter);
 app.use("/api/exams", router);
 app.use("/api/attempts", examAttemptRouter);

@@ -49,7 +49,7 @@ export default function ExamHistory() {
     async function fetchHistory() {
       try {
         const res = await axios.get(
-          `https://ligand-software-solutions-workshop-2.onrender.com/api/attempts/student/${studentId}`
+          `https://ligand-dev-7.onrender.com/api/attempts/student/${studentId}`
         );
         // Filter out attempts with createdAt date 12-9-2025 (September 12, 2025)
         const excludeDate = new Date(2025, 8, 12); // Months are 0-indexed: 8 = September
