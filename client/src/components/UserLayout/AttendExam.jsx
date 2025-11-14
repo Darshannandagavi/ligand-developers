@@ -29,7 +29,7 @@ export default function AttendExam() {
         console.log(studentId);
         setLoading((prev) => ({ ...prev, exams: true }));
         const res = await axios.get(
-          `https://ligand-dev-7.onrender.com/api/exams/foruser/${collegeName}/${studentId}`
+          `https://ligand-dev-4.onrender.com/api/exams/foruser/${collegeName}/${studentId}`
         );
         console.log(res.data);
         setExams(res.data.exams || []);
@@ -147,7 +147,7 @@ export default function AttendExam() {
       };
 
       const res = await axios.post(
-        "https://ligand-dev-7.onrender.com/api/attempts/submit",
+        "https://ligand-dev-4.onrender.com/api/attempts/submit",
         payload
       );
 

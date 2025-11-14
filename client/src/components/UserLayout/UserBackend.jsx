@@ -486,7 +486,7 @@ export default UserRouter;`,
           step: "Step 3: Register Test",
           instructions: [
             "Select POST method",
-            "Add the path: https://ligand-dev-7.onrender.com/api/users/register",
+            "Add the path: https://ligand-dev-4.onrender.com/api/users/register",
             "Select Body → raw",
             "Add your data in JSON format",
             `{
@@ -507,7 +507,7 @@ export default UserRouter;`,
           instructions: [
             "Create new request in Postman",
             "Select POST method",
-            "Add path: https://ligand-dev-7.onrender.com/api/users/login",
+            "Add path: https://ligand-dev-4.onrender.com/api/users/login",
             "Add data in Body → raw (JSON format)",
             "Example data:",
             `{

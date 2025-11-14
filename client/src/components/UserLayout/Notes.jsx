@@ -8,7 +8,7 @@
 //   useEffect(() => {
 //     const fetchNotes = async () => {
 //       try {
-//         const res = await axios.get("https://ligand-dev-7.onrender.com/api/notes/active");
+//         const res = await axios.get("https://ligand-dev-4.onrender.com/api/notes/active");
 //         setNotes(res.data);
 //       } catch (err) {
 //         console.error("Error fetching notes", err);
@@ -54,7 +54,7 @@ const Notes = ({ user }) => {
     const fetchNotes = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`https://ligand-dev-7.onrender.com/api/notes/foruser/${collegeName}`);
+        const res = await axios.get(`https://ligand-dev-4.onrender.com/api/notes/foruser/${collegeName}`);
         setNotes(res.data);
         setError(null);
       } catch (err) {

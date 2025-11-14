@@ -34,7 +34,7 @@ const Register = () => {
         const types = ["batch", "collegeName", "programName", "technology"];
         const responses = await Promise.all(
           types.map((type) =>
-            axios.get(`https://ligand-dev-7.onrender.com/api/options/${type}`)
+            axios.get(`https://ligand-dev-4.onrender.com/api/options/${type}`)
           )
         );
         setOptions({
@@ -80,7 +80,7 @@ const Register = () => {
 
     try {
       const res = await axios.post(
-        "https://ligand-dev-7.onrender.com/api/users/register",
+        "https://ligand-dev-4.onrender.com/api/users/register",
         data,
         {
           headers: { "Content-Type": "multipart/form-data" },

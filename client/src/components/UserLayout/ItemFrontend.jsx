@@ -46,7 +46,7 @@ const Items = () => {
   }, []);
 
   const fetchItems = async () => {
-    const response = await axios.get("https://ligand-dev-7.onrender.com/item");
+    const response = await axios.get("https://ligand-dev-4.onrender.com/item");
     setItems(response.data.items);
     console.log(response.data);
   };
@@ -71,12 +71,12 @@ const Items = () => {
       let response;
       if (isEditMode) {
         response = await axios.put(
-          \`https://ligand-dev-7.onrender.com/item/\${itemId}\`,
+          \`https://ligand-dev-4.onrender.com/item/\${itemId}\`,
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
       } else {
-        response = await axios.post("https://ligand-dev-7.onrender.com/item", formData, {
+        response = await axios.post("https://ligand-dev-4.onrender.com/item", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -116,7 +116,7 @@ const Items = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await axios.delete(\`https://ligand-dev-7.onrender.com/item/\${id}\`);
+      const res = await axios.delete(\`https://ligand-dev-4.onrender.com/item/\${id}\`);
       setItems(items.filter((item) => item._id !== id));
       alert(res.data.message);
     } catch (error) {
@@ -220,7 +220,7 @@ const Items = () => {
 
               <td>
                 <img
-                  src={\`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`}
+                  src={\`https://ligand-dev-4.onrender.com/uploads/\${item.itemImage}\`}
                   alt={item.itemName}
                   width="50"
                 />
@@ -309,7 +309,7 @@ import { MdEdit, MdDelete } from "react-icons/md";`,
       content: "Function to fetch items from the backend API:",
       explanation: "This function makes a GET request to the backend to retrieve all items and updates the state with the response.",
       code: `const fetchItems = async () => {
-  const response = await axios.get("https://ligand-dev-7.onrender.com/item");
+  const response = await axios.get("https://ligand-dev-4.onrender.com/item");
   setItems(response.data.items);
   console.log(response.data);
 };`,
@@ -353,12 +353,12 @@ import { MdEdit, MdDelete } from "react-icons/md";`,
     let response;
     if (isEditMode) {
       response = await axios.put(
-        \`https://ligand-dev-7.onrender.com/item/\${itemId}\`,
+        \`https://ligand-dev-4.onrender.com/item/\${itemId}\`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
     } else {
-      response = await axios.post("https://ligand-dev-7.onrender.com/item", formData, {
+      response = await axios.post("https://ligand-dev-4.onrender.com/item", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
     }
@@ -420,7 +420,7 @@ import { MdEdit, MdDelete } from "react-icons/md";`,
   if (!confirmDelete) return;
 
   try {
-    const res = await axios.delete(\`https://ligand-dev-7.onrender.com/item/\${id}\`);
+    const res = await axios.delete(\`https://ligand-dev-4.onrender.com/item/\${id}\`);
     setItems(items.filter((item) => item._id !== id));
     alert(res.data.message);
   } catch (error) {
@@ -540,7 +540,7 @@ import { MdEdit, MdDelete } from "react-icons/md";`,
       explanation: "This code renders the uploaded images in the table by constructing the proper URL to access them.",
       code: `<td>
   <img
-    src={\`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`}
+    src={\`https://ligand-dev-4.onrender.com/uploads/\${item.itemImage}\`}
     alt={item.itemName}
     width="50"
   />

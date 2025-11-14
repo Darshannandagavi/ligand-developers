@@ -286,7 +286,7 @@ app.use("/item", itemRouter);`,
         {
           line: "app.use('/uploads', express.static(...))",
           purpose: "Serves uploaded files statically from the 'uploads' directory",
-          details: "Allows clients to access uploaded images via URLs like https://ligand-dev-7.onrender.com/uploads/filename.jpg"
+          details: "Allows clients to access uploaded images via URLs like https://ligand-dev-4.onrender.com/uploads/filename.jpg"
         },
         {
           line: "app.use('/item', itemRouter)",

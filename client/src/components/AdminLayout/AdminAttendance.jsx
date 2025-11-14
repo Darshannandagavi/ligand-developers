@@ -45,7 +45,7 @@ const AdminAttendance = () => {
     const fetchCollegeOptions = async () => {
       try {
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/options/collegeName"
+          "https://ligand-dev-4.onrender.com/api/options/collegeName"
         );
         setCollegeOptions(res.data || []);
       } catch (err) {
@@ -66,7 +66,7 @@ const AdminAttendance = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/attendance/options/batches",
+          "https://ligand-dev-4.onrender.com/api/attendance/options/batches",
           {
             params: { collegeName },
             headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -98,7 +98,7 @@ const AdminAttendance = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/attendance/options/programs",
+          "https://ligand-dev-4.onrender.com/api/attendance/options/programs",
           {
             params: { collegeName, batch },
             headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -128,7 +128,7 @@ const AdminAttendance = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/attendance/options/technologies",
+          "https://ligand-dev-4.onrender.com/api/attendance/options/technologies",
           {
             params: { collegeName, batch, programName },
             headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -153,7 +153,7 @@ const AdminAttendance = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        "https://ligand-dev-7.onrender.com/api/attendance/students",
+        "https://ligand-dev-4.onrender.com/api/attendance/students",
         {
           params: { collegeName, batch, programName, technology },
           headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -165,7 +165,7 @@ const AdminAttendance = () => {
       studentsData.forEach((s) => (init[s._id] = "pending"));
 
       try {
-        const attRes = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
+        const attRes = await axios.get("https://ligand-dev-4.onrender.com/api/attendance", {
           params: { date, programName, technology, collegeName, batch },
           headers: { Authorization: token ? `Bearer ${token}` : "" },
         });
@@ -221,7 +221,7 @@ const AdminAttendance = () => {
       }
 
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
+      const res = await axios.get("https://ligand-dev-4.onrender.com/api/attendance", {
         params: { from: from.toISOString(), to: to.toISOString() },
         headers: { Authorization: token ? `Bearer ${token}` : "" },
       });
@@ -295,7 +295,7 @@ const AdminAttendance = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "https://ligand-dev-7.onrender.com/api/attendance",
+        "https://ligand-dev-4.onrender.com/api/attendance",
         payload,
         {
           headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -403,7 +403,7 @@ const AdminAttendance = () => {
       }
 
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
+      const res = await axios.get("https://ligand-dev-4.onrender.com/api/attendance", {
         params: {
           from: from.toISOString(),
           to: to.toISOString(),
@@ -834,7 +834,7 @@ const AdminAttendance = () => {
                                         const token =
                                           localStorage.getItem("token");
                                         const res = await axios.get(
-                                          "https://ligand-dev-7.onrender.com/api/attendance",
+                                          "https://ligand-dev-4.onrender.com/api/attendance",
                                           {
                                             params: {
                                               from: from.toISOString(),

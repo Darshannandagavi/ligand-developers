@@ -11,7 +11,7 @@ const AdminNotesControl = () => {
   const fetchNotes = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("https://ligand-dev-7.onrender.com/api/notes/admin"); 
+      const res = await axios.get("https://ligand-dev-4.onrender.com/api/notes/admin"); 
       setNotes(res.data);
     } catch (err) {
       console.error("Error fetching notes", err);
@@ -29,9 +29,9 @@ const AdminNotesControl = () => {
     e.preventDefault();
     try {
       if (editingId) {
-        await axios.put(`https://ligand-dev-7.onrender.com/api/notes/${editingId}`, form);
+        await axios.put(`https://ligand-dev-4.onrender.com/api/notes/${editingId}`, form);
       } else {
-        await axios.post("https://ligand-dev-7.onrender.com/api/notes", form);
+        await axios.post("https://ligand-dev-4.onrender.com/api/notes", form);
       }
       setForm({ title: "", path: "", description: "" });
       setEditingId(null);
@@ -51,7 +51,7 @@ const AdminNotesControl = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this note?")) {
       try {
-        await axios.delete(`https://ligand-dev-7.onrender.com/api/notes/${id}`);
+        await axios.delete(`https://ligand-dev-4.onrender.com/api/notes/${id}`);
         fetchNotes();
       } catch (err) {
         console.error("Error deleting note", err);
@@ -62,7 +62,7 @@ const AdminNotesControl = () => {
   // Toggle active/inactive
   const handleToggle = async (id) => {
     try {
-      await axios.patch(`https://ligand-dev-7.onrender.com/api/notes/${id}/toggle`);
+      await axios.patch(`https://ligand-dev-4.onrender.com/api/notes/${id}/toggle`);
       fetchNotes();
     } catch (err) {
       console.error("Error toggling note", err);

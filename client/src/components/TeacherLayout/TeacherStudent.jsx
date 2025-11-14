@@ -30,7 +30,7 @@ const TeacherStudent = () => {
   useEffect(() => {
     const fetchCollegeOptions = async () => {
       try {
-        const res = await axios.get("https://ligand-dev-7.onrender.com/api/options/collegeName");
+        const res = await axios.get("https://ligand-dev-4.onrender.com/api/options/collegeName");
         setCollegeOptions(res.data || []);
         toast.success("Colleges loaded successfully");
       } catch (err) {
@@ -52,7 +52,7 @@ const TeacherStudent = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/attendance/options/batches",
+          "https://ligand-dev-4.onrender.com/api/attendance/options/batches",
           {
             params: { collegeName },
             headers: { Authorization: `Bearer ${token}` },
@@ -82,7 +82,7 @@ const TeacherStudent = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/attendance/options/programs",
+          "https://ligand-dev-4.onrender.com/api/attendance/options/programs",
           {
             params: { collegeName, batch },
             headers: { Authorization: `Bearer ${token}` },
@@ -111,7 +111,7 @@ const TeacherStudent = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/attendance/options/technologies",
+          "https://ligand-dev-4.onrender.com/api/attendance/options/technologies",
           {
             params: { collegeName, batch, programName },
             headers: { Authorization: `Bearer ${token}` },
@@ -142,7 +142,7 @@ const TeacherStudent = () => {
       const teacher = JSON.parse(localStorage.getItem("teacherInfo"));
       const teacherId = teacher?._id;
       
-      const res = await axios.get("https://ligand-dev-7.onrender.com/api/attendance/students/forteacher", {
+      const res = await axios.get("https://ligand-dev-4.onrender.com/api/attendance/students/forteacher", {
         params: { collegeName, batch, programName, technology, teacherId },
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -344,7 +344,7 @@ const TeacherStudent = () => {
                     <img
                       src={
                         s.profilePic
-                          ? `https://ligand-dev-7.onrender.com/uploads/${s.profilePic}`
+                          ? `https://ligand-dev-4.onrender.com/uploads/${s.profilePic}`
                           : "/default_user.jpeg"
                       }
                       alt={s.name}
