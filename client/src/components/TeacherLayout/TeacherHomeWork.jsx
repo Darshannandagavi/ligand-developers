@@ -807,12 +807,6 @@ const TeacherHomework = () => {
   cursor: not-allowed;
 }
 
-/* Homework Stats */
-.homework-stats {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 2px solid #e2e8f0;
-}
 
 .homework-stats h4 {
   margin: 0 0 15px 0;
