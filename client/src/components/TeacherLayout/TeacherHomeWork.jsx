@@ -412,10 +412,11 @@ const TeacherHomework = () => {
         {/* Student List */}
         <div className="student-list-section card">
           <div className="page-header">
+                 <h4>Homework Progress</h4>
             <div className="header-content">
               {selectedHomework && students.length > 0 && (
             <div className="homework-stats">
-              <h4>Homework Progress</h4>
+         
               <div className="stats-grid">
                 <div className="stat-item done">
                   <span className="stat-count">{stats.done}</span>
@@ -711,6 +712,7 @@ const TeacherHomework = () => {
 .stat-label {
   font-size: 0.9rem;
   opacity: 0.9;
+  color:white;
 }
 
 /* Content Grid */
@@ -850,6 +852,7 @@ const TeacherHomework = () => {
 .stat-label {
   font-size: 0.8rem;
   opacity: 0.9;
+  min-width: 120px;
 }
 
 /* Action Buttons */
