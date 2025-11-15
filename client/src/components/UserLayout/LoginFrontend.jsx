@@ -1,5 +1,5 @@
+
 import React, { useState } from 'react';
-import './MyNotes.css';
 
 const LoginFrontend = () => {
   const [copiedIndex, setCopiedIndex] = useState(null);
@@ -8,6 +8,204 @@ const LoginFrontend = () => {
     navigator.clipboard.writeText(text);
     setCopiedIndex(index);
     setTimeout(() => setCopiedIndex(null), 2000);
+  };
+
+  // Internal CSS Styles
+  const styles = {
+    container: {
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      maxWidth: "1200px",
+      margin: "0 auto",
+      padding: "20px",
+      backgroundColor: "#f9f9f9",
+      color: "#333",
+      lineHeight: "1.6",
+    },
+    header: {
+      textAlign: "center",
+      marginBottom: "30px",
+      padding: "30px",
+      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      color: "white",
+      borderRadius: "12px",
+      boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
+    },
+    headerH1: {
+      margin: "0 0 15px 0",
+      fontSize: "2.8rem",
+      fontWeight: "700",
+    },
+    headerP: {
+      margin: "0",
+      fontSize: "1.3rem",
+      opacity: "0.95",
+    },
+    companyInfo: {
+      textAlign: "center",
+      margin: "40px 0",
+      padding: "25px",
+      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      color: "white",
+      borderRadius: "12px",
+      boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
+    },
+    companyH2: {
+      margin: "0 0 15px 0",
+      fontSize: "2rem",
+      fontWeight: "600",
+    },
+    companyP: {
+      margin: "8px 0",
+      fontSize: "1.1rem",
+    },
+    sectionsContainer: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "30px",
+    },
+    sectionCard: {
+      backgroundColor: "white",
+      padding: "30px",
+      borderRadius: "12px",
+      boxShadow: "0 8px 16px rgba(0, 0, 0, 0.08)",
+      borderLeft: "6px solid #3498db",
+    },
+    sectionH2: {
+      color: "#2c3e50",
+      marginTop: "0",
+      marginBottom: "25px",
+      fontSize: "1.9rem",
+      borderBottom: "3px solid #f0f0f0",
+      paddingBottom: "15px",
+      textAlign: "left",
+    },
+    contentBlock: {
+      marginBottom: "25px",
+      textAlign: "left",
+    },
+    subtitleH3: {
+      color: "#3498db",
+      margin: "25px 0 15px 0",
+      fontSize: "1.5rem",
+      textAlign: "left",
+    },
+    textP: {
+      margin: "0 0 18px 0",
+      fontSize: "1.15rem",
+      lineHeight: "1.7",
+      textAlign: "left",
+    },
+    listBlock: {
+      backgroundColor: "#f8f9fa",
+      padding: "20px 25px 20px 45px",
+      borderRadius: "10px",
+      margin: "20px 0",
+      borderLeft: "4px solid #3498db",
+      textAlign: "left",
+    },
+    listH4: {
+      margin: "0 0 15px 0",
+      color: "#2c3e50",
+      fontSize: "1.3rem",
+      textAlign: "left",
+    },
+    listUl: {
+      margin: "0",
+      padding: "0",
+      textAlign: "left",
+    },
+    listLi: {
+      marginBottom: "12px",
+      fontSize: "1.1rem",
+      paddingLeft: "5px",
+      textAlign: "left",
+    },
+    codeBlock: {
+      position: "relative",
+      backgroundColor: "#2d3436",
+      color: "#dfe6e9",
+      padding: "18px",
+      borderRadius: "8px",
+      margin: "20px 0",
+      overflowX: "auto",
+      border: "1px solid #444",
+      textAlign: "left",
+    },
+    code: {
+      fontFamily: "'Fira Code', 'Monaco', 'Consolas', monospace",
+      fontSize: "1rem",
+      whiteSpace: "pre-wrap",
+      textAlign: "left",
+    },
+    pre: {
+      fontFamily: "'Fira Code', 'Monaco', 'Consolas', monospace",
+      fontSize: "1rem",
+      whiteSpace: "pre-wrap",
+      margin: "0",
+      lineHeight: "1.5",
+      textAlign: "left",
+    },
+    copyBtn: {
+      position: "absolute",
+      top: "12px",
+      right: "12px",
+      backgroundColor: "#3498db",
+      color: "white",
+      border: "none",
+      padding: "8px 15px",
+      borderRadius: "6px",
+      cursor: "pointer",
+      fontSize: "0.9rem",
+      transition: "all 0.3s ease",
+    },
+    copiedBtn: {
+      backgroundColor: "#27ae60",
+    },
+    imageContainer: {
+      margin: "25px 0",
+      textAlign: "center",
+    },
+    imageCaption: {
+      fontStyle: "italic",
+      color: "#666",
+      marginBottom: "10px",
+      fontSize: "1rem",
+      textAlign: "center",
+    },
+    image: {
+      width: "100%",
+      maxWidth: "100%",
+      borderRadius: "8px",
+      boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)",
+      border: "1px solid #ddd",
+    },
+    footer: {
+      textAlign: "center",
+      marginTop: "50px",
+      padding: "30px",
+      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      color: "white",
+      borderRadius: "12px",
+      boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
+    },
+    footerP: {
+      margin: "8px 0",
+      fontSize: "1.15rem",
+    },
+    instructionsList: {
+      backgroundColor: "#f8f9fa",
+      padding: "20px 25px 20px 45px",
+      borderRadius: "10px",
+      margin: "20px 0",
+      borderLeft: "4px solid #e74c3c",
+      textAlign: "left",
+    },
+    instructionsH4: {
+      margin: "0 0 15px 0",
+      color: "#2c3e50",
+      fontSize: "1.3rem",
+      textAlign: "left",
+    },
   };
 
   const steps = [
@@ -52,7 +250,7 @@ const Login = () => {
     }
     setIsLoading(true);
     try {
-      const res = await axios.post("https://ligand-dev-7.onrender.com/api/users/login", formData);
+      const res = await axios.post("https://ligand-software-solutions-workshop-2.onrender.com/api/users/login", formData);
       setMessage({ text: res.data.message, type: "success" });
       // Save user details in localStorage (optional)
       localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -210,7 +408,6 @@ export default Login;`
       title: "Handle Change Function",
       content: "The handleChange function updates form data as the user types.",
       explanation: "This function runs whenever the user types in an input box, updating the corresponding state value.",
-      
       breakdown: [
         "...formData: Keeps previous data",
         "[e.target.name]: e.target.value: Updates only the field being typed"
@@ -231,7 +428,7 @@ export default Login;`
   }
   setIsLoading(true);
   try {
-    const res = await axios.post("https://ligand-dev-7.onrender.com/api/users/login", formData);
+    const res = await axios.post("https://ligand-software-solutions-workshop-2.onrender.com/api/users/login", formData);
     setMessage({ text: res.data.message, type: "success" });
     // Save user details in localStorage (optional)
     localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -397,157 +594,182 @@ export default Login;`
       content: "If the login is successful, the user will be redirected to the user page.",
       image: "/user page.png"
     },
+    {
+      title: "🧠 Home Work",
+      content: "Create Admin Login Component",
+      explanation: "Now that you've successfully created a user login component, your homework is to create a similar login component specifically for administrators.",
+      instructions: [
+        "Create a new file called AdminLogin.jsx in the adminLayout folder",
+        "Use the same structure as the regular login component",
+        "Modify the API endpoint to point to your admin authentication endpoint",
+        "After successful login, redirect admin users to '/admin/dashboard'",
+        "Add admin-specific styling or branding to differentiate it from the user login",
+        "Include proper validation and error handling for admin credentials",
+        "Add a secure logout functionality for admin users"
+      ],
+      features: [
+        "Admin-specific authentication endpoint",
+        "Redirect to admin dashboard on success",
+        "Admin role validation",
+        "Enhanced security features",
+        "Professional admin interface design"
+      ]
+    }
   ];
 
   return (
-    <div className="notes-container">
-      <div className="notes-header">
-        <h1>Login Frontend Guide</h1>
-        <p>Follow these steps to create a responsive login form with React and Bootstrap</p>
+    <div style={styles.container}>
+      <div style={styles.header}>
+        <h1 style={styles.headerH1}>Login Frontend Guide</h1>
+        <p style={styles.headerP}>Follow these steps to create a responsive login form with React and Bootstrap</p>
       </div>
 
-      <div className="company-info">
-        <h2>LIGAND SOFTWARE SOLUTIONS</h2>
-        <p>Your Launchpad To Tech Success</p>
-        <p>Happy Coding!!!!!</p>
-        <p>Sankeshwar</p>
-        <p>8722585715</p>
-        <p>www.ligandsoftware.com</p>
-      </div>
 
-      <div className="steps-container">
+
+      <div style={styles.sectionsContainer}>
         {steps.map((step, index) => (
-          <div key={index} className="step-card">
-            <h3>{step.title}</h3>
-            <p>{step.content}</p>
-            
+          <div key={index} style={styles.sectionCard}>
+            <h2 style={styles.sectionH2}>{step.title}</h2>
+            <p style={styles.textP}>{step.content}</p>
+
             {step.explanation && (
-              <div className="explanation-box">
-                <h4>Explanation:</h4>
-                <p>{step.explanation}</p>
+              <div style={styles.listBlock}>
+                <h4 style={styles.listH4}>Explanation:</h4>
+                <p style={styles.textP}>{step.explanation}</p>
               </div>
             )}
-            
+
             {step.points && (
-              <div className="points-list">
-                {step.points.map((point, i) => (
-                  <div key={i} className="point-item">
-                    <h5>{point.term}</h5>
-                    <p>{point.explanation}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-            
-            {step.states && (
-              <div className="states-list">
-                <h4>State Variables:</h4>
-                {step.states.map((state, i) => (
-                  <div key={i} className="state-item">
-                    <h5>{state.name}</h5>
-                    <p>{state.purpose}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-            
-            {step.breakdown && (
-              <div className="breakdown-list">
-                <h4>Breakdown:</h4>
-                <ul>
-                  {step.breakdown.map((item, i) => (
-                    <li key={i}>{item}</li>
+              <div style={styles.listBlock}>
+                <h4 style={styles.listH4}>Import Details:</h4>
+                <ul style={styles.listUl}>
+                  {step.points.map((point, i) => (
+                    <li key={i} style={styles.listLi}>
+                      <strong>{point.term}:</strong> {point.explanation}
+                    </li>
                   ))}
                 </ul>
               </div>
             )}
-            
+
+            {step.states && (
+              <div style={styles.listBlock}>
+                <h4 style={styles.listH4}>State Variables:</h4>
+                <ul style={styles.listUl}>
+                  {step.states.map((state, i) => (
+                    <li key={i} style={styles.listLi}>
+                      <strong>{state.name}:</strong> {state.purpose}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {step.breakdown && (
+              <div style={styles.listBlock}>
+                <h4 style={styles.listH4}>Breakdown:</h4>
+                <ul style={styles.listUl}>
+                  {step.breakdown.map((item, i) => (
+                    <li key={i} style={styles.listLi}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {step.purpose && (
-              <div className="purpose-list">
-                <h4>Purpose:</h4>
+              <div style={styles.listBlock}>
+                <h4 style={styles.listH4}>Purpose:</h4>
                 {Array.isArray(step.purpose) ? (
-                  <ul>
+                  <ul style={styles.listUl}>
                     {step.purpose.map((item, i) => (
-                      <li key={i}>{item}</li>
+                      <li key={i} style={styles.listLi}>{item}</li>
                     ))}
                   </ul>
                 ) : (
-                  <p>{step.purpose}</p>
+                  <p style={styles.textP}>{step.purpose}</p>
                 )}
               </div>
             )}
-            
+
             {step.features && (
-              <div className="features-list">
-                <h4>Features:</h4>
-                <ul>
+              <div style={styles.listBlock}>
+                <h4 style={styles.listH4}>Features:</h4>
+                <ul style={styles.listUl}>
                   {step.features.map((feature, i) => (
-                    <li key={i}>{feature}</li>
+                    <li key={i} style={styles.listLi}>{feature}</li>
                   ))}
                 </ul>
               </div>
             )}
-            
+
             {step.properties && (
-              <div className="properties-list">
-                <h4>Properties:</h4>
-                <ul>
+              <div style={styles.listBlock}>
+                <h4 style={styles.listH4}>Properties:</h4>
+                <ul style={styles.listUl}>
                   {step.properties.map((property, i) => (
-                    <li key={i}>{property}</li>
+                    <li key={i} style={styles.listLi}>{property}</li>
                   ))}
                 </ul>
               </div>
             )}
-            
-            {step.command && (
-              <div className="code-block">
-                <code>{step.command}</code>
-                <button 
-                  className={`copy-btn ${copiedIndex === index ? 'copied' : ''}`}
-                  onClick={() => copyToClipboard(step.command, index)}
-                >
-                  {copiedIndex === index ? 'Copied!' : 'Copy'}
-                </button>
+
+            {step.instructions && (
+              <div style={styles.instructionsList}>
+                <h4 style={styles.instructionsH4}>Instructions:</h4>
+                <ul style={styles.listUl}>
+                  {step.instructions.map((instruction, i) => (
+                    <li key={i} style={styles.listLi}>{instruction}</li>
+                  ))}
+                </ul>
               </div>
             )}
-            
+
             {step.code && (
-              <div className="code-block">
-                <pre>{step.code}</pre>
-                <button 
-                  className={`copy-btn ${copiedIndex === index ? 'copied' : ''}`}
+              <div style={styles.codeBlock}>
+                <pre style={styles.pre}>{step.code}</pre>
+                <button
+                  style={{
+                    ...styles.copyBtn,
+                    ...(copiedIndex === index ? styles.copiedBtn : {}),
+                  }}
                   onClick={() => copyToClipboard(step.code, index)}
                 >
                   {copiedIndex === index ? 'Copied!' : 'Copy'}
                 </button>
               </div>
             )}
-            
+
             {step.image && (
-              <div className="image-placeholder">
-                <div className="image-container">
-                  <img src={step.image} alt={step.title} className="step-image" />
-                </div>
+              <div style={styles.imageContainer}>
+                <p style={styles.imageCaption}>
+                  Image: {step.image}
+                </p>
+                <img
+                  src={step.image}
+                  alt={step.title}
+                  style={styles.image}
+                  onError={(e) => {
+                    e.target.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlZWVlIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zNWVtIj5JbWFnZSBQbGFjZWhvbGRlcjwvdGV4dD48L3N2Zz4=";
+                  }}
+                />
               </div>
             )}
           </div>
         ))}
       </div>
-
-      <div className="notes-footer">
-        <p>Join us for Programming, Coding, Project Training and Internship opportunities.</p>
-        <p>Let's learn, code and build together.</p>
+      <div style={styles.companyInfo}>
+        <h2 style={styles.companyH2}>LIGAND SOFTWARE SOLUTIONS</h2>
+        <p style={styles.companyP}>Your Launchpad To Tech Success</p>
+        <p style={styles.companyP}>Happy Coding!!!!!</p>
+        <p style={styles.companyP}>Sankeshwar</p>
+        <p style={styles.companyP}>8722585715</p>
+        <p style={styles.companyP}>www.ligandsoftware.com</p>
       </div>
-      <style>{`
-      .steps-container p{
-        box-sizing: border-box;
-        text-align: left;
-      }
-       .steps-container li{
-        box-sizing: border-box;
-        text-align: left;
-      }
-      `}</style>
+
+      <div style={styles.footer}>
+        <p style={styles.footerP}>Join us for Programming, Coding, Project Training and Internship opportunities.</p>
+        <p style={styles.footerP}>Let's learn, code and build together.</p>
+      </div>
     </div>
   );
 };

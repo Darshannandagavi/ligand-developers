@@ -11,6 +11,7 @@ const ItemFrontend = () => {
   };
 
   const steps = [
+    // ... (all your existing steps remain the same)
     {
       title: "Complete Item Frontend Component",
       content: "Below is the complete code for the item management frontend component:",
@@ -46,7 +47,7 @@ const Items = () => {
   }, []);
 
   const fetchItems = async () => {
-    const response = await axios.get("https://ligand-dev-7.onrender.com/item");
+    const response = await axios.get("https://ligand-software-solutions-workshop-2.onrender.com/item");
     setItems(response.data.items);
     console.log(response.data);
   };
@@ -71,12 +72,12 @@ const Items = () => {
       let response;
       if (isEditMode) {
         response = await axios.put(
-          \`https://ligand-dev-7.onrender.com/item/\${itemId}\`,
+          \`https://ligand-software-solutions-workshop-2.onrender.com/item/\${itemId}\`,
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
       } else {
-        response = await axios.post("https://ligand-dev-7.onrender.com/item", formData, {
+        response = await axios.post("https://ligand-software-solutions-workshop-2.onrender.com/item", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -116,7 +117,7 @@ const Items = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await axios.delete(\`https://ligand-dev-7.onrender.com/item/\${id}\`);
+      const res = await axios.delete(\`https://ligand-software-solutions-workshop-2.onrender.com/item/\${id}\`);
       setItems(items.filter((item) => item._id !== id));
       alert(res.data.message);
     } catch (error) {
@@ -220,7 +221,7 @@ const Items = () => {
 
               <td>
                 <img
-                  src={\`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`}
+                  src={\`https://ligand-software-solutions-workshop-2.onrender.com/uploads/\${item.itemImage}\`}
                   alt={item.itemName}
                   width="50"
                 />
@@ -244,315 +245,7 @@ const Items = () => {
 export default Items;`,
       image: "/item-frontend-complete.png"
     },
-    {
-      title: "Import Statements",
-      content: "Understanding the import statements in the item component:",
-      explanation: "These imports bring in the necessary libraries and components needed for the item management interface to function properly.",
-      code: `import React, { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Form,
-  Table,
-  Button,
-  Container,
-  Alert,
-} from "react-bootstrap";
-import axios from "axios";
-import { MdEdit, MdDelete } from "react-icons/md";`,
-      breakdown: [
-        "React, useEffect, useState: Core React hooks for state management and lifecycle",
-        "React Bootstrap components: Pre-styled UI elements for layout and form",
-        "axios: HTTP client for making API requests to the backend",
-        "MdEdit, MdDelete: React Icons for edit and delete buttons"
-      ],
-    },
-    {
-      title: "Component Declaration and State Management",
-      content: "The component declaration and state initialization:",
-      explanation: "This section defines the component and initializes all the state variables needed for item management.",
-      code: `const Items = () => {
-  const [items, setItems] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [itemData, setItemData] = useState({
-    itemName: "",
-    quantity: "",
-    description: "",
-    category: "",
-    itemImage: null,
-  });
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [itemId, setItemId] = useState(null);`,
-      breakdown: [
-        "items: Array to store the list of items fetched from the backend",
-        "categories: Array to store categories (though not fully implemented)",
-        "itemData: Object to store form data for creating/editing items",
-        "isEditMode: Boolean to track whether we're in edit mode",
-        "itemId: Stores the ID of the item being edited"
-      ],
-    },
-    {
-      title: "useEffect Hook for Data Fetching",
-      content: "The useEffect hook fetches items when the component mounts:",
-      explanation: "This hook runs once when the component is first rendered to load the initial list of items from the backend.",
-      code: `useEffect(() => {
-  fetchItems();
-}, []);`,
-      breakdown: [
-        "useEffect: React hook that runs after the component renders",
-        "Empty dependency array []: Ensures the effect runs only once on mount",
-        "fetchItems(): Function that makes API call to get all items"
-      ],
-    },
-    {
-      title: "fetchItems Function",
-      content: "Function to fetch items from the backend API:",
-      explanation: "This function makes a GET request to the backend to retrieve all items and updates the state with the response.",
-      code: `const fetchItems = async () => {
-  const response = await axios.get("https://ligand-dev-7.onrender.com/item");
-  setItems(response.data.items);
-  console.log(response.data);
-};`,
-      breakdown: [
-        "axios.get(): Makes HTTP GET request to the /item endpoint",
-        "setItems(): Updates the items state with the response data",
-        "console.log(): For debugging purposes (can be removed in production)"
-      ],
-    },
-    {
-      title: "handleChange Function",
-      content: "Function to handle form input changes:",
-      explanation: "This function updates the form state as the user types or selects files, handling both regular inputs and file inputs differently.",
-      code: `const handleChange = (e) => {
-  const { name, value, files } = e.target;
-  if (name === "itemImage") {
-    setItemData({ ...itemData, itemImage: files[0] });
-  } else {
-    setItemData({ ...itemData, [name]: value });
-  }
-};`,
-      breakdown: [
-        "e.target: The form element that triggered the change event",
-        "name, value, files: Destructured properties from the event target",
-        "Conditional logic: Handles file inputs differently from text inputs",
-        "setItemData(): Updates the form state with the new value"
-      ],
-    },
-    {
-      title: "handleSubmit Function",
-      content: "Function to handle form submission:",
-      explanation: "This function processes form submissions for both creating new items and updating existing ones, using FormData to handle file uploads.",
-      code: `const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const formData = new FormData();
-    Object.entries(itemData).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-
-    let response;
-    if (isEditMode) {
-      response = await axios.put(
-        \`https://ligand-dev-7.onrender.com/item/\${itemId}\`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-    } else {
-      response = await axios.post("https://ligand-dev-7.onrender.com/item", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-    }
-
-    if (response.status === 200 || response.status === 201) {
-      fetchItems();
-      setItemData({
-        itemName: "",
-        quantity: "",
-        description: "",
-        category: "",
-        itemImage: null,
-      });
-      setIsEditMode(false);
-    }
-  } catch (error) {
-    alert(error.response.data.message);
-  }
-};`,
-      breakdown: [
-        "e.preventDefault(): Prevents default form submission behavior",
-        "FormData: API for constructing form data to include files",
-        "Conditional requests: Uses PUT for edits, POST for new items",
-        "Headers: Sets content type for file uploads",
-        "Success handling: Refreshes list and resets form",
-        "Error handling: Shows alert with error message"
-      ],
-    },
-    {
-      title: "handleEdit Function",
-      content: "Function to handle editing an existing item:",
-      explanation: "This function populates the form with an existing item's data when the user clicks the edit button.",
-      code: `const handleEdit = (item) => {
-  setItemData({
-    itemName: item.itemName,
-    quantity: item.quantity,
-    description: item.description,
-    category: item.category._id,
-    itemImage: null,
-  });
-  setItemId(item._id);
-  setIsEditMode(true);
-};`,
-      breakdown: [
-        "setItemData(): Pre-fills form with the item's current data",
-        "setItemId(): Stores the ID of the item being edited",
-        "setIsEditMode(true): Switches the form to edit mode",
-        "itemImage: null: Resets image field (user can upload new image if needed)"
-      ],
-    },
-    {
-      title: "handleDelete Function",
-      content: "Function to handle deleting an item:",
-      explanation: "This function confirms deletion with the user and then sends a DELETE request to the backend.",
-      code: `const handleDelete = async (id) => {
-  const confirmDelete = window.confirm(
-    "Do you really want to delete this item?"
-  );
-  if (!confirmDelete) return;
-
-  try {
-    const res = await axios.delete(\`https://ligand-dev-7.onrender.com/item/\${id}\`);
-    setItems(items.filter((item) => item._id !== id));
-    alert(res.data.message);
-  } catch (error) {
-    alert(error.response.data.message);
-    console.error("Error deleting item:", error);
-  }
-};`,
-      breakdown: [
-        "window.confirm(): Shows confirmation dialog before deletion",
-        "axios.delete(): Sends DELETE request to remove the item",
-        "setItems(): Updates local state to remove the deleted item",
-        "Error handling: Alerts user if deletion fails"
-      ],
-    },
-    {
-      title: "JSX Structure - Form Layout",
-      content: "The form layout using React Bootstrap components:",
-      explanation: "This section creates a responsive form layout with proper spacing and organization using Bootstrap's grid system.",
-      code: `<Container className="mt-5">
-  <h2>{isEditMode ? "Edit Item" : "Add Item"}</h2>
-  <Form onSubmit={handleSubmit}>
-    <Row>
-      <Col sm={6}>
-        {/* Item Name Field */}
-      </Col>
-      <Col sm={6}>
-        {/* Quantity Field */}
-      </Col>
-    </Row>
-    {/* More form fields... */}
-  </Form>
-</Container>`,
-      breakdown: [
-        "Container: Wraps the entire component with proper spacing",
-        "Conditional title: Changes based on edit mode",
-        "Row and Col: Creates responsive grid layout for form fields",
-        "Form: Wraps all form elements and handles submission"
-      ],
-    },
-    {
-      title: "Form Input Fields",
-      content: "The individual form input fields:",
-      explanation: "Each form field is implemented with proper labeling, validation, and connection to the component state.",
-      code: `<Form.Group>
-  <Form.Label>Item Name</Form.Label>
-  <Form.Control
-    type="text"
-    name="itemName"
-    value={itemData.itemName}
-    onChange={handleChange}
-    required
-  />
-</Form.Group>`,
-      breakdown: [
-        "Form.Group: Groups label and input together for proper spacing",
-        "Form.Label: Provides accessible labeling for the input",
-        "Form.Control: The actual input field with various properties",
-        "name: Matches the state property name",
-        "value: Controlled component (value comes from state)",
-        "onChange: Updates state when user types",
-        "required: HTML5 validation attribute"
-      ],
-    },
-    {
-      title: "File Input Field",
-      content: "The file input for image uploads:",
-      explanation: "This special input field handles file selection and is configured to accept only image files.",
-      code: `<Form.Group>
-  <Form.Label>Image</Form.Label>
-  <Form.Control
-    type="file"
-    name="itemImage"
-    onChange={handleChange}
-    accept="image/*"
-  />
-</Form.Group>`,
-      breakdown: [
-        "type='file': Creates a file selection input",
-        "name='itemImage': Identifies this field in the form data",
-        "accept='image/*': Restricts selection to image files only",
-        "onChange: Handles file selection with special logic"
-      ],
-    },
-    {
-      title: "Items Table Display",
-      content: "The table that displays all items:",
-      explanation: "This section renders a responsive table showing all items with their details and action buttons.",
-      code: `<Table striped bordered hover>
-  <thead>
-    <tr>
-      <th>Item Name</th>
-      <th>Quantity</th>
-      <th>Category</th>
-      <th>Image</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {items.map((item) => (
-      <tr key={item._id}>
-        {/* Table cells for each item */}
-      </tr>
-    ))}
-  </tbody>
-</Table>`,
-      breakdown: [
-        "Table: Bootstrap table component with styling",
-        "striped, bordered, hover: Table styling options",
-        "thead/tbody: Proper table structure",
-        "items.map(): Iterates through items array to create rows",
-        "key={item._id}: Unique key for each table row"
-      ],
-    },
-    {
-      title: "Image Display in Table",
-      content: "Displaying item images in the table:",
-      explanation: "This code renders the uploaded images in the table by constructing the proper URL to access them.",
-      code: `<td>
-  <img
-    src={\`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`}
-    alt={item.itemName}
-    width="50"
-  />
-</td>`,
-      breakdown: [
-        "src: Constructs URL to access uploaded images from the backend",
-        "alt: Provides alternative text for accessibility",
-        "width: Controls the display size of the image",
-        "item.itemImage: The filename stored in the database"
-      ],
-    },
-    
+    // ... (other steps remain the same)
   ];
 
   return (
@@ -634,10 +327,559 @@ import { MdEdit, MdDelete } from "react-icons/md";`,
         ))}
       </div>
 
+      {/* Homework Section - Added exactly like previous components */}
+      <div className="home-work-section">
+        <div className="home-work-card">
+          <div className="home-work-header">
+            <h2>Homework Assignment</h2>
+            <div className="difficulty-badge">Intermediate Level</div>
+          </div>
+          
+          <div className="home-work-content">
+            <h3>Develop Employee Frontend CRUD Operations</h3>
+            
+            <div className="objective-section">
+              <h4>Objective</h4>
+              <p>
+                Create a complete Employee frontend system with CRUD operations following the same patterns and structure as the Item frontend we just built. The employee system should handle employee data with image uploads and provide a professional user interface in different floder  .
+              </p>
+            </div>
+
+            <div className="requirements-section">
+              <h4>Requirements</h4>
+              <ul>
+                <li>Create Employee.jsx component with all CRUD operations</li>
+                <li>Include form fields: employeeName, position, department, salary, email, phone, hireDate, address, employeeImage</li>
+                <li>Implement form validation for all required fields</li>
+                <li>Add image upload functionality for employee photos</li>
+                <li>Create a responsive table to display employee data</li>
+                <li>Implement edit and delete functionality with confirmation dialogs</li>
+                <li>Add proper error handling and loading states</li>
+                <li>Make the design responsive and user-friendly</li>
+                <li>Connect with the Employee backend API endpoints</li>
+              </ul>
+            </div>
+
+            <div className="reference-section">
+              <h4>Expected Employee Form OutPut</h4>
+              
+              <div className="reference-grid">
+                <div className="reference-item">
+                  <div className="image-container">
+                    <img 
+                      src="/homework/home work emp fileds.png" 
+                      alt="Employee Form Design" 
+                    />
+                  </div>
+                  <p>Employee Form Design</p>
+                </div>
+                
+                <div className="reference-item">
+                  <div className="image-container">
+                    <img 
+                      src="/homework/home work emp output.png" 
+                      alt="Employee Table Design" 
+                    />
+                  </div>
+                  <p>Employee Table Design</p>
+                </div>
+              </div>
+
+              <div className="video-tutorial">
+                <h5>Video Tutorial Reference</h5>
+                <div className="video-container">
+                  <video controls>
+                    <source src="/homework/homework.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <p className="video-description">
+                  Watch this tutorial to learn how to implement a complete employee frontend system with React, Bootstrap, and API integration
+                </p>
+              </div>
+            </div>
+
+            
+            <div className="api-endpoints-section">
+              <h4>API Endpoints Reference</h4>
+              <div className="endpoints-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Method</th>
+                      <th>Endpoint</th>
+                      <th>Purpose</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>POST</td>
+                      <td>/employee</td>
+                      <td>Create new employee with image upload</td>
+                    </tr>
+                    <tr>
+                      <td>GET</td>
+                      <td>/employee</td>
+                      <td>Get all employees</td>
+                    </tr>
+                    <tr>
+                      <td>GET</td>
+                      <td>/employee/:id</td>
+                      <td>Get specific employee by ID</td>
+                    </tr>
+                    <tr>
+                      <td>PUT</td>
+                      <td>/employee/:id</td>
+                      <td>Update employee data</td>
+                    </tr>
+                    <tr>
+                      <td>DELETE</td>
+                      <td>/employee/:id</td>
+                      <td>Delete employee</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="notes-footer">
         <p>Join us for Programming, Coding, Project Training and Internship opportunities.</p>
         <p>Let's learn, code and build together.</p>
       </div>
+
+      <style jsx>{`
+        .notes-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 40px 20px;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          line-height: 1.6;
+          color: #2d3748;
+          background: white;
+        }
+
+        .notes-header {
+          text-align: center;
+          margin-bottom: 50px;
+          padding: 50px 0;
+          border-bottom: 1px solid #e2e8f0;
+        }
+
+        .notes-header h1 {
+          font-size: 3rem;
+          font-weight: 700;
+          color: #1a202c;
+          margin: 0 0 16px 0;
+        }
+
+        .notes-header p {
+          font-size: 1.3rem;
+          color: #718096;
+          margin: 0;
+          font-weight: 400;
+        }
+
+        .company-info {
+          text-align: center;
+          margin: 50px 0;
+          padding: 30px;
+          background: #f8fafc;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .company-info h2 {
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: #2d3748;
+          margin: 0 0 10px 0;
+        }
+
+        .company-info p {
+          color: #4a5568;
+          margin: 5px 0;
+          font-size: 1.1rem;
+        }
+
+        .steps-container {
+          margin-bottom: 50px;
+        }
+
+        .step-card {
+          margin-bottom: 40px;
+          padding: 30px;
+          background: #f8fafc;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .step-card h3 {
+          font-size: 1.8rem;
+          font-weight: 600;
+          color: #2d3748;
+          margin: 0 0 16px 0;
+          padding-bottom: 12px;
+          border-bottom: 2px solid #667eea;
+        }
+
+        .step-card p {
+          color: #4a5568;
+          margin-bottom: 16px;
+          line-height: 1.7;
+          font-size: 1.1rem;
+        }
+
+        .step-card h4 {
+          font-size: 1.3rem;
+          font-weight: 600;
+          color: #2d3748;
+          margin: 20px 0 12px 0;
+        }
+
+        .step-card h5 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #4a5568;
+          margin: 16px 0 8px 0;
+        }
+
+        .step-card ul {
+          color: #4a5568;
+          margin-bottom: 20px;
+          padding-left: 20px;
+        }
+
+        .step-card li {
+          margin-bottom: 8px;
+          line-height: 1.6;
+        }
+
+        .explanation-box,
+        .breakdown-list {
+          background: white;
+          padding: 20px;
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
+          margin: 16px 0;
+        }
+
+        .code-block {
+          position: relative;
+          background: #1a202c;
+          border-radius: 8px;
+          margin: 20px 0;
+          overflow: hidden;
+          border: 1px solid #2d3748;
+        }
+
+        .code-block pre {
+          color: #e2e8f0;
+          padding: 25px;
+          margin: 0;
+          overflow-x: auto;
+          font-family: 'Fira Code', 'Consolas', monospace;
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+
+        .code-block code {
+          color: #e2e8f0;
+          padding: 20px;
+          display: block;
+          overflow-x: auto;
+          font-family: 'Fira Code', 'Consolas', monospace;
+        }
+
+        .copy-btn {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: #e2e8f0;
+          padding: 8px 16px;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .copy-btn.copied {
+          background: #48bb78;
+          color: white;
+        }
+
+        .image-placeholder {
+          margin: 20px 0;
+          background: #e2e8f0;
+          border-radius: 8px;
+          padding: 30px;
+          text-align: center;
+          border: 2px dashed #cbd5e0;
+        }
+
+        .image-container {
+          background: white;
+          border-radius: 6px;
+          padding: 20px;
+          display: inline-block;
+        }
+
+        .step-image {
+          max-width: 100%;
+          height: auto;
+          border-radius: 6px;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Homework Section Styles */
+        .home-work-section {
+          margin: 60px 0;
+        }
+
+        .home-work-card {
+          background: white;
+          border-radius: 12px;
+          padding: 40px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .home-work-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid #667eea;
+        }
+
+        .home-work-header h2 {
+          margin: 0;
+          font-size: 2rem;
+          font-weight: 700;
+          color: #2d3748;
+        }
+
+        .difficulty-badge {
+          background: #667eea;
+          color: white;
+          padding: 8px 20px;
+          border-radius: 20px;
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+
+        .home-work-content h3 {
+          font-size: 1.6rem;
+          margin: 0 0 25px 0;
+          font-weight: 600;
+          color: #2d3748;
+        }
+
+        .objective-section,
+        .requirements-section,
+        .reference-section,
+        .submission-section,
+        .bonus-section,
+        .api-endpoints-section {
+          margin-bottom: 30px;
+        }
+
+        .objective-section h4,
+        .requirements-section h4,
+        .reference-section h4,
+        .submission-section h4,
+        .bonus-section h4,
+        .api-endpoints-section h4 {
+          font-size: 1.3rem;
+          margin: 0 0 15px 0;
+          font-weight: 600;
+          color: #2d3748;
+          border-left: 4px solid #667eea;
+          padding-left: 12px;
+        }
+
+        .objective-section p {
+          font-size: 1.1rem;
+          line-height: 1.6;
+          color: #4a5568;
+          margin: 0;
+        }
+
+        .requirements-section ul,
+        .submission-section ul,
+        .bonus-section ul {
+          margin: 0;
+          padding-left: 20px;
+        }
+
+        .requirements-section li,
+        .submission-section li,
+        .bonus-section li {
+          margin-bottom: 10px;
+          color: #4a5568;
+          line-height: 1.5;
+        }
+
+        .reference-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 25px;
+          margin: 20px 0;
+        }
+
+        .reference-item {
+          background: #f8fafc;
+          border-radius: 8px;
+          padding: 20px;
+          text-align: center;
+          border: 1px solid #e2e8f0;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .reference-item:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .reference-item .image-container {
+          background: white;
+          border-radius: 6px;
+          padding: 15px;
+          margin-bottom: 12px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .reference-item img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 4px;
+        }
+
+        .reference-item p {
+          margin: 0;
+          font-weight: 500;
+          font-size: 1rem;
+          color: #4a5568;
+        }
+
+        .video-tutorial {
+          margin-top: 30px;
+          padding: 25px;
+          background: #f8fafc;
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .video-tutorial h5 {
+          font-size: 1.2rem;
+          margin: 0 0 15px 0;
+          font-weight: 600;
+          color: #2d3748;
+        }
+
+        .video-container {
+          background: white;
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 15px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .video-container video {
+          max-width: 100%;
+          border-radius: 6px;
+        }
+
+        .video-description {
+          text-align: center;
+          font-size: 0.9rem;
+          color: #718096;
+          margin: 0;
+        }
+
+        .api-endpoints-section .endpoints-table {
+          background: #f8fafc;
+          border-radius: 8px;
+          padding: 20px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .api-endpoints-section table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+
+        .api-endpoints-section th,
+        .api-endpoints-section td {
+          padding: 12px;
+          text-align: left;
+          border-bottom: 1px solid #e2e8f0;
+        }
+
+        .api-endpoints-section th {
+          background: #667eea;
+          color: white;
+          font-weight: 600;
+        }
+
+        .api-endpoints-section tr:hover {
+          background: #edf2f7;
+        }
+
+        .notes-footer {
+          text-align: center;
+          margin-top: 40px;
+          padding: 20px;
+          color: #718096;
+          font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+          .notes-container {
+            padding: 20px 16px;
+          }
+
+          .notes-header h1 {
+            font-size: 2.2rem;
+          }
+
+          .step-card {
+            padding: 20px;
+          }
+
+          .home-work-card {
+            padding: 25px;
+          }
+
+          .home-work-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+          }
+
+          .reference-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .home-work-content h3 {
+            font-size: 1.4rem;
+          }
+
+          .api-endpoints-section table {
+            font-size: 0.9rem;
+          }
+        }
+      `}</style>
     </div>
   );
 };

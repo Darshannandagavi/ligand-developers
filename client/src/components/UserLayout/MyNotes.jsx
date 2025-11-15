@@ -112,14 +112,7 @@ export default App;`,
         <p>Follow these steps to set up your React client application</p>
       </div>
 
-      <div className="company-info">
-        <h2>LIGAND SOFTWARE SOLUTIONS</h2>
-        <p>Your Launchpad To Tech Success</p>
-        <p>Happy Coding!!!!!</p>
-        <p>Sankeshwar</p>
-        <p>8722585715</p>
-        <p>www.ligandsoftware.com</p>
-      </div>
+
 
       <div className="steps-container">
         {steps.map((step, index) => (
@@ -131,9 +124,8 @@ export default App;`,
               <div className="code-block">
                 <code>{step.command}</code>
                 <button
-                  className={`copy-btn ${
-                    copiedIndex === index ? "copied" : ""
-                  }`}
+                  className={`copy-btn ${copiedIndex === index ? "copied" : ""
+                    }`}
                   onClick={() => copyToClipboard(step.command, index)}
                 >
                   {copiedIndex === index ? "Copied!" : "Copy"}
@@ -145,9 +137,8 @@ export default App;`,
               <div className="code-block">
                 <pre>{step.code}</pre>
                 <button
-                  className={`copy-btn ${
-                    copiedIndex === index ? "copied" : ""
-                  }`}
+                  className={`copy-btn ${copiedIndex === index ? "copied" : ""
+                    }`}
                   onClick={() => copyToClipboard(step.code, index)}
                 >
                   {copiedIndex === index ? "Copied!" : "Copy"}
@@ -172,13 +163,32 @@ export default App;`,
         ))}
       </div>
 
-      <div className="home-work step-card">
-        <h2>Home-Work</h2><br />
-        <p>🧠 Homework Task: Build and Customize Your First React Client App</p><br />
+      <div className="step-card">
+        <h2>Home-Work</h2>
+        <p>🧠 Homework Task: Build and Customize Your First React Client App</p>
         <p>
-          🎯 Objective: Set up a new React client from scratch and display a
-          custom landing page on the index page which shows <b>WELCOME to MERN</b> in <b>YELLOW</b> color with <b>RED</b> underline.
+          🎯 Objective: Display a custom landing page on the index page which shows
+          <b> "Every Expert Was Once a Beginner in MERN 🚀"</b>
+          in <b>YELLOW</b> color with a <b> RED</b> underline on a black background.
         </p>
+        <div className="image-placeholder">
+          <div className="image-container">
+            <img
+              src="/homeWork/homework Client Setup .png"
+              alt="client setup homework"
+              className="step-image"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="company-info">
+        <h2>LIGAND SOFTWARE SOLUTIONS</h2>
+        <p>Your Launchpad To Tech Success</p>
+        <p>Happy Coding!!!!!</p>
+        <p>Sankeshwar</p>
+        <p>8722585715</p>
+        <p>www.ligandsoftware.com</p>
       </div>
 
       <div className="notes-footer">

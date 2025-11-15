@@ -27,7 +27,7 @@ const Chapter3 = () => {
       color: "white",
       borderRadius: "12px",
       boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
-      fontFamily:"cursive"
+      fontFamily: "cursive"
     },
     headerH1: {
       margin: "0 0 15px 0",
@@ -247,7 +247,7 @@ const Chapter3 = () => {
           text: "Together, these components provide a seamless experience for developers, enabling them to work in a JavaScript ecosystem throughout the entire development process (both front-end and back-end)."
         },
         {
-         
+
         }
       ]
     },
@@ -275,22 +275,22 @@ const Chapter3 = () => {
         {
           subtitle: "MongoDB (Database)",
           text: "Type: NoSQL database. Role: Stores and manages data in a flexible, document-based format (JSON-like documents). Why MongoDB?: MongoDB stores data as documents (JSON), which allows for a more flexible data structure and easier scaling. It is ideal for web apps with varying types of data or applications that require high throughput.",
-         
+
         },
         {
           subtitle: "Express.js (Backend Framework)",
           text: "Type: Web framework for Node.js. Role: Express handles the server-side logic, routing, HTTP requests, and integrates with MongoDB and Node.js. Why Express?: Express is lightweight, unopinionated, and flexible, which makes it an excellent choice for building APIs quickly and efficiently. It provides a robust set of features for building web applications and services.",
-         
+
         },
         {
           subtitle: "React (Frontend Library)",
           text: "Type: JavaScript library for building UIs. Role: React helps create dynamic and interactive UIs by breaking down the UI into small, reusable components. Why React?: React's component-based structure makes it highly maintainable, and it allows for fast rendering of UI elements thanks to its virtual DOM. It also supports a rich ecosystem of libraries and tools for building complex UIs efficiently.",
-          
+
         },
         {
           subtitle: "Node.js (Runtime Environment)",
           text: "Type: JavaScript runtime built on Chrome's V8 engine. Role: Node.js allows you to use JavaScript on the server-side, making it possible to handle server-side logic, API requests, and database management all with JavaScript. Why Node.js?: Node.js is event-driven and non-blocking, which makes it extremely fast for I/O-heavy tasks. It's perfect for building scalable and high-performance applications.",
-         
+
         }
       ]
     },
@@ -337,7 +337,7 @@ const Chapter3 = () => {
           }
         },
         {
-          
+
         },
         {
           subtitle: "Flow of Data in a MERN Stack Application:",
@@ -353,10 +353,10 @@ const Chapter3 = () => {
               "UI Rendering (React.js): Once the data is received by React (e.g., through state updates), React renders the data in the UI. React updates only the components that are changed based on the new data, making the UI dynamic and responsive."
             ]
           }
-          
+
         },
         {
-          
+
         }
       ]
     }
@@ -369,25 +369,17 @@ const Chapter3 = () => {
         <p style={styles.headerP}>Learn about full-stack development with the powerful MERN stack - MongoDB, Express.js, React, and Node.js</p>
       </div>
 
-      <div style={styles.companyInfo}>
-        <h2 style={styles.companyH2}>LIGAND SOFTWARE SOLUTIONS</h2>
-        <p style={styles.companyP}>Your Launchpad To Tech Success</p>
-        <p style={styles.companyP}>Happy Learning!!!!!</p>
-        <p style={styles.companyP}>Sankeshwar</p>
-        <p style={styles.companyP}>8722585715</p>
-        <p style={styles.companyP}>www.ligandsoftware.com</p>
-      </div>
 
       <div style={styles.sectionsContainer}>
         {sections.map((section, sectionIndex) => (
           <div key={sectionIndex} style={styles.sectionCard}>
             <h2 style={styles.sectionH2}>{section.title}</h2>
-            
+
             {section.content.map((content, contentIndex) => (
               <div key={contentIndex} style={styles.contentBlock}>
                 {content.subtitle && <h3 style={styles.subtitleH3}>{content.subtitle}</h3>}
                 {content.text && <p style={styles.textP}>{content.text}</p>}
-                
+
                 {content.list && (
                   <div style={styles.listBlock}>
                     {content.list.title && <h4 style={styles.listH4}>{content.list.title}</h4>}
@@ -398,13 +390,13 @@ const Chapter3 = () => {
                     </ul>
                   </div>
                 )}
-                
+
                 {content.image && (
                   <div style={styles.imageContainer}>
                     <p style={styles.imageCaption}>{content.image.caption}</p>
-                    <img 
-                      src={content.image.src} 
-                      alt={content.image.caption} 
+                    <img
+                      src={content.image.src}
+                      alt={content.image.caption}
                       style={styles.image}
                       onError={(e) => {
                         e.target.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZWVlZWVlIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zNWVtIj5JbWFnZSBQbGFjZWhvbGRlcjwvdGV4dD48L3N2Zz4=";
@@ -417,6 +409,16 @@ const Chapter3 = () => {
           </div>
         ))}
       </div>
+
+      <div style={styles.companyInfo}>
+        <h2 style={styles.companyH2}>LIGAND SOFTWARE SOLUTIONS</h2>
+        <p style={styles.companyP}>Your Launchpad To Tech Success</p>
+        <p style={styles.companyP}>Happy Learning!!!!!</p>
+        <p style={styles.companyP}>Sankeshwar</p>
+        <p style={styles.companyP}>8722585715</p>
+        <p style={styles.companyP}>www.ligandsoftware.com</p>
+      </div>
+
 
       <div style={styles.footer}>
         <p style={styles.footerP}>Join us for Programming, Coding, Project Training and Internship opportunities.</p>

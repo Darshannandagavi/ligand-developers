@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import "./Chapter4.css";
 
@@ -434,9 +435,8 @@ ReactDOM.render(
             <div className="code-block">
               <pre>{`<div className="container">Hello, World!</div>`}</pre>
               <button
-                className={`copy-btn ${
-                  copiedIndex === "classname" ? "copied" : ""
-                }`}
+                className={`copy-btn ${copiedIndex === "classname" ? "copied" : ""
+                  }`}
                 onClick={() =>
                   copyToClipboard(
                     '<div className="container">Hello, World!</div>',
@@ -455,9 +455,8 @@ ReactDOM.render(
             <div className="code-block">
               <pre>{`<img src="logo.png" alt="logo" />`}</pre>
               <button
-                className={`copy-btn ${
-                  copiedIndex === "selfclose" ? "copied" : ""
-                }`}
+                className={`copy-btn ${copiedIndex === "selfclose" ? "copied" : ""
+                  }`}
                 onClick={() =>
                   copyToClipboard(
                     '<img src="logo.png" alt="logo" />',
@@ -476,9 +475,8 @@ ReactDOM.render(
             <div className="code-block">
               <pre>{`<button onClick={handleClick}>Click Me</button>`}</pre>
               <button
-                className={`copy-btn ${
-                  copiedIndex === "event" ? "copied" : ""
-                }`}
+                className={`copy-btn ${copiedIndex === "event" ? "copied" : ""
+                  }`}
                 onClick={() =>
                   copyToClipboard(
                     "<button onClick={handleClick}>Click Me</button>",
@@ -492,14 +490,13 @@ ReactDOM.render(
           </li>
           <li>
             <strong>Embedding Expressions</strong>: In React, JavaScript
-            expressions can be embedded inside curly braces {}.
+            expressions can be embedded inside curly braces { }.
             <div className="code-block">
               <pre>{`const name = "John";
 return <h1>Hello, {name}!</h1>;`}</pre>
               <button
-                className={`copy-btn ${
-                  copiedIndex === "expression" ? "copied" : ""
-                }`}
+                className={`copy-btn ${copiedIndex === "expression" ? "copied" : ""
+                  }`}
                 onClick={() =>
                   copyToClipboard(
                     'const name = "John";\nreturn <h1>Hello, {name}!</h1>;',
@@ -847,9 +844,8 @@ return <h1>Hello, {name}!</h1>;`}</pre>
         <div className="code-block">
           <pre>{indexHtmlExample}</pre>
           <button
-            className={`copy-btn ${
-              copiedIndex === "index-html" ? "copied" : ""
-            }`}
+            className={`copy-btn ${copiedIndex === "index-html" ? "copied" : ""
+              }`}
             onClick={() => copyToClipboard(indexHtmlExample, "index-html")}
           >
             {copiedIndex === "index-html" ? "Copied!" : "Copy"}
@@ -892,7 +888,95 @@ return <h1>Hello, {name}!</h1>;`}</pre>
             🎯 Objective: Create Registration form with different inputs and
             style it using bootstrap.
           </p>
+
+          {/* 🧩 Homework Instructions Added Below */}
+          <div className="homework-tips" style={{ color: "#f1f1f1", lineHeight: "1.6" }}>
+            <p>
+              Create a form with these fields at minimum: <strong>Full Name</strong>,
+              <strong> Email</strong>, <strong>Profile Pic</strong>,<strong>Password</strong>,
+              <strong> Confirm Password</strong>, <strong>Phone </strong>, and a <strong>Submit</strong> button.
+            </p>
+
+            {/* <p>
+              Use <strong>React controlled components</strong> (state for each input).
+            </p> */}
+
+            <p>Validate before submit:</p>
+            <ul>
+              <li>Email pattern (simple regex).</li>
+              <li>Password length ≥ 6 and check Confirm Password matches.</li>
+              <li>Show inline error messages (under the input).</li>
+            </ul>
+
+            <p>
+              Use <strong>Bootstrap classes</strong> (<code>form-group</code>,{" "}
+              <code>form-control</code>, <code>btn</code>, grid <code>Row/Col</code>)
+              for layout and styling.
+            </p>
+
+            <p>
+              Make the form <strong>responsive</strong>: on mobile fields stack vertically,
+              on desktop use 2-column layout for some fields.
+            </p>
+
+            <p>
+              Prevent default submit and show a <strong>success message</strong>
+
+            </p>
+
+            <p>
+              Add basic CSS or use <strong>Bootstrap utilities</strong> to make the form
+              visually neat (spacing, rounded inputs, centered card).
+            </p>
+          </div>
+
+          {/* Image Example */}
+          <div className="">
+            <p>Example Image:</p>
+            <div className="image-container">
+              <img
+                src="/homework/homework  regisiterfrom.png"
+                alt="Registration Form Example"
+                className="step-image"
+              />
+            </div>
+          </div>
+
+          {/* Video Example */}
+          <div className="video-placeholder">
+            <p style={{
+              display: "flex",
+              textAlign: "center",
+              justifyContent: "center",
+              color: "blue",
+              marginTop: "60px",
+              marginBottom: "20px"
+            }}>
+              <strong>Homework Video Tutorial:</strong>
+            </p>
+            <div className="video-container" style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}>
+              <video width="600" height="400" controls style={{
+                borderRadius: "10px",
+                boxShadow: "0 4px 8px rgba(0,0,0,0.1)"
+              }}>
+                <source
+                  src="/homework/homework.mp4"
+                  type="video/mp4"
+                />
+                <source
+                  src="/homework/registration-form-tutorial.ogg"
+                  type="video/ogg"
+                />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   );

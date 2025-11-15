@@ -20,7 +20,7 @@ import homeworkstatusRouter from "./routes/homeworkStatusRoutes.js";
 const app = express();
 app.use(bodyParser.json());
 app.use(cors({
-  origin: "https://liganddevelopers.vercel.app",
+  origin: ["https://liganddevelopers.vercel.app", "http://localhost:3000"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));

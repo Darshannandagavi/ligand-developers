@@ -14,7 +14,7 @@ const ItemBackend = () => {
       title: "Item Model (models/Item.js)",
       content: "The Item model defines the structure for item data in the database.",
       explanation: "This model specifies what fields an item document should have, their data types, and any validation rules. It includes timestamps for automatic creation and update tracking.",
-      image: "/create itemjs.png", // keep only this one
+      image: "/create itemjs.png",
       code: `import mongoose from "mongoose";
 
 const itemSchema = new mongoose.Schema(
@@ -48,6 +48,7 @@ const itemSchema = new mongoose.Schema(
 
 const Item = mongoose.model("Item", itemSchema);
 export { Item };`,
+      image: "/create itemjs.png",
       breakdown: [
         "itemName: String field for the item name, required and trimmed",
         "itemImage: String field to store image filename or path, required",
@@ -286,7 +287,7 @@ app.use("/item", itemRouter);`,
         {
           line: "app.use('/uploads', express.static(...))",
           purpose: "Serves uploaded files statically from the 'uploads' directory",
-          details: "Allows clients to access uploaded images via URLs like https://ligand-dev-7.onrender.com/uploads/filename.jpg"
+          details: "Allows clients to access uploaded images via URLs like https://ligand-software-solutions-workshop-2.onrender.com/uploads/filename.jpg"
         },
         {
           line: "app.use('/item', itemRouter)",
@@ -308,8 +309,6 @@ app.use("/item", itemRouter);`,
         "uploads/ - Directory for storing uploaded images (created automatically)"
       ]
     },
-    
-    
   ];
 
   return (
@@ -403,19 +402,6 @@ app.use("/item", itemRouter);`,
               </div>
             )}
             
-            {step.testing && (
-              <div className="testing-list">
-                <h4>API Testing:</h4>
-                {step.testing.map((test, i) => (
-                  <div key={i} className="test-item">
-                    <h5>{test.method} {test.endpoint}</h5>
-                    <p><strong>Body:</strong> {test.body}</p>
-                    <p><strong>Notes:</strong> {test.notes}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-            
             {step.command && (
               <div className="code-block">
                 <code>{step.command}</code>
@@ -447,165 +433,498 @@ app.use("/item", itemRouter);`,
                 </button>
               </div>
             )}
-            
-            
           </div>
         ))}
+      </div>
+
+      {/* Homework Section - Added exactly like RegistrationFrontend */}
+      <div className="home-work-section">
+        <div className="home-work-card">
+          <div className="home-work-header">
+            <h2>Homework Assignment</h2>
+            <div className="difficulty-badge">Intermediate Level</div>
+          </div>
+          
+          <div className="home-work-content">
+            <h3>Develop Employee Backend CRUD Operations</h3>
+            
+            <div className="objective-section">
+              <h4>Objective</h4>
+              <p>
+                Create a complete Employee backend system with CRUD operations following the same patterns and structure as the Item backend we just built. The employee system should handle employee data with image uploads.
+              </p>
+            </div>
+
+            <div className="requirements-section">
+              <h4>Requirements</h4>
+              <ul>
+                <li>Create Employee Model with fields: employeeName, employeeImage, position, department, salary, email, phone, hireDate, address</li>
+                <li>Implement Employee Controller with all CRUD operations</li>
+                <li>Create Employee Router with proper endpoints</li>
+                <li>Add file upload functionality for employee images</li>
+                <li>Implement proper error handling and validation</li>
+                <li>Test all endpoints using Postman</li>
+                <li>Ensure email field is unique</li>
+                <li>Add proper validation for all fields</li>
+              </ul>
+            </div>
+
+            <div className="reference-section">
+              <h4>Expected Output</h4>
+              
+              {/* <div className="reference-grid">
+                <div className="reference-item">
+                  <div className="image-container">
+                    <img 
+                      src="/homework/employee-model.png" 
+                      alt="Employee Model Structure" 
+                    />
+                  </div>
+                  <p>Employee Model Structure</p>
+                </div>
+                
+                <div className="reference-item">
+                  <div className="image-container">
+                    <img 
+                      src="/homework/postman-testing.png" 
+                      alt="Postman Testing" 
+                    />
+                  </div>
+                  <p>Postman API Testing</p>
+                </div>
+              </div> */}
+
+              <div className="video-tutorial">
+                <h5>Video Tutorial Reference</h5>
+                <div className="video-container">
+                  <video controls>
+                    <source src="/homework/homework.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <p className="video-description">
+                  Watch this tutorial to learn how to implement a complete employee backend system with Node.js, Express, and MongoDB
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
 
       <div className="notes-footer">
         <p>Join us for Programming, Coding, Project Training and Internship opportunities.</p>
         <p>Let's learn, code and build together.</p>
       </div>
+
       <style>{`
-      
-.notes-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  color: #333;
-}
+        .notes-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 40px 20px;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          line-height: 1.6;
+          color: #2d3748;
+          background: white;
+        }
 
-.notes-header {
-  text-align: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #eaeaea;
-}
+        .notes-header {
+          text-align: center;
+          margin-bottom: 50px;
+          padding: 50px 0;
+          border-bottom: 1px solid #e2e8f0;
+        }
 
-.notes-header h1 {
-  color: #2c3e50;
-  margin-bottom: 10px;
-}
+        .notes-header h1 {
+          font-size: 3rem;
+          font-weight: 700;
+          color: #1a202c;
+          margin: 0 0 16px 0;
+        }
 
-.company-info {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 30px;
-  text-align: center;
-}
+        .notes-header p {
+          font-size: 1.3rem;
+          color: #718096;
+          margin: 0;
+          font-weight: 400;
+        }
 
-.company-info h2 {
-  color: #3498db;
-  margin-bottom: 10px;
-}
+        .company-info {
+          text-align: center;
+          margin: 50px 0;
+          padding: 30px;
+          background: #f8fafc;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+        }
 
-.steps-container {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
+        .company-info h2 {
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: #2d3748;
+          margin: 0 0 10px 0;
+        }
 
-.step-card {
-  background-color: white;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
-}
+        .company-info p {
+          color: #4a5568;
+          margin: 5px 0;
+          font-size: 1.1rem;
+        }
 
-.step-card:hover {
-  transform: translateY(-3px);
-}
+        .steps-container {
+          margin-bottom: 50px;
+        }
 
-.step-card h3 {
-  color: #2c3e50;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eaeaea;
-}
+        .step-card {
+          margin-bottom: 40px;
+          padding: 30px;
+          background: #f8fafc;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+        }
 
-.code-block {
-  position: relative;
-  background-color: #2d2d2d;
-  color: #f8f8f2;
-  padding: 15px;
-  border-radius: 5px;
-  margin: 15px 0;
-  overflow-x: auto;
-}
+        .step-card h3 {
+          font-size: 1.8rem;
+          font-weight: 600;
+          color: #2d3748;
+          margin: 0 0 16px 0;
+          padding-bottom: 12px;
+          border-bottom: 2px solid #667eea;
+        }
 
-.code-block pre {
-  margin: 0;
-  white-space: pre-wrap;
-}
+        .step-card p {
+          color: #4a5568;
+          margin-bottom: 16px;
+          line-height: 1.7;
+          font-size: 1.1rem;
+        }
 
-.code-block code {
-  font-family: 'Consolas', 'Monaco', monospace;
-}
+        .step-card h4 {
+          font-size: 1.3rem;
+          font-weight: 600;
+          color: #2d3748;
+          margin: 20px 0 12px 0;
+        }
 
-.copy-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  transition: background-color 0.2s;
-}
+        .step-card h5 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #4a5568;
+          margin: 16px 0 8px 0;
+        }
 
-.copy-btn:hover {
-  background-color: #2980b9;
-}
+        .step-card ul {
+          color: #4a5568;
+          margin-bottom: 20px;
+          padding-left: 20px;
+        }
 
-.copy-btn.copied {
-  background-color: #27ae60;
-}
+        .step-card li {
+          margin-bottom: 8px;
+          line-height: 1.6;
+        }
 
-.image-placeholder {
-  margin: 15px 0;
-  padding: 15px;
-  background-color: #f0f0f0;
-  border-radius: 5px;
-  text-align: center;
-}
+        .explanation-box,
+        .breakdown-list,
+        .functions-list,
+        .endpoints-list,
+        .configuration-list,
+        .structure-list {
+          background: white;
+          padding: 20px;
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
+          margin: 16px 0;
+        }
 
-.image-container {
-  margin-top: 10px;
-  padding: 20px;
-  background-color: #e0e0e0;
-  border: 2px dashed #a0a0a0;
-  border-radius: 5px;
-}
+        .function-item,
+        .endpoint-item,
+        .config-item {
+          background: #f8fafc;
+          padding: 16px;
+          border-radius: 6px;
+          margin: 12px 0;
+          border: 1px solid #e2e8f0;
+        }
 
-.step-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 4px;
-}
+        .code-block {
+          position: relative;
+          background: #1a202c;
+          border-radius: 8px;
+          margin: 20px 0;
+          overflow: hidden;
+          border: 1px solid #2d3748;
+        }
 
-.notes-footer {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 2px solid #eaeaea;
-  text-align: center;
-  color: #7f8c8d;
-}
+        .code-block pre {
+          color: #e2e8f0;
+          padding: 25px;
+          margin: 0;
+          overflow-x: auto;
+          font-family: 'Fira Code', 'Consolas', monospace;
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
 
-@media (max-width: 768px) {
-  .notes-container {
-    padding: 15px;
-  }
-  
-  .step-card {
-    padding: 15px;
-  }
-}
-  .steps-container p{
-        box-sizing: border-box;
-        text-align: left;
-      }
-       .steps-container li{
-        box-sizing: border-box;
-        text-align: left;
-      }
+        .code-block code {
+          color: #e2e8f0;
+          padding: 20px;
+          display: block;
+          overflow-x: auto;
+          font-family: 'Fira Code', 'Consolas', monospace;
+        }
+
+        .copy-btn {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: #e2e8f0;
+          padding: 8px 16px;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .copy-btn.copied {
+          background: #48bb78;
+          color: white;
+        }
+
+        .image-placeholder {
+          margin: 20px 0;
+          background: #e2e8f0;
+          border-radius: 8px;
+          padding: 30px;
+          text-align: center;
+          border: 2px dashed #cbd5e0;
+        }
+
+        .image-container {
+          background: white;
+          border-radius: 6px;
+          padding: 20px;
+          display: inline-block;
+        }
+
+        .step-image {
+          max-width: 100%;
+          height: auto;
+          border-radius: 6px;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Homework Section Styles */
+        .home-work-section {
+          margin: 60px 0;
+        }
+
+        .home-work-card {
+          background: white;
+          border-radius: 12px;
+          padding: 40px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .home-work-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid #667eea;
+        }
+
+        .home-work-header h2 {
+          margin: 0;
+          font-size: 2rem;
+          font-weight: 700;
+          color: #2d3748;
+        }
+
+        .difficulty-badge {
+          background: #667eea;
+          color: white;
+          padding: 8px 20px;
+          border-radius: 20px;
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+
+        .home-work-content h3 {
+          font-size: 1.6rem;
+          margin: 0 0 25px 0;
+          font-weight: 600;
+          color: #2d3748;
+        }
+
+        .objective-section,
+        .requirements-section,
+        .reference-section,
+        .submission-section,
+        .bonus-section {
+          margin-bottom: 30px;
+        }
+
+        .objective-section h4,
+        .requirements-section h4,
+        .reference-section h4,
+        .submission-section h4,
+        .bonus-section h4 {
+          font-size: 1.3rem;
+          margin: 0 0 15px 0;
+          font-weight: 600;
+          color: #2d3748;
+          border-left: 4px solid #667eea;
+          padding-left: 12px;
+        }
+
+        .objective-section p {
+          font-size: 1.1rem;
+          line-height: 1.6;
+          color: #4a5568;
+          margin: 0;
+        }
+
+        .requirements-section ul,
+        .submission-section ul,
+        .bonus-section ul {
+          margin: 0;
+          padding-left: 20px;
+        }
+
+        .requirements-section li,
+        .submission-section li,
+        .bonus-section li {
+          margin-bottom: 10px;
+          color: #4a5568;
+          line-height: 1.5;
+        }
+
+        .reference-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 25px;
+          margin: 20px 0;
+        }
+
+        .reference-item {
+          background: #f8fafc;
+          border-radius: 8px;
+          padding: 20px;
+          text-align: center;
+          border: 1px solid #e2e8f0;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .reference-item:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .reference-item .image-container {
+          background: white;
+          border-radius: 6px;
+          padding: 15px;
+          margin-bottom: 12px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .reference-item img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 4px;
+        }
+
+        .reference-item p {
+          margin: 0;
+          font-weight: 500;
+          font-size: 1rem;
+          color: #4a5568;
+        }
+
+        .video-tutorial {
+          margin-top: 30px;
+          padding: 25px;
+          background: #f8fafc;
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .video-tutorial h5 {
+          font-size: 1.2rem;
+          margin: 0 0 15px 0;
+          font-weight: 600;
+          color: #2d3748;
+        }
+
+        .video-container {
+          background: white;
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 15px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .video-container video {
+          max-width: 100%;
+          border-radius: 6px;
+        }
+
+        .video-description {
+          text-align: center;
+          font-size: 0.9rem;
+          color: #718096;
+          margin: 0;
+        }
+
+        .notes-footer {
+          text-align: center;
+          margin-top: 40px;
+          padding: 20px;
+          color: #718096;
+          font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+          .notes-container {
+            padding: 20px 16px;
+          }
+
+          .notes-header h1 {
+            font-size: 2.2rem;
+          }
+
+          .step-card {
+            padding: 20px;
+          }
+
+          .home-work-card {
+            padding: 25px;
+          }
+
+          .home-work-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+          }
+
+          .reference-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .home-work-content h3 {
+            font-size: 1.4rem;
+          }
+        }
       `}</style>
     </div>
   );

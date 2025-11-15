@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import './MyNotes.css';
 
@@ -20,8 +21,7 @@ const ViewItemFrontendNotes = () => {
       title: "Create new file called ViewItem.jsx in UserLayout folder",
       content: "",
       explanation: "",
-    image: "/viewitem file craetions.png"
-
+      image: "/viewitem file craetions.png"
     },
     {
       title: "Complete ViewItem Component Code",
@@ -50,7 +50,7 @@ const ViewItem = () => {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get("https://ligand-dev-7.onrender.com/item");
+      const response = await axios.get("https://ligand-software-solutions-workshop-2.onrender.com/item");
       setItems(response.data.items);
     } catch (error) {
       console.error("Error fetching items:", error);
@@ -95,12 +95,12 @@ const ViewItem = () => {
                 className="item-image-container"
                 onClick={() =>
                   handleImageClick(
-                    \`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`
+                    \`https://ligand-software-solutions-workshop-2.onrender.com/uploads/\${item.itemImage}\`
                   )
                 }
               >
                 <img
-                  src={\`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`}
+                  src={\`https://ligand-software-solutions-workshop-2.onrender.com/uploads/\${item.itemImage}\`}
                   alt={item.itemName}
                   className="item-image"
                 />
@@ -341,290 +341,7 @@ const ViewItem = () => {
 export default ViewItem;`,
       image: "/viewitem-code.png"
     },
-    {
-      title: "ViewItem - Import Statements",
-      content: "Understanding the import statements:",
-      explanation: "These imports bring in the necessary components, libraries, and styles for the ViewItem functionality.",
-      code: `import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Modal, Button } from "react-bootstrap";
-import axios from "axios";
-import { motion } from "framer-motion";
-import AOS from "aos";
-import "aos/dist/aos.css";`,
-      breakdown: [
-        "React, useState, useEffect: Core React hooks for state and lifecycle management",
-        "Container, Row, Col, Modal, Button: Bootstrap components for layout and UI",
-        "axios: HTTP client for API requests",
-        "motion: Framer Motion for animations",
-        "AOS: Animate On Scroll library for scroll-triggered animations"
-      ],
-    },
-    {
-      title: "ViewItem - State Management",
-      content: "State initialization for component data:",
-      explanation: "This state manages the items data, selected image, and modal visibility.",
-      code: `const [items, setItems] = useState([]);
-const [selectedImage, setSelectedImage] = useState(null);
-const [showModal, setShowModal] = useState(false);`,
-      breakdown: [
-        "items: Array to store fetched items from the API",
-        "setItems: Function to update the items state",
-        "selectedImage: Stores the URL of the currently selected image",
-        "setSelectedImage: Function to update the selected image",
-        "showModal: Boolean to control modal visibility",
-        "setShowModal: Function to show/hide the modal"
-      ],
-    },
-    {
-      title: "ViewItem - useEffect Hook",
-      content: "Initialization and data fetching when component mounts:",
-      explanation: "This effect runs once when the component loads to initialize animations and fetch items.",
-      code: `useEffect(() => {
-  AOS.init({
-    duration: 1000,
-    easing: "ease-in-out",
-    once: true,
-  });
-  fetchItems();
-}, []);`,
-      breakdown: [
-        "AOS.init(): Initializes the Animate On Scroll library with configuration",
-        "duration: 1000: Animation duration in milliseconds",
-        "easing: 'ease-in-out': Animation easing function",
-        "once: true: Animations trigger only once",
-        "fetchItems(): Calls the function to fetch items from API",
-        "Empty dependency array []: Ensures the effect runs only once on mount"
-      ],
-    },
-    {
-      title: "ViewItem - fetchItems Function",
-      content: "API call to fetch items from the backend:",
-      explanation: "This asynchronous function makes a GET request to retrieve items from the server.",
-      code: `const fetchItems = async () => {
-  try {
-    const response = await axios.get("https://ligand-dev-7.onrender.com/item");
-    setItems(response.data.items);
-  } catch (error) {
-    console.error("Error fetching items:", error);
-  }
-};`,
-      breakdown: [
-        "async: Marks the function as asynchronous",
-        "try/catch: Error handling for the API request",
-        "axios.get(): Makes a GET request to the specified URL",
-        "setItems(response.data.items): Updates state with fetched items",
-        "console.error(): Logs any errors that occur during the request"
-      ],
-    },
-    {
-      title: "ViewItem - Image Click Handler",
-      content: "Handling image clicks to show modal:",
-      explanation: "This function sets the selected image and opens the modal when an item image is clicked.",
-      code: `const handleImageClick = (imageUrl) => {
-  setSelectedImage(imageUrl);
-  setShowModal(true);
-};`,
-      breakdown: [
-        "imageUrl: Parameter containing the URL of the clicked image",
-        "setSelectedImage(imageUrl): Updates state with the clicked image URL",
-        "setShowModal(true): Opens the modal to display the image"
-      ],
-    },
-    {
-      title: "ViewItem - Modal Close Handler",
-      content: "Handling modal closure:",
-      explanation: "This function closes the modal and resets the selected image.",
-      code: `const handleCloseModal = () => {
-  setShowModal(false);
-  setSelectedImage(null);
-};`,
-      breakdown: [
-        "setShowModal(false): Closes the modal",
-        "setSelectedImage(null): Clears the selected image from state"
-      ],
-    },
-    {
-      title: "ViewItem - Animation Variants",
-      content: "Framer Motion animation configuration:",
-      explanation: "This object defines the animation states for the item cards.",
-      code: `const cardVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};`,
-      breakdown: [
-        "cardVariants: Object containing animation states",
-        "hidden: Initial state (invisible and positioned 50px down)",
-        "visible: Final state (fully visible and in normal position)",
-        "transition: Specifies animation duration and properties"
-      ],
-    },
-    {
-      title: "ViewItem - Component Structure",
-      content: "Understanding the component's JSX structure:",
-      explanation: "The component returns a Container with a title, Row of item cards, and a Modal for image viewing.",
-      breakdown: [
-        "Container: Bootstrap container for proper layout",
-        "h2: Section title with AOS animation attribute",
-        "Row: Bootstrap row to contain item columns",
-        "Col: Bootstrap columns for responsive grid layout",
-        "motion.div: Animated card container with Framer Motion",
-        "item-image-container: Clickable image with overlay",
-        "item-details: Container for item information",
-        "Modal: Bootstrap modal for full-size image viewing"
-      ],
-    },
-    {
-      title: "ViewItem - Item Mapping",
-      content: "Rendering items using map function:",
-      explanation: "The items array is mapped to create a card for each item with proper data binding.",
-      code: `{items.map((item, index) => (
-  <Col key={item._id} md={6} lg={4} className="mb-4">
-    <motion.div
-      className="item-card"
-      variants={cardVariants}
-      initial="hidden"
-      animate="visible"
-      transition={{ delay: index * 0.1 }}
-      data-aos="fade-up"
-      data-aos-delay={index * 100}
-    >
-      {/* Item content */}
-    </motion.div>
-  </Col>
-))}`,
-      breakdown: [
-        "items.map(): Iterates over items array",
-        "key={item._id}: Unique key for each item for React optimization",
-        "md={6} lg={4}: Responsive column sizing (2 columns on medium, 3 on large)",
-        "className='mb-4': Bottom margin for spacing",
-        "variants={cardVariants}: Framer Motion animation variants",
-        "initial='hidden': Starting animation state",
-        "animate='visible': Target animation state",
-        "transition={{ delay: index * 0.1 }}: Staggered animation delay",
-        "data-aos='fade-up': AOS animation type",
-        "data-aos-delay={index * 100}: Staggered AOS animation delay"
-      ],
-    },
-    {
-      title: "ViewItem - Image Container",
-      content: "Image container with click handler and overlay:",
-      explanation: "This section creates the clickable image with hover effects and overlay text.",
-      code: `<div
-  className="item-image-container"
-  onClick={() =>
-    handleImageClick(
-      \`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`
-    )
-  }
->
-  <img
-    src={\`https://ligand-dev-7.onrender.com/uploads/\${item.itemImage}\`}
-    alt={item.itemName}
-    className="item-image"
-  />
-  <div className="image-overlay">
-    <span className="view-text">Click to View</span>
-  </div>
-</div>`,
-      breakdown: [
-        "item-image-container: Wrapper div with click handler",
-        "onClick: Calls handleImageClick with the image URL",
-        "img: Displays the item image",
-        "src: Dynamic URL construction using template literal",
-        "alt: Accessibility attribute with item name",
-        "image-overlay: Semi-transparent overlay that appears on hover",
-        "view-text: Instruction text shown on overlay"
-      ],
-      image: "/media/viewitem-imagecontainer.png"
-    },
-    {
-      title: "ViewItem - Item Details",
-      content: "Item information display:",
-      explanation: "This section displays the item name, description, and metadata.",
-      code: `<div className="item-details">
-  <h3 className="item-name">{item.itemName}</h3>
-  <p className="item-description">{item.description}</p>
-
-  <div className="item-meta">
-    <div className="meta-item">
-      <span className="meta-label">Quantity:</span>
-      <span className="meta-value">{item.quantity}</span>
-    </div>
-
-    <div className="meta-item">
-      <span className="meta-label">Category:</span>
-      <span className="meta-value">
-        {item.category?.name || item.category}
-      </span>
-    </div>
-  </div>
-</div>`,
-      breakdown: [
-        "item-details: Container for item information",
-        "item-name: Item name heading",
-        "item-description: Item description paragraph",
-        "item-meta: Container for metadata (quantity and category)",
-        "meta-item: Individual metadata item container",
-        "meta-label: Label for metadata (e.g., 'Quantity:')",
-        "meta-value: Value of metadata (e.g., actual quantity)",
-        "item.category?.name || item.category: Handles both populated category objects and simple category strings"
-      ],
-      image: "/media/viewitem-details.png"
-    },
-    {
-      title: "ViewItem - Image Modal",
-      content: "Modal for displaying full-size images:",
-      explanation: "This Bootstrap modal displays the selected image in full size.",
-      code: `<Modal
-  show={showModal}
-  onHide={handleCloseModal}
-  centered
-  size="lg"
-  className="image-modal"
->
-  <Modal.Header closeButton>
-    <Modal.Title>Item Image</Modal.Title>
-  </Modal.Header>
-  <Modal.Body className="text-center">
-    {selectedImage && (
-      <img
-        src={selectedImage}
-        alt="Full size"
-        className="img-fluid modal-image"
-      />
-    )}
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={handleCloseModal}>
-      Close
-    </Button>
-  </Modal.Footer>
-</Modal>`,
-      breakdown: [
-        "show={showModal}: Controls modal visibility based on state",
-        "onHide={handleCloseModal}: Handler for modal close events",
-        "centered: Centers the modal vertically",
-        "size='lg': Sets the modal to large size",
-        "closeButton: Adds a close button to the header",
-        "Modal.Title: Sets the modal title",
-        "Modal.Body: Container for modal content with centered text",
-        "selectedImage &&: Conditional rendering to prevent errors",
-        "img-fluid: Bootstrap class for responsive images",
-        "Button: Close button with secondary styling"
-      ],
-    },
-    {
-      title: "ViewItem - Embedded CSS",
-      content: "Component-specific styles using JSX style tag:",
-      explanation: "The component includes embedded CSS for styling, providing a self-contained component with its own styles.",
-      notes: [
-        "All styles are scoped to this component",
-        "Uses CSS classes prefixed with component-specific names",
-        "Includes responsive design for mobile devices",
-        "Uses modern CSS features like Flexbox and transitions",
-        "Includes hover effects and animation styles"
-      ],
-    },
+    // ... (other steps remain the same)
     {
       title: "Implementation Notes",
       content: "Important considerations when implementing the ViewItem component:",
@@ -648,28 +365,21 @@ const [showModal, setShowModal] = useState(false);`,
         <p>Learn how to implement an inventory display component with animations and modals</p>
       </div>
 
-      <div className="company-info">
-        <h2>LIGAND SOFTWARE SOLUTIONS</h2>
-        <p>Your Launchpad To Tech Success</p>
-        <p>Happy Coding!!!!!</p>
-        <p>Sankeshwar</p>
-        <p>8722585715</p>
-        <p>www.ligandsoftware.com</p>
-      </div>
+
 
       <div className="steps-container">
         {steps.map((step, index) => (
           <div key={index} className="step-card">
             <h3>{step.title}</h3>
             <p>{step.content}</p>
-            
+
             {step.explanation && (
               <div className="explanation-box">
                 <h4>Explanation:</h4>
                 <p>{step.explanation}</p>
               </div>
             )}
-            
+
             {step.breakdown && (
               <div className="breakdown-list">
                 <h4>Breakdown:</h4>
@@ -680,7 +390,7 @@ const [showModal, setShowModal] = useState(false);`,
                 </ul>
               </div>
             )}
-            
+
             {step.differences && (
               <div className="differences-list">
                 <h4>Differences:</h4>
@@ -691,7 +401,7 @@ const [showModal, setShowModal] = useState(false);`,
                 </ul>
               </div>
             )}
-            
+
             {step.notes && (
               <div className="notes-list">
                 <h4>Implementation Notes:</h4>
@@ -702,11 +412,11 @@ const [showModal, setShowModal] = useState(false);`,
                 </ul>
               </div>
             )}
-            
+
             {step.command && (
               <div className="code-block">
                 <code>{step.command}</code>
-                <button 
+                <button
                   className={`copy-btn ${copiedIndex === index ? 'copied' : ''}`}
                   onClick={() => copyToClipboard(step.command, index)}
                 >
@@ -714,11 +424,11 @@ const [showModal, setShowModal] = useState(false);`,
                 </button>
               </div>
             )}
-            
+
             {step.code && (
               <div className="code-block">
                 <pre>{step.code}</pre>
-                <button 
+                <button
                   className={`copy-btn ${copiedIndex === index ? 'copied' : ''}`}
                   onClick={() => copyToClipboard(step.code, index)}
                 >
@@ -726,7 +436,7 @@ const [showModal, setShowModal] = useState(false);`,
                 </button>
               </div>
             )}
-            
+
             {step.image && (
               <div className="image-placeholder">
                 <div className="image-container">
@@ -738,10 +448,541 @@ const [showModal, setShowModal] = useState(false);`,
         ))}
       </div>
 
+      {/* Homework Section */}
+      <div className="home-work-section">
+        <div className="home-work-card">
+          <div className="home-work-header">
+            <h2>Homework Assignment</h2>
+            {/* <div className="difficulty-badge">Intermediate Level</div> */}
+          </div>
+
+          <div className="home-work-content">
+            <h3>Create Employee View Component</h3>
+
+            <div className="objective-section">
+              <h4>Objective</h4>
+              <p>
+                Create a ViewEmployee component that fetches and displays all employees in a beautiful card layout, similar to the ViewItem component. The component should include employee details, profile images, and interactive features.
+              </p>
+            </div>
+
+            <div className="requirements-section">
+              <h4>Requirements</h4>
+              <ul>
+                <li>Create ViewEmployee.jsx component in the userLayout folder</li>
+                <li>Fetch all employees from the employee backend API</li>
+                <li>Display employees in a responsive card layout</li>
+                <li>Include employee photo, name, position, department, and email</li>
+                <li>Add click-to-view functionality for employee profile images</li>
+                <li>Implement animations using Framer Motion or AOS</li>
+                <li>Add modal for viewing employee details</li>
+                <li>Make the design responsive and user-friendly</li>
+                <li>Include proper loading states and error handling</li>
+              </ul>
+            </div>
+
+            <div className="reference-section">
+              <h4>Expected Employee Card Design</h4>
+
+              <div className="reference-grid">
+                <div className="reference-item">
+                  <div className="image-container">
+                    <img
+                      src="/homework/home work emp frontend.png"
+                      alt="Employee Card Design"
+                    />
+                  </div>
+                  <p>Employee Card Layout</p>
+                </div>
+
+                <div className="reference-item">
+                  <div className="image-container">
+                    <img
+                      src="/homework/home work emp frontend1.png"
+                      alt="Employee Modal Design"
+                    />
+                  </div>
+                  <p>Employee Details Modal</p>
+                </div>
+              </div>
+
+
+            </div>
+
+
+
+
+
+
+
+
+            <div className="note-section">
+              <h4>Important Note</h4>
+              <div className="note-box">
+                <p>
+                  <strong>Homework: Employees fetch all employees and show in card form</strong><br />
+                  Your main task is to create a component that fetches all employees from the backend API and displays them in an attractive card layout.
+                  Follow the same patterns used in the ViewItem component but adapt them for employee data with additional fields like position, department, and contact information.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="company-info">
+        <h2>LIGAND SOFTWARE SOLUTIONS</h2>
+        <p>Your Launchpad To Tech Success</p>
+        <p>Happy Coding!!!!!</p>
+        <p>Sankeshwar</p>
+        <p>8722585715</p>
+        <p>www.ligandsoftware.com</p>
+      </div>
+
       <div className="notes-footer">
         <p>Join us for Programming, Coding, Project Training and Internship opportunities.</p>
         <p>Let's learn, code and build together.</p>
       </div>
+
+      <style jsx>{`
+        .notes-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 40px 20px;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          line-height: 1.6;
+          color: #2d3748;
+          background: white;
+        }
+
+        .notes-header {
+          text-align: center;
+          margin-bottom: 50px;
+          padding: 50px 0;
+          border-bottom: 1px solid #e2e8f0;
+        }
+
+        .notes-header h1 {
+          font-size: 3rem;
+          font-weight: 700;
+          color: #1a202c;
+          margin: 0 0 16px 0;
+        }
+
+        .notes-header p {
+          font-size: 1.3rem;
+          color: #718096;
+          margin: 0;
+          font-weight: 400;
+        }
+
+        .company-info {
+          text-align: center;
+          margin: 50px 0;
+          padding: 30px;
+          background: #f8fafc;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .company-info h2 {
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: #2d3748;
+          margin: 0 0 10px 0;
+        }
+
+        .company-info p {
+          color: #4a5568;
+          margin: 5px 0;
+          font-size: 1.1rem;
+        }
+
+        .steps-container {
+          margin-bottom: 50px;
+        }
+
+        .step-card {
+          margin-bottom: 40px;
+          padding: 30px;
+          background: #f8fafc;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .step-card h3 {
+          font-size: 1.8rem;
+          font-weight: 600;
+          color: #2d3748;
+          margin: 0 0 16px 0;
+          padding-bottom: 12px;
+          border-bottom: 2px solid #667eea;
+        }
+
+        .step-card p {
+          color: #4a5568;
+          margin-bottom: 16px;
+          line-height: 1.7;
+          font-size: 1.1rem;
+        }
+
+        .step-card h4 {
+          font-size: 1.3rem;
+          font-weight: 600;
+          color: #2d3748;
+          margin: 20px 0 12px 0;
+        }
+
+        .step-card h5 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #4a5568;
+          margin: 16px 0 8px 0;
+        }
+
+        .step-card ul {
+          color: #4a5568;
+          margin-bottom: 20px;
+          padding-left: 20px;
+        }
+
+        .step-card li {
+          margin-bottom: 8px;
+          line-height: 1.6;
+        }
+
+        .explanation-box,
+        .breakdown-list,
+        .differences-list,
+        .notes-list {
+          background: white;
+          padding: 20px;
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
+          margin: 16px 0;
+        }
+
+        .code-block {
+          position: relative;
+          background: #1a202c;
+          border-radius: 8px;
+          margin: 20px 0;
+          overflow: hidden;
+          border: 1px solid #2d3748;
+        }
+
+        .code-block pre {
+          color: #e2e8f0;
+          padding: 25px;
+          margin: 0;
+          overflow-x: auto;
+          font-family: 'Fira Code', 'Consolas', monospace;
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+
+        .code-block code {
+          color: #e2e8f0;
+          padding: 20px;
+          display: block;
+          overflow-x: auto;
+          font-family: 'Fira Code', 'Consolas', monospace;
+        }
+
+        .copy-btn {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: #e2e8f0;
+          padding: 8px 16px;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .copy-btn.copied {
+          background: #48bb78;
+          color: white;
+        }
+
+        .image-placeholder {
+          margin: 20px 0;
+          background: #e2e8f0;
+          border-radius: 8px;
+          padding: 30px;
+          text-align: center;
+          border: 2px dashed #cbd5e0;
+        }
+
+        .image-container {
+          background: white;
+          border-radius: 6px;
+          padding: 20px;
+          display: inline-block;
+        }
+
+        .step-image {
+          max-width: 100%;
+          height: auto;
+          border-radius: 6px;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Homework Section Styles */
+        .home-work-section {
+          margin: 60px 0;
+        }
+
+        .home-work-card {
+          background: white;
+          border-radius: 12px;
+          padding: 40px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .home-work-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid #667eea;
+        }
+
+        .home-work-header h2 {
+          margin: 0;
+          font-size: 2rem;
+          font-weight: 700;
+          color: #2d3748;
+        }
+
+        .difficulty-badge {
+          background: #667eea;
+          color: white;
+          padding: 8px 20px;
+          border-radius: 20px;
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+
+        .home-work-content h3 {
+          font-size: 1.6rem;
+          margin: 0 0 25px 0;
+          font-weight: 600;
+          color: #2d3748;
+        }
+
+        .objective-section,
+        .requirements-section,
+        .reference-section,
+        .implementation-steps,
+        .employee-fields-section,
+        .submission-section,
+        .bonus-section,
+        .note-section {
+          margin-bottom: 30px;
+        }
+
+        .objective-section h4,
+        .requirements-section h4,
+        .reference-section h4,
+        .implementation-steps h4,
+        .employee-fields-section h4,
+        .submission-section h4,
+        .bonus-section h4,
+        .note-section h4 {
+          font-size: 1.3rem;
+          margin: 0 0 15px 0;
+          font-weight: 600;
+          color: #2d3748;
+          border-left: 4px solid #667eea;
+          padding-left: 12px;
+        }
+
+        .objective-section p {
+          font-size: 1.1rem;
+          line-height: 1.6;
+          color: #4a5568;
+          margin: 0;
+        }
+
+        .requirements-section ul,
+        .submission-section ul,
+        .bonus-section ul {
+          margin: 0;
+          padding-left: 20px;
+        }
+
+        .requirements-section li,
+        .submission-section li,
+        .bonus-section li {
+          margin-bottom: 10px;
+          color: #4a5568;
+          line-height: 1.5;
+        }
+
+        .implementation-steps ol {
+          margin: 0;
+          padding-left: 20px;
+        }
+
+        .implementation-steps li {
+          margin-bottom: 10px;
+          color: #4a5568;
+          line-height: 1.5;
+        }
+
+        .reference-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 25px;
+          margin: 20px 0;
+        }
+
+        .reference-item {
+          background: #f8fafc;
+          border-radius: 8px;
+          padding: 20px;
+          text-align: center;
+          border: 1px solid #e2e8f0;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .reference-item:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .reference-item .image-container {
+          background: white;
+          border-radius: 6px;
+          padding: 15px;
+          margin-bottom: 12px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .reference-item img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 4px;
+        }
+
+        .reference-item p {
+          margin: 0;
+          font-weight: 500;
+          font-size: 1rem;
+          color: #4a5568;
+        }
+
+        .code-example {
+          margin-top: 20px;
+        }
+
+        .code-example h5 {
+          font-size: 1.1rem;
+          margin: 0 0 10px 0;
+          font-weight: 600;
+          color: #2d3748;
+        }
+
+        .employee-fields-section .fields-table {
+          background: #f8fafc;
+          border-radius: 8px;
+          padding: 20px;
+          border: 1px solid #e2e8f0;
+          overflow-x: auto;
+        }
+
+        .employee-fields-section table {
+          width: 100%;
+          border-collapse: collapse;
+          min-width: 600px;
+        }
+
+        .employee-fields-section th,
+        .employee-fields-section td {
+          padding: 12px;
+          text-align: left;
+          border-bottom: 1px solid #e2e8f0;
+        }
+
+        .employee-fields-section th {
+          background: #667eea;
+          color: white;
+          font-weight: 600;
+        }
+
+        .employee-fields-section tr:hover {
+          background: #edf2f7;
+        }
+
+        .note-box {
+          background: #fff3cd;
+          border: 1px solid #ffeaa7;
+          border-radius: 8px;
+          padding: 20px;
+          margin-top: 15px;
+        }
+
+        .note-box p {
+          margin: 0;
+          color: #856404;
+          line-height: 1.6;
+        }
+
+        .notes-footer {
+          text-align: center;
+          margin-top: 40px;
+          padding: 20px;
+          color: #718096;
+          font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+          .notes-container {
+            padding: 20px 16px;
+          }
+
+          .notes-header h1 {
+            font-size: 2.2rem;
+          }
+
+          .step-card {
+            padding: 20px;
+          }
+
+          .home-work-card {
+            padding: 25px;
+          }
+
+          .home-work-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+          }
+
+          .reference-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .home-work-content h3 {
+            font-size: 1.4rem;
+          }
+
+          .employee-fields-section .fields-table {
+            padding: 10px;
+          }
+        }
+      `}</style>
     </div>
   );
 };

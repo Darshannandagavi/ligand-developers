@@ -172,7 +172,7 @@ const UserBackend = () => {
       textAlign: "center",
     },
     image: {
-      width:"100%",
+      width: "100%",
       maxWidth: "100%",
       borderRadius: "8px",
       boxShadow: "0 5px 15px rgba(0, 0, 0, 0.1)",
@@ -486,7 +486,7 @@ export default UserRouter;`,
           step: "Step 3: Register Test",
           instructions: [
             "Select POST method",
-            "Add the path: https://ligand-dev-7.onrender.com/api/users/register",
+            "Add the path: https://ligand-software-solutions-workshop-2.onrender.com/api/users/register",
             "Select Body → raw",
             "Add your data in JSON format",
             `{
@@ -507,7 +507,7 @@ export default UserRouter;`,
           instructions: [
             "Create new request in Postman",
             "Select POST method",
-            "Add path: https://ligand-dev-7.onrender.com/api/users/login",
+            "Add path: https://ligand-software-solutions-workshop-2.onrender.com/api/users/login",
             "Add data in Body → raw (JSON format)",
             "Example data:",
             `{
@@ -722,6 +722,16 @@ export default UserRouter;`,
           Backend implementation complete. Your user side backend is now ready!
         </p>
       </div>
+
+      <div className="home-work step-card">
+        <h2 style={{ color: "white" }}>Home-Work</h2>
+        <p>🧠 Homework Task: Try another one type this in your another folder structure.</p>
+        <br />
+        <p>
+          🎯 Objective: Practice creating the same backend setup again in a new folder structure to understand model, controller, router connections and postman testing clearly.
+        </p>
+      </div>
+
 
       <div style={styles.companyInfo}>
         <h2 style={styles.companyH2}>LIGAND SOFTWARE SOLUTIONS</h2>

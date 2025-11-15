@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 const Chapter6 = () => {
@@ -13,13 +14,13 @@ const Chapter6 = () => {
     <div className="chapter-container">
       <div className="chapter-header">
         <h1>Chapter 6 - Landing Pages</h1>
-        <p>In this chapter we will see how to create Home page, About page and other pages.</p>
+        <p style={{color:"white"}}>In this chapter we will see how to create Home page, About page and other pages.</p>
       </div>
 
       <div className="content-section">
         <h2>1. Home Page:</h2>
         <p>If you have not created <strong>Home.jsx</strong> file in <strong>guestLayout</strong> folder, please create one new file and write code like below:</p>
-       
+
         <div className="code-block">
           <pre>{`import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
@@ -186,13 +187,13 @@ export default Home;`, 'homeCode')}
 
         <h3>You have to make changes in App.js file like below:</h3>
         <p><strong>App.js:</strong></p>
-       
+
         <div className="image-placeholder">
-         <img src="\c6Picture1.png" alt="App.js" />
+          <img src="\c6Picture1.png" alt="App.js" />
         </div>
-       
+
         <p><strong>Code:</strong></p>
-       
+
         <div className="code-block">
           <pre>{`import { Route, Routes } from 'react-router-dom';
 import './App.css';
@@ -242,7 +243,7 @@ export default App;`, 'appCode1')}
         </div>
 
         <h3>Home.jsx code Explanation:</h3>
-       
+
         <h4>a. Imports</h4>
         <div className="code-block">
           <pre>{`import React, { useState } from 'react';
@@ -388,14 +389,12 @@ import Contact from './Contact';`}</pre>
         <div className="image-placeholder">
           <img src="/c6Picture2.png" alt="" />
         </div>
-
-     
       </div>
 
       <div className="content-section">
         <h2>2. About Page:</h2>
         <p>Create <strong>About.jsx</strong> file if not created and write below code:</p>
-       
+
         <div className="code-block">
           <pre>{`import React from "react";
 
@@ -1021,14 +1020,12 @@ export default About;`, 'aboutCode')}
         <div className="image-placeholder">
           <img src="/c6Picture3.png" alt="" />
         </div>
-
-        
       </div>
 
       <div className="content-section">
         <h2>3. Services Page:</h2>
         <p>Create <strong>Services.jsx</strong> file if not created and write below code:</p>
-       
+
         <div className="code-block">
           <pre>{`import React from "react";
 
@@ -1522,14 +1519,12 @@ export default Services;`, 'servicesCode')}
         <div className="image-placeholder">
           <img src="/c6Picture4.png" alt="" />
         </div>
-
-       
       </div>
 
       <div className="content-section">
         <h2>4. Contact Page:</h2>
         <p>Create <strong>Contact.jsx</strong> file if not created and write below code:</p>
-       
+
         <div className="code-block">
           <pre>{`import React, { useState } from "react";
 
@@ -2169,14 +2164,12 @@ export default Contact;`, 'contactCode')}
         <div className="image-placeholder">
           <img src="/c6Picture5.png" alt="" />
         </div>
-
-        
       </div>
 
       <div className="content-section">
         <h2>5. Update App.js:</h2>
         <p>Now you have to update App.js file to include all pages:</p>
-       
+
         <div className="code-block">
           <pre>{`import { Route, Routes } from 'react-router-dom';
 import './App.css';
@@ -2236,14 +2229,12 @@ export default App;`, 'appCode2')}
             {copiedIndex === 'appCode2' ? 'Copied!' : 'Copy Code'}
           </button>
         </div>
-
-       
       </div>
 
       <div className="content-section">
         <h2>6. Update GuestLayout.jsx:</h2>
         <p>Now you have to update GuestLayout.jsx file to include navigation to all pages:</p>
-       
+
         <div className="code-block">
           <pre>{`import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
@@ -2309,19 +2300,99 @@ export default GuestLayout;`, 'guestLayoutCode')}
             {copiedIndex === 'guestLayoutCode' ? 'Copied!' : 'Copy Code'}
           </button>
         </div>
-
-       
       </div>
 
-      
-      <div className="home-work step-card">
-          <h2 style={{ color: "white" }}>Home-Work</h2>
-          <p>🧠 Homework Task: Add content in Multiple pages.</p>
-          <br />
-          <p>
-            🎯 Objective: Add interactive content in Home, About, Contact, Login and Register page such as textual content, image content or video content.
-          </p>
+      {/* Homework Section */}
+      <div className="home-work-section">
+        <div className="home-work-card">
+          <div className="home-work-header">
+            <h2>Homework Assignment</h2>
+            {/* <div className="difficulty-badge">Intermediate Level</div> */}
+          </div>
+
+          <div className="home-work-content">
+            <h3>Customize Landing Pages for Your Project</h3>
+
+            <div className="objective-section">
+              <h4>Objective</h4>
+              <p>
+                Replace all placeholder content in the Home, About, Services and Contact pages with real content for your project or institution. Make the site look like a professional product landing page for your project.
+              </p>
+            </div>
+
+            <div className="requirements-section">
+              <h4>Requirements</h4>
+              <ul>
+                <li>Update all texts (titles, captions, paragraphs) to reflect your project/company</li>
+                <li>Replace placeholder images and carousel slides with your own images or appropriate stock images</li>
+                <li>Change carousel captions to meaningful, tech-related taglines for your project</li>
+                <li>Ensure routing (App.js) points to the updated pages and navigation links work</li>
+                <li>Make the pages responsive and accessible (semantic HTML, alt text, labels)</li>
+                <li>Keep the existing component structure and only edit content/assets</li>
+              </ul>
+            </div>
+
+
+            <div className="example-section">
+              <h4>Example</h4>
+              <p>
+                Changed content and images — for example, for our institution website used information and visuals related to our institute.
+              </p>
+            </div>
+
+
+            <div className="reference-section">
+              <h4>Expected Output</h4>
+
+              <div className="reference-grid">
+                <div className="reference-item">
+                  <div className="image-container">
+                    <img
+                      src="/homework/homework  landing page.png"
+                      alt="Landing Page Example 1"
+                    />
+                  </div>
+                </div>
+
+                <div className="reference-item">
+                  <div className="image-container">
+                    <img
+                      src="/homework/homework  landing page2.png"
+                      alt="Landing Page Example 2"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="video-tutorial">
+                <h5>Video Tutorial</h5>
+                <div className="video-container">
+                  <video controls>
+                    <source src="/homework/homework.mp4" type="video/mp4" />
+                    {/* <source src="/homework/landing-pages-tutorial.ogg" type="video/ogg" /> */}
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <p className="video-description">
+                  Watch this tutorial to learn how to customize landing pages effectively
+                </p>
+              </div>
+            </div>
+
+
+            {/* <div className="submission-section">
+              <h4>Submission Guidelines</h4>
+              <ul>
+                <li>Submit all four updated pages (Home, About, Services, Contact)</li>
+                <li>Include updated App.js with proper routing</li>
+                <li>Ensure all images are properly linked and displayed</li>
+                <li>Test navigation between all pages</li>
+                <li>Verify responsive design on different screen sizes</li>
+              </ul>
+            </div> */}
+          </div>
         </div>
+      </div>
 
       <div className="company-info">
         <h2>LIGAND SOFTWARE SOLUTIONS</h2>
@@ -2331,6 +2402,363 @@ export default GuestLayout;`, 'guestLayoutCode')}
         <p>8722585715</p>
         <p>www.ligandsoftware.com</p>
       </div>
+
+      <style jsx>{`
+        .chapter-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 40px 20px;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          line-height: 1.6;
+          color: #2d3748;
+          background: white;
+        }
+
+        .chapter-header {
+          text-align: center;
+          margin-bottom: 50px;
+          padding: 50px 0;
+          border-bottom: 1px solid #e2e8f0;
+        }
+
+        .chapter-header h1 {
+          font-size: 3rem;
+          font-weight: 700;
+          color: #1a202c;
+          margin: 0 0 16px 0;
+        }
+
+        .chapter-header p {
+          font-size: 1.3rem;
+          color: #718096;
+          margin: 0;
+          font-weight: 400;
+        }
+
+        .content-section {
+          margin-bottom: 50px;
+          padding: 40px;
+          background: #f8fafc;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .content-section h2 {
+          font-size: 2rem;
+          font-weight: 600;
+          color: #2d3748;
+          margin: 0 0 20px 0;
+          padding-bottom: 15px;
+          border-bottom: 2px solid #667eea;
+        }
+
+        .content-section h3 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: #4a5568;
+          margin: 25px 0 15px 0;
+        }
+
+        .content-section h4 {
+          font-size: 1.2rem;
+          font-weight: 600;
+          color: #4a5568;
+          margin: 20px 0 10px 0;
+        }
+
+        .content-section p {
+          color: #4a5568;
+          margin-bottom: 16px;
+          line-height: 1.7;
+          font-size: 1.1rem;
+        }
+
+        .content-section ul {
+          color: #4a5568;
+          margin-bottom: 20px;
+          padding-left: 20px;
+        }
+
+        .content-section li {
+          margin-bottom: 8px;
+          line-height: 1.6;
+        }
+
+        .code-block {
+          position: relative;
+          background: #1a202c;
+          border-radius: 8px;
+          margin: 20px 0;
+          overflow: hidden;
+          border: 1px solid #2d3748;
+        }
+
+        .code-block pre {
+          color: #e2e8f0;
+          padding: 25px;
+          margin: 0;
+          overflow-x: auto;
+          font-family: 'Fira Code', 'Consolas', monospace;
+          font-size: 0.9rem;
+          line-height: 1.5;
+        }
+
+        .copy-btn {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: #e2e8f0;
+          padding: 8px 16px;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .copy-btn.copied {
+          background: #48bb78;
+          color: white;
+        }
+
+        .image-placeholder {
+          margin: 20px 0;
+          background: #e2e8f0;
+          border-radius: 8px;
+          padding: 30px;
+          text-align: center;
+          border: 2px dashed #cbd5e0;
+        }
+
+        .image-placeholder img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 6px;
+        }
+
+        .home-work-section {
+          margin: 60px 0;
+        }
+
+        .home-work-card {
+          background: white;
+          border-radius: 12px;
+          padding: 40px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .home-work-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid #667eea;
+        }
+
+        .home-work-header h2 {
+          margin: 0;
+          font-size: 2rem;
+          font-weight: 700;
+          color: #2d3748;
+        }
+
+        .difficulty-badge {
+          background: #667eea;
+          color: white;
+          padding: 8px 20px;
+          border-radius: 20px;
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+
+        .home-work-content h3 {
+          font-size: 1.6rem;
+          margin: 0 0 25px 0;
+          font-weight: 600;
+          color: #2d3748;
+        }
+
+        .objective-section,
+        .requirements-section,
+        .reference-section,
+        .example-section,
+        .submission-section {
+          margin-bottom: 30px;
+        }
+
+        .objective-section h4,
+        .requirements-section h4,
+        .reference-section h4,
+        .example-section h4,
+        .submission-section h4 {
+          font-size: 1.3rem;
+          margin: 0 0 15px 0;
+          font-weight: 600;
+          color: #2d3748;
+          border-left: 4px solid #667eea;
+          padding-left: 12px;
+        }
+
+        .objective-section p,
+        .example-section p {
+          font-size: 1.1rem;
+          line-height: 1.6;
+          color: #4a5568;
+          margin: 0;
+        }
+
+        .requirements-section ul,
+        .submission-section ul {
+          margin: 0;
+          padding-left: 20px;
+        }
+
+        .requirements-section li,
+        .submission-section li {
+          margin-bottom: 10px;
+          color: #4a5568;
+          line-height: 1.5;
+        }
+
+        .reference-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 25px;
+          margin: 20px 0;
+        }
+
+        .reference-item {
+          background: #f8fafc;
+          border-radius: 8px;
+          padding: 20px;
+          text-align: center;
+          border: 1px solid #e2e8f0;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .reference-item:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .reference-item .image-container {
+          background: white;
+          border-radius: 6px;
+          padding: 15px;
+          margin-bottom: 12px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .reference-item img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 4px;
+        }
+
+        .reference-item p {
+          margin: 0;
+          font-weight: 500;
+          font-size: 1rem;
+          color: #4a5568;
+        }
+
+        .video-tutorial {
+          margin-top: 30px;
+          padding: 25px;
+          background: #f8fafc;
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .video-tutorial h5 {
+          font-size: 1.2rem;
+          margin: 0 0 15px 0;
+          font-weight: 600;
+          color: #2d3748;
+        }
+
+        .video-container {
+          background: white;
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 15px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .video-container video {
+          max-width: 100%;
+          border-radius: 6px;
+        }
+
+        .video-description {
+          text-align: center;
+          font-size: 0.9rem;
+          color: #718096;
+          margin: 0;
+        }
+
+        .company-info {
+          text-align: center;
+          margin-top: 50px;
+          padding: 30px;
+          background: #f8fafc;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+        }
+
+        .company-info h2 {
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: #2d3748;
+          margin: 0 0 10px 0;
+        }
+
+        .company-info p {
+          color: #4a5568;
+          margin: 5px 0;
+          font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+          .chapter-container {
+            padding: 20px 16px;
+          }
+
+          .chapter-header h1 {
+            font-size: 2.2rem;
+          }
+
+          .content-section {
+            padding: 25px;
+          }
+
+          .home-work-card {
+            padding: 25px;
+          }
+
+          .home-work-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+          }
+
+          .reference-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .home-work-content h3 {
+            font-size: 1.4rem;
+          }
+        }
+      `}</style>
     </div>
   );
 };
