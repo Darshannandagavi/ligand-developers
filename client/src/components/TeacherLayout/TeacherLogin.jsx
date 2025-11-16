@@ -190,6 +190,29 @@ const TeacherLogin = () => {
               </>
             )}
           </button>
+          <div
+  style={{
+    height: "50px",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }}
+>
+  <Link
+    to="/login"
+    style={{
+      marginTop: "20px",
+      color: "#667eea",
+      display: "flex",
+      alignItems: "center",
+      gap: "5px",
+    }}
+  >
+    <FaUserGraduate className="icon" style={{ color: "#667eea" }} />
+    Back to Student Login
+  </Link>
+</div>
         </form>
 
         
