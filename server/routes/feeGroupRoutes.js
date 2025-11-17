@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/', auth, createFeeGroup);
 router.get('/', auth, listFeeGroups);
 router.get('/students', auth, listStudentFees);
-router.get('/dashboard', auth, dashboard);
+router.get('/dashboard', dashboard);
 router.put('/:id/students/:studentId/installments/:index/pay', auth, markInstallmentPaid);
 router.put('/:id/students/:studentId/installments/:index/unpay', auth, markInstallmentUnpaid);
 router.post('/:id/students/:studentId/payment', auth, recordPayment);

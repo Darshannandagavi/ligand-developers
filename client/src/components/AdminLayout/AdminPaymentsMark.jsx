@@ -439,14 +439,14 @@ export default function AdminPaymentsMark() {
       // ✅ Email filter
       if (
         qEmail &&
-        !(r.student && (r.student.email || "").toLowerCase().includes(qEmail))
+        !(r.student && (r.student?.email || "").toLowerCase().includes(qEmail))
       )
         return false;
 
       // ✅ USN filter
       if (
         qUsn &&
-        !(r.student && (r.student.usn || "").toLowerCase().includes(qUsn))
+        !(r.student && (r.student?.usn || "").toLowerCase().includes(qUsn))
       )
         return false;
 
@@ -653,8 +653,8 @@ export default function AdminPaymentsMark() {
                     <td style={styles.tableCell}>
                       <img
                         src={
-                          r.student.profilePic
-                            ? `https://ligand-dev-7.onrender.com/uploads/${r.student.profilePic}`
+                          r.student?.profilePic
+                            ? `https://ligand-dev-7.onrender.com/uploads/${r.student?.profilePic}`
                             : "/default_user.jpeg"
                         }
                         onError={(e) => {
@@ -710,14 +710,14 @@ export default function AdminPaymentsMark() {
                           type="number"
                           placeholder="Amount"
                           value={
-                            (rowPayments[`${r.groupId}_${r.student._id}`] || {})
+                            (rowPayments[`${r.groupId}_${r.student?._id}`] || {})
                               .amount || ""
                           }
                           onChange={(e) =>
                             setRowPayments((prev) => ({
                               ...prev,
-                              [`${r.groupId}_${r.student._id}`]: {
-                                ...(prev[`${r.groupId}_${r.student._id}`] ||
+                              [`${r.groupId}_${r.student?._id}`]: {
+                                ...(prev[`${r.groupId}_${r.student?._id}`] ||
                                   {}),
                                 amount: e.target.value,
                               },
@@ -732,14 +732,14 @@ export default function AdminPaymentsMark() {
                         />
                         <select
                           value={
-                            (rowPayments[`${r.groupId}_${r.student._id}`] || {})
+                            (rowPayments[`${r.groupId}_${r.student?._id}`] || {})
                               .installmentIndex ?? ""
                           }
                           onChange={(e) =>
                             setRowPayments((prev) => ({
                               ...prev,
-                              [`${r.groupId}_${r.student._id}`]: {
-                                ...(prev[`${r.groupId}_${r.student._id}`] ||
+                              [`${r.groupId}_${r.student?._id}`]: {
+                                ...(prev[`${r.groupId}_${r.student?._id}`] ||
                                   {}),
                                 installmentIndex: e.target.value,
                               },
@@ -755,7 +755,7 @@ export default function AdminPaymentsMark() {
                         <button
                           disabled={actionLoading}
                           onClick={() =>
-                            submitPayment(r.groupId, r.student._id)
+                            submitPayment(r.groupId, r.student?._id)
                           }
                           style={combineStyles(
                             styles.actionButton,
