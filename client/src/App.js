@@ -51,6 +51,9 @@ import Homework from "./components/AdminLayout/Homework";
 import TeacherHomework from "./components/TeacherLayout/TeacherHomeWork";
 import TeacherForgot from "./components/TeacherLayout/TeacherForgot";
 import AdminApproveStudents from "./components/AdminLayout/AdminApproveStudents";
+import CreateAppPassword from "./components/UserLayout/CreateAppPassword";
+import NoteForgotChangePassword from "./components/UserLayout/NoteForgotChangePassword";
+import ProfileNotes from "./components/UserLayout/ProfileNotes";
 
 function App() {
   return (
@@ -79,6 +82,9 @@ function App() {
           <Route path="/user/ServerSetup" element={<ServerSetup />} />
           <Route path="/user/PostmanSetup" element={<PostmanSetup />} />
           <Route path="/user/userbackend" element={<UserBackend />} />
+          <Route path="/user/CreateAppPassword" element={<CreateAppPassword/>} />
+          <Route path="/user/ProfileNotes" element={<ProfileNotes/>} />
+          <Route path="/user/NoteForgotChangePassword" element={<NoteForgotChangePassword/>} />
           <Route
             path="/user/RegistrationFrontend"
             element={<RegistrationFrontend />}
