@@ -53,6 +53,9 @@ import CreateAppPassword from "./components/UserLayout/CreateAppPassword";
 import NoteForgotChangePassword from "./components/UserLayout/NoteForgotChangePassword";
 import ProfileNotes from "./components/UserLayout/ProfileNotes";
 import TeacherAttendance from "./components/TeacherLayout/TeacherAttendance";
+import StudentDelete from "./components/AdminLayout/StudentDelete";
+import AdminStudentDashboard from "./components/AdminLayout/AdminStudentDashboard";
+import StudentAnalytics from "./components/UserLayout/StudentAnalytics";
 
 function App() {
   return (
@@ -84,6 +87,7 @@ function App() {
           <Route path="/user/userbackend" element={<UserBackend />} />
           <Route path="/user/CreateAppPassword" element={<CreateAppPassword/>} />
           <Route path="/user/ProfileNotes" element={<ProfileNotes/>} />
+           <Route path="/user/analytics" element={<StudentAnalytics/>} />
           <Route path="/user/NoteForgotChangePassword" element={<NoteForgotChangePassword/>} />
           <Route
             path="/user/RegistrationFrontend"
@@ -114,6 +118,9 @@ function App() {
           <Route path="/admin/attendance" element={<AdminAttendance />} />
           <Route path="/admin/payments" element={<AdminPayments />} />
           <Route path="/admin/payments/mark" element={<AdminPaymentsMark />} />
+          <Route path="/admin/deletestudents" element={<StudentDelete />} />
+          <Route path="/admin/getstudentprogress" element={<AdminStudentDashboard />} />
+          
           <Route
             path="/admin/payments/dashboard"
             element={<AdminPaymentsDashboard />}
