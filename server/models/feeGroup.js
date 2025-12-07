@@ -15,7 +15,7 @@ const studentFeeSchema = new mongoose.Schema({
   paymentHistory: [
   {
     amount: Number,
-    by: { type: mongoose.Schema.Types.ObjectId, ref: "Admin" },
+    by: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     paidOn: Date,
     paymentMode: { type: String, enum: ["cash", "online"], default: "cash" },
     transactionId: { type: String, default: "" },
