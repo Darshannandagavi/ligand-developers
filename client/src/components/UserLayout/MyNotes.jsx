@@ -112,8 +112,6 @@ export default App;`,
         <p>Follow these steps to set up your React client application</p>
       </div>
 
-
-
       <div className="steps-container">
         {steps.map((step, index) => (
           <div key={index} className="step-card">
@@ -124,8 +122,9 @@ export default App;`,
               <div className="code-block">
                 <code>{step.command}</code>
                 <button
-                  className={`copy-btn ${copiedIndex === index ? "copied" : ""
-                    }`}
+                  className={`copy-btn ${
+                    copiedIndex === index ? "copied" : ""
+                  }`}
                   onClick={() => copyToClipboard(step.command, index)}
                 >
                   {copiedIndex === index ? "Copied!" : "Copy"}
@@ -137,8 +136,9 @@ export default App;`,
               <div className="code-block">
                 <pre>{step.code}</pre>
                 <button
-                  className={`copy-btn ${copiedIndex === index ? "copied" : ""
-                    }`}
+                  className={`copy-btn ${
+                    copiedIndex === index ? "copied" : ""
+                  }`}
                   onClick={() => copyToClipboard(step.code, index)}
                 >
                   {copiedIndex === index ? "Copied!" : "Copy"}
@@ -167,9 +167,11 @@ export default App;`,
         <h2>Home-Work</h2>
         <p>🧠 Homework Task: Build and Customize Your First React Client App</p>
         <p>
-          🎯 Objective: Display a custom landing page on the index page which shows
+          🎯 Objective: Display a custom landing page on the index page which
+          shows
           <b> "Every Expert Was Once a Beginner in MERN 🚀"</b>
-          in <b>YELLOW</b> color with a <b> RED</b> underline on a black background.
+          in <b>YELLOW</b> color with a <b> RED</b> underline on a black
+          background.
         </p>
         <div className="image-placeholder">
           <div className="image-container">
@@ -179,6 +181,74 @@ export default App;`,
               className="step-image"
             />
           </div>
+        </div>
+      </div>
+
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "800px",
+          margin: "2rem auto",
+          borderRadius: "12px",
+          overflow: "hidden",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+          backgroundColor: "#000",
+        }}
+      >
+        <div
+          onContextMenu={(e) => e.preventDefault()}
+          style={{ position: "relative" }}
+        >
+          <video
+            style={{
+              width: "100%",
+              height: "auto",
+              display: "block",
+              outline: "none",
+              userSelect: "none",
+              WebkitUserSelect: "none",
+            }}
+            controls
+            controlsList="nodownload noremoteplayback"
+            disablePictureInPicture
+            disableRemotePlayback
+            preload="metadata"
+            poster=""
+            onKeyDown={(e) => {
+              if (e.ctrlKey && (e.key === "s" || e.key === "S")) {
+                e.preventDefault();
+              }
+            }}
+          >
+            <source src="/FirstReactApp.mp4" type="video/mp4" />
+          </video>
+
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              pointerEvents: "none",
+              zIndex: 1,
+            }}
+          />
+        </div>
+
+        <div
+          style={{
+            padding: "1rem",
+            backgroundColor: "#f8f9fa",
+            color: "#333",
+            fontSize: "0.9rem",
+            textAlign: "center",
+            borderTop: "1px solid #eaeaea",
+            userSelect: "none",
+          }}
+        >
+          Video content is protected. Downloading is disabled.
         </div>
       </div>
 

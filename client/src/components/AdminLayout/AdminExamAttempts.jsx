@@ -683,7 +683,6 @@ export default function AdminExamAttempts() {
 const styles = `
 .admin-exam-container {
   padding: 2rem;
-  max-width: 1200px;
   margin: 0 auto;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -868,7 +867,7 @@ const styles = `
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #3182ce;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -893,7 +892,7 @@ const styles = `
   width: 40px;
   height: 40px;
   border: 4px solid #e2e8f0;
-  border-top: 4px solid #3182ce;
+  border-top: 4px solid #667eea;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -925,7 +924,7 @@ const styles = `
 }
 
 .attempts-table th {
-  background: #3182ce;
+  background: #667eea;
   color: white;
   padding: 0.75rem 1rem;
   text-align: left;
@@ -959,7 +958,7 @@ const styles = `
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #4299e1;
+  background: #667eea;
   color: white;
   border: none;
   padding: 0.4rem 0.75rem;
@@ -1148,7 +1147,7 @@ const styles = `
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: #3182ce;
+ background: #667eea;
   color: white;
 }
 
@@ -1204,7 +1203,7 @@ const styles = `
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #4299e1;
+  background: #667eea;
   color: white;
   border: none;
   padding: 0.5rem 1rem;

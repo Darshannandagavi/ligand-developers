@@ -196,7 +196,7 @@ export default function ManageExamAndNoteVisibility() {
       <style>
         {`
         .visibility-manager {
-  max-width: 1200px;
+ 
   margin: 0 auto;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

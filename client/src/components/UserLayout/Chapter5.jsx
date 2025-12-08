@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Chapter5 = () => {
   const [copiedIndex, setCopiedIndex] = useState(null);
@@ -331,7 +330,7 @@ root.render(
   </React.StrictMode>
 );
 
-reportWebVitals();`
+reportWebVitals();`,
   ];
 
   const renderCodeBlock = (code, idx, title = null) => (
@@ -340,7 +339,7 @@ reportWebVitals();`
       <div className="code-block">
         <pre>{code}</pre>
         <button
-          className={`copy-btn ${copiedIndex === idx ? 'copied' : ''}`}
+          className={`copy-btn ${copiedIndex === idx ? "copied" : ""}`}
           onClick={() => handleCopy(code, idx)}
           aria-label="Copy code"
         >
@@ -354,112 +353,148 @@ reportWebVitals();`
     {
       step: 1,
       title: "Create 'components' folder in client/src folder",
-      description: "Create a components folder in your React project structure.",
-      images: ['/c5Picture1.png', '/c5Picture2.png']
+      description:
+        "Create a components folder in your React project structure.",
+      images: ["/c5Picture1.png", "/c5Picture2.png"],
     },
     {
       step: 2,
       title: "Create user folders inside components folder",
-      description: "Create a folder for each user in your project inside components folder (here we will consider 1 user 'Guest' we will create a folder 'guestLayout').",
-      images: ['/c5Picture3.png', '/c5Picture4.png']
+      description:
+        "Create a folder for each user in your project inside components folder (here we will consider 1 user 'Guest' we will create a folder 'guestLayout').",
+      images: ["/c5Picture3.png", "/c5Picture4.png"],
     },
     {
       step: 3,
       title: "Create layout files inside guestLayout folder",
-      description: "Create 3 basic layout .jsx files inside guestLayout folder i.e. GuestHeader.jsx, GuestFooter.jsx and GuestLayout.jsx.",
-      images: ['/c5Picture5.png']
+      description:
+        "Create 3 basic layout .jsx files inside guestLayout folder i.e. GuestHeader.jsx, GuestFooter.jsx and GuestLayout.jsx.",
+      images: ["/c5Picture5.png"],
     },
     {
       step: 4,
       title: "Install required packages for navbar",
       description: "To add navbar install some packages:",
       code: "npm i react-icons styled-components",
-      images: ['/c5Picture6.png']
+      images: ["/c5Picture6.png"],
     },
     {
       step: 5,
       title: "Create GuestNavbar.jsx with styling",
-      description: "After successful installation create GuestNavbar.jsx file in guestLayout folder to design navbar component.",
-      images: ['/c5Picture7.png'],
-      codeBlock: { code: codeBlocks[0], index: 0, title: "GuestNavbar.jsx" }
+      description:
+        "After successful installation create GuestNavbar.jsx file in guestLayout folder to design navbar component.",
+      images: ["/c5Picture7.png"],
+      codeBlock: { code: codeBlocks[0], index: 0, title: "GuestNavbar.jsx" },
     },
     {
       step: 6,
       title: "Create GuestHeader.jsx",
-      description: "Open GuestHeader.jsx, type 'rafc' and hit enter key to get basic snippet.",
-      images: ['/c5Picture8.png'],
-      codeBlock: { code: codeBlocks[1], index: 1, title: "GuestHeader.jsx" }
+      description:
+        "Open GuestHeader.jsx, type 'rafc' and hit enter key to get basic snippet.",
+      images: ["/c5Picture8.png"],
+      codeBlock: { code: codeBlocks[1], index: 1, title: "GuestHeader.jsx" },
     },
     {
       step: 7,
       title: "Create GuestFooter.jsx",
       description: "Open GuestFooter.jsx and add the following code:",
-      codeBlock: { code: codeBlocks[2], index: 2, title: "GuestFooter.jsx" }
+      codeBlock: { code: codeBlocks[2], index: 2, title: "GuestFooter.jsx" },
     },
     {
       step: 8,
       title: "Create GuestLayout.jsx",
-      description: "Open GuestLayout.jsx and import GuestHeader.jsx and GuestFooter.jsx components.",
-      images: ['/c5Picture9.png'],
+      description:
+        "Open GuestLayout.jsx and import GuestHeader.jsx and GuestFooter.jsx components.",
+      images: ["/c5Picture9.png"],
       codeBlock: { code: codeBlocks[3], index: 3, title: "GuestLayout.jsx" },
       additionalContent: (
         <>
-          <p>In the above code we are importing Outlet from react-router-dom this Outlet is a special component where all child components will be rendered within this Outlet component.</p>
+          <p>
+            In the above code we are importing Outlet from react-router-dom this
+            Outlet is a special component where all child components will be
+            rendered within this Outlet component.
+          </p>
           <h4>How Outlet works:</h4>
           <div className="image-gallery">
-            <img src='/c5Picture10.png' alt="Outlet diagram" />
+            <img src="/c5Picture10.png" alt="Outlet diagram" />
           </div>
-          <p>All Child Elements like Home, About, Services, Contact, Register and Login are Child components of GuestLayout so All child components will be rendered between Guest Header and Guest Footer.</p>
+          <p>
+            All Child Elements like Home, About, Services, Contact, Register and
+            Login are Child components of GuestLayout so All child components
+            will be rendered between Guest Header and Guest Footer.
+          </p>
           <div className="image-gallery">
-            <img src='/c5Picture11.png' alt="Layout structure" />
+            <img src="/c5Picture11.png" alt="Layout structure" />
           </div>
         </>
-      )
+      ),
     },
     {
       step: 9,
       title: "Include GuestLayout in App.js",
-      description: "After writing code into GuestLayout.jsx you must include that into App.js.",
-      images: ['/c5Picture12.png'],
+      description:
+        "After writing code into GuestLayout.jsx you must include that into App.js.",
+      images: ["/c5Picture12.png"],
       codeBlock: { code: codeBlocks[4], index: 4, title: "App.js" },
       additionalContent: (
         <>
           <div className="key-points">
             <div className="point">
-              <strong>Routes Component</strong>: This is the parent component that holds all of your individual Route components. It is used to group together different routes and manage which one should be rendered based on the current URL.
+              <strong>Routes Component</strong>: This is the parent component
+              that holds all of your individual Route components. It is used to
+              group together different routes and manage which one should be
+              rendered based on the current URL.
             </div>
             <div className="point">
-              <strong>Route Component</strong>: This is the child component that defines a single route. It specifies a path (URL) and the element (React component) that should be rendered when that path matches the current URL.
+              <strong>Route Component</strong>: This is the child component that
+              defines a single route. It specifies a path (URL) and the element
+              (React component) that should be rendered when that path matches
+              the current URL.
             </div>
           </div>
-          <p>In React Router v6, <strong>Routes</strong> is used to wrap all of the <strong>Route</strong> components. You can have multiple Route components inside a single Routes component, and <strong>multiple Routes components</strong> are used for different sections or parts of the app. You don't nest Route components directly inside each other, but instead, each route has a unique path and a component to render.</p>
+          <p>
+            In React Router v6, <strong>Routes</strong> is used to wrap all of
+            the <strong>Route</strong> components. You can have multiple Route
+            components inside a single Routes component, and{" "}
+            <strong>multiple Routes components</strong> are used for different
+            sections or parts of the app. You don't nest Route components
+            directly inside each other, but instead, each route has a unique
+            path and a component to render.
+          </p>
         </>
-      )
+      ),
     },
     {
       step: 10,
       title: "Configure BrowserRouter in index.js",
-      description: "Open index.js file and import BrowserRouter and wrap it with &lt;App/&gt;.",
-      images: ['/c5Picture13.png'],
+      description:
+        "Open index.js file and import BrowserRouter and wrap it with &lt;App/&gt;.",
+      images: ["/c5Picture13.png"],
       codeBlock: { code: codeBlocks[5], index: 5, title: "index.js" },
       additionalContent: (
         <>
           <p>Now open your browser and check output should be like below:</p>
           <div className="image-gallery">
-            <img src='/c5Picture14.png' alt="Final output" />
+            <img src="/c5Picture14.png" alt="Final output" />
           </div>
         </>
-      )
+      ),
     },
     {
       step: 11,
       title: "Create page components",
-      description: "Create files inside 'guestLayout' folder for Home, About, Products, Signup and Login.",
-      images: ['/c5Picture15.png'],
+      description:
+        "Create files inside 'guestLayout' folder for Home, About, Products, Signup and Login.",
+      images: ["/c5Picture15.png"],
       additionalContent: (
-        <p>Now Check Output like this you can create Common Layout for all users of your project. We will start designing <strong>landing pages</strong> (Home, About, Contact, Services and other pages) in next chapter.</p>
-      )
-    }
+        <p>
+          Now Check Output like this you can create Common Layout for all users
+          of your project. We will start designing{" "}
+          <strong>landing pages</strong> (Home, About, Contact, Services and
+          other pages) in next chapter.
+        </p>
+      ),
+    },
   ];
 
   return (
@@ -469,7 +504,7 @@ reportWebVitals();`
         <div className="header-content">
           <div className="chapter-badge">Chapter 5</div>
           <h1>Common Layouts</h1>
-          <p className="chapter-subtitle" style={{color:"white"}}>
+          <p className="chapter-subtitle" style={{ color: "white" }}>
             Implementing role-based layouts in React applications
           </p>
         </div>
@@ -493,7 +528,7 @@ reportWebVitals();`
             "Implementing dynamic navigation (Navbar, Sidebar, Footer) for each layout",
             "Conditional rendering based on user type",
             "Testing and debugging different user layouts",
-            "Optimizing performance using lazy loading and minimizing re-renders"
+            "Optimizing performance using lazy loading and minimizing re-renders",
           ].map((item, index) => (
             <li key={index}>{item}</li>
           ))}
@@ -523,22 +558,26 @@ reportWebVitals();`
                   onClick={() => handleCopy(stepData.code, 100 + index)}
                   aria-label="Copy code"
                 >
-                  {copiedIndex === (100 + index) ? "✓ Copied!" : "Copy"}
+                  {copiedIndex === 100 + index ? "✓ Copied!" : "Copy"}
                 </button>
               </div>
             )}
 
-            {stepData.codeBlock && renderCodeBlock(
-              stepData.codeBlock.code,
-              stepData.codeBlock.index,
-              stepData.codeBlock.title
-            )}
+            {stepData.codeBlock &&
+              renderCodeBlock(
+                stepData.codeBlock.code,
+                stepData.codeBlock.index,
+                stepData.codeBlock.title
+              )}
 
             {stepData.images && (
               <div className="image-gallery">
                 {stepData.images.map((img, imgIndex) => (
                   <div className="image-container" key={imgIndex}>
-                    <img src={img} alt={`Step ${stepData.step} visual ${imgIndex + 1}`} />
+                    <img
+                      src={img}
+                      alt={`Step ${stepData.step} visual ${imgIndex + 1}`}
+                    />
                   </div>
                 ))}
               </div>
@@ -559,19 +598,40 @@ reportWebVitals();`
           <div className="home-work-content">
             <h3>Build an UserLayout Component</h3>
             <p className="objective">
-              <strong>Objective:</strong> Develop an <strong>UserLayout</strong> that includes a responsive  navigation with links to
-              <strong> Home</strong>, <strong>Items</strong>, <strong>Profile</strong>,<strong>ChangePassword</strong>, and <strong>Logout</strong> pages.
+              <strong>Objective:</strong> Develop an <strong>UserLayout</strong>{" "}
+              that includes a responsive navigation with links to
+              <strong> Home</strong>, <strong>Items</strong>,{" "}
+              <strong>Profile</strong>,<strong>ChangePassword</strong>, and{" "}
+              <strong>Logout</strong> pages.
             </p>
 
             <div className="requirements">
               <h4>Requirements:</h4>
               <ul>
-                <li>Create a responsive <strong> navigation</strong> using <strong>Bootstrap</strong> or <strong>React-Bootstrap</strong></li>
-                <li>Include <strong>header</strong>, <strong>main content area</strong>, and <strong>footer</strong></li>
-                <li>Implement <strong>routing</strong> for each page (Home, Items, Profile, ChangePassword, Logout)</li>
-                <li>Ensure layout is <strong>mobile-friendly</strong> with collapsible sidebar</li>
-                <li>Use <strong>React Router Outlet</strong> to render child components dynamically</li>
-                <li>Design clean, professional UI suitable for an user panel</li>
+                <li>
+                  Create a responsive <strong> navigation</strong> using{" "}
+                  <strong>Bootstrap</strong> or <strong>React-Bootstrap</strong>
+                </li>
+                <li>
+                  Include <strong>header</strong>,{" "}
+                  <strong>main content area</strong>, and{" "}
+                  <strong>footer</strong>
+                </li>
+                <li>
+                  Implement <strong>routing</strong> for each page (Home, Items,
+                  Profile, ChangePassword, Logout)
+                </li>
+                <li>
+                  Ensure layout is <strong>mobile-friendly</strong> with
+                  collapsible sidebar
+                </li>
+                <li>
+                  Use <strong>React Router Outlet</strong> to render child
+                  components dynamically
+                </li>
+                <li>
+                  Design clean, professional UI suitable for an user panel
+                </li>
               </ul>
             </div>
 
@@ -579,20 +639,76 @@ reportWebVitals();`
               <h4>Expected Output:</h4>
               <div className="materials-grid">
                 <div className="material-item">
-                  <img src="/homework/homework user setup.png" alt="User Layout Example" />
+                  <img
+                    src="/homework/homework user setup.png"
+                    alt="User Layout Example"
+                  />
                   <p>Example User Layout Structure</p>
                 </div>
-                <div className="material-item">
-                  <div className="video-placeholder">
-                    <video controls>
-                     <source
-                  src="/homework/homework.mp4"
-                  type="video/mp4"
-                />
-                      Your browser does not support the video tag.
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    maxWidth: "800px",
+                    margin: "2rem auto",
+                    borderRadius: "12px",
+                    overflow: "hidden",
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+                    backgroundColor: "#000",
+                  }}
+                >
+                  <div
+                    onContextMenu={(e) => e.preventDefault()}
+                    style={{ position: "relative" }}
+                  >
+                    <video
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        display: "block",
+                        outline: "none",
+                        userSelect: "none",
+                        WebkitUserSelect: "none",
+                      }}
+                      controls
+                      controlsList="nodownload noremoteplayback"
+                      disablePictureInPicture
+                      disableRemotePlayback
+                      preload="metadata"
+                      poster=""
+                      onKeyDown={(e) => {
+                        if (e.ctrlKey && (e.key === "s" || e.key === "S")) {
+                          e.preventDefault();
+                        }
+                      }}
+                    >
+                      <source src="/userLayout.mp4" type="video/mp4" />
                     </video>
-                    <p>Video Tutorial</p>
+
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        pointerEvents: "none",
+                        zIndex: 1,
+                      }}
+                    />
                   </div>
+
+                  <div
+                    style={{
+                      padding: "1rem",
+                      backgroundColor: "#f8f9fa",
+                      color: "#333",
+                      fontSize: "0.9rem",
+                      textAlign: "center",
+                      borderTop: "1px solid #eaeaea",
+                      userSelect: "none",
+                    }}
+                  ></div>
                 </div>
               </div>
             </div>
@@ -600,13 +716,12 @@ reportWebVitals();`
         </div>
       </div>
 
-
       <style jsx>{`
         .chapter-container {
           max-width: 1200px;
           margin: 0 auto;
           padding: 40px 20px;
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
           line-height: 1.6;
           color: #2d3748;
           background: white;
@@ -783,7 +898,7 @@ reportWebVitals();`
           padding: 25px;
           margin: 0;
           overflow-x: auto;
-          font-family: 'Fira Code', 'Consolas', monospace;
+          font-family: "Fira Code", "Consolas", monospace;
           font-size: 0.9rem;
           line-height: 1.5;
         }

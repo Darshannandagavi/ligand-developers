@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const ItemBackend = () => {
   const [copiedIndex, setCopiedIndex] = useState(null);
@@ -12,8 +12,10 @@ const ItemBackend = () => {
   const steps = [
     {
       title: "Item Model (models/Item.js)",
-      content: "The Item model defines the structure for item data in the database.",
-      explanation: "This model specifies what fields an item document should have, their data types, and any validation rules. It includes timestamps for automatic creation and update tracking.",
+      content:
+        "The Item model defines the structure for item data in the database.",
+      explanation:
+        "This model specifies what fields an item document should have, their data types, and any validation rules. It includes timestamps for automatic creation and update tracking.",
       image: "/create itemjs.png",
       code: `import mongoose from "mongoose";
 
@@ -55,13 +57,14 @@ export { Item };`,
         "quantity: Number field with minimum value validation (min: 1)",
         "description: Optional String field for item description",
         "category: String field for item category, required and trimmed",
-        "timestamps: true automatically adds createdAt and updatedAt fields"
-      ]
+        "timestamps: true automatically adds createdAt and updatedAt fields",
+      ],
     },
     {
       title: "File Upload Middleware (middlewares/upload.js)",
       content: "This middleware handles file uploads using multer.",
-      explanation: "The upload middleware configures multer to store uploaded files in a specific directory with unique filenames. It ensures the uploads directory exists and handles file storage configuration.",
+      explanation:
+        "The upload middleware configures multer to store uploaded files in a specific directory with unique filenames. It ensures the uploads directory exists and handles file storage configuration.",
       code: `import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -96,13 +99,15 @@ export default upload;`,
         "fs.existsSync and fs.mkdirSync: Ensure the upload directory exists",
         "multer.diskStorage: Configures how files should be stored",
         "destination: Specifies where to store uploaded files",
-        "filename: Generates unique filenames using current timestamp and original extension"
-      ]
+        "filename: Generates unique filenames using current timestamp and original extension",
+      ],
     },
     {
       title: "Item Controller (controllers/ItemController.js)",
-      content: "The controller contains all the business logic for item CRUD operations.",
-      explanation: "This controller handles creating, reading, updating, and deleting items. It processes incoming requests, interacts with the database through the Item model, and sends appropriate responses.",
+      content:
+        "The controller contains all the business logic for item CRUD operations.",
+      explanation:
+        "This controller handles creating, reading, updating, and deleting items. It processes incoming requests, interacts with the database through the Item model, and sends appropriate responses.",
       code: `import { Item } from "../models/Item.js";
 
 // CREATE ITEM
@@ -190,34 +195,40 @@ export const deleteItem = async (req, res) => {
         {
           name: "createItem",
           purpose: "Handles creating new items with image upload",
-          details: "Extracts data from request body and file, validates required fields, creates new item, and saves to database"
+          details:
+            "Extracts data from request body and file, validates required fields, creates new item, and saves to database",
         },
         {
           name: "getItems",
           purpose: "Retrieves all items from the database",
-          details: "Uses Item.find() to get all items without population (as indicated by the comment)"
+          details:
+            "Uses Item.find() to get all items without population (as indicated by the comment)",
         },
         {
           name: "getItemById",
           purpose: "Retrieves a specific item by its ID",
-          details: "Uses Item.findById() to find a single item and returns 404 if not found"
+          details:
+            "Uses Item.findById() to find a single item and returns 404 if not found",
         },
         {
           name: "updateItem",
           purpose: "Updates an existing item, optionally with a new image",
-          details: "Handles partial updates, including file upload if provided, and returns the updated item"
+          details:
+            "Handles partial updates, including file upload if provided, and returns the updated item",
         },
         {
           name: "deleteItem",
           purpose: "Deletes an item from the database",
-          details: "Finds item by ID and removes it, returns success message or 404 if not found"
-        }
-      ]
+          details:
+            "Finds item by ID and removes it, returns success message or 404 if not found",
+        },
+      ],
     },
     {
       title: "Item Router (routes/itemRouter.js)",
       content: "The router defines the API endpoints for item operations.",
-      explanation: "This router maps HTTP requests to the appropriate controller functions and applies middleware for file uploads where needed.",
+      explanation:
+        "This router maps HTTP requests to the appropriate controller functions and applies middleware for file uploads where needed.",
       code: `import express from "express";
 import {
   createItem,
@@ -244,70 +255,77 @@ export default itemRouter;`,
           path: "/",
           middleware: "upload.single('itemImage')",
           controller: "createItem",
-          purpose: "Create a new item with image upload"
+          purpose: "Create a new item with image upload",
         },
         {
           method: "GET",
           path: "/",
           middleware: "None",
           controller: "getItems",
-          purpose: "Get all items"
+          purpose: "Get all items",
         },
         {
           method: "GET",
           path: "/:id",
           middleware: "None",
           controller: "getItemById",
-          purpose: "Get a specific item by ID"
+          purpose: "Get a specific item by ID",
         },
         {
           method: "PUT",
           path: "/:id",
           middleware: "upload.single('itemImage')",
           controller: "updateItem",
-          purpose: "Update an item, optionally with new image"
+          purpose: "Update an item, optionally with new image",
         },
         {
           method: "DELETE",
           path: "/:id",
           middleware: "None",
           controller: "deleteItem",
-          purpose: "Delete an item by ID"
-        }
-      ]
+          purpose: "Delete an item by ID",
+        },
+      ],
     },
     {
       title: "Server Configuration (index.js)",
-      content: "Configuring the server to use the item router and serve uploaded files.",
-      explanation: "This setup connects the item router to the Express application and configures static file serving for uploaded images.",
+      content:
+        "Configuring the server to use the item router and serve uploaded files.",
+      explanation:
+        "This setup connects the item router to the Express application and configures static file serving for uploaded images.",
       code: `app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use("/item", itemRouter);`,
       image: "/server-config.png",
       configuration: [
         {
           line: "app.use('/uploads', express.static(...))",
-          purpose: "Serves uploaded files statically from the 'uploads' directory",
-          details: "Allows clients to access uploaded images via URLs like https://ligand-software-solutions-workshop-2.onrender.com/uploads/filename.jpg"
+          purpose:
+            "Serves uploaded files statically from the 'uploads' directory",
+          details:
+            "Allows clients to access uploaded images via URLs like https://ligand-software-solutions-workshop-2.onrender.com/uploads/filename.jpg",
         },
         {
           line: "app.use('/item', itemRouter)",
           purpose: "Mounts the item router at the '/item' base path",
-          details: "All item routes will be prefixed with '/item', so createItem becomes POST /item, getItems becomes GET /item, etc."
-        }
-      ]
+          details:
+            "All item routes will be prefixed with '/item', so createItem becomes POST /item, getItems becomes GET /item, etc.",
+        },
+      ],
     },
     {
       title: "Folder Structure",
-      content: "Recommended folder structure for the item backend implementation.",
-      explanation: "This shows how to organize your files for the item management system with image uploads.",
+      content:
+        "Recommended folder structure for the item backend implementation.",
+      explanation:
+        "This shows how to organize your files for the item management system with image uploads.",
       image: "/Folder Structures.png",
       structure: [
         "models/Item.js - Mongoose model for items",
         "middlewares/upload.js - Multer configuration for file uploads",
         "controllers/ItemController.js - Business logic for item operations",
         "routes/itemRouter.js - API route definitions",
-        "uploads/ - Directory for storing uploaded images (created automatically)"
-      ]
+        "uploads/ - Directory for storing uploaded images (created automatically)",
+      ],
     },
   ];
 
@@ -315,7 +333,10 @@ app.use("/item", itemRouter);`,
     <div className="notes-container">
       <div className="notes-header">
         <h1>Item Backend Guide</h1>
-        <p>Follow these steps to set up your Node.js backend with item management and image uploads</p>
+        <p>
+          Follow these steps to set up your Node.js backend with item management
+          and image uploads
+        </p>
       </div>
 
       <div className="company-info">
@@ -332,14 +353,14 @@ app.use("/item", itemRouter);`,
           <div key={index} className="step-card">
             <h3>{step.title}</h3>
             <p>{step.content}</p>
-            
+
             {step.explanation && (
               <div className="explanation-box">
                 <h4>Explanation:</h4>
                 <p>{step.explanation}</p>
               </div>
             )}
-            
+
             {step.breakdown && (
               <div className="breakdown-list">
                 <h4>Breakdown:</h4>
@@ -350,47 +371,63 @@ app.use("/item", itemRouter);`,
                 </ul>
               </div>
             )}
-            
+
             {step.functions && (
               <div className="functions-list">
                 <h4>Controller Functions:</h4>
                 {step.functions.map((func, i) => (
                   <div key={i} className="function-item">
                     <h5>{func.name}</h5>
-                    <p><strong>Purpose:</strong> {func.purpose}</p>
-                    <p><strong>Details:</strong> {func.details}</p>
+                    <p>
+                      <strong>Purpose:</strong> {func.purpose}
+                    </p>
+                    <p>
+                      <strong>Details:</strong> {func.details}
+                    </p>
                   </div>
                 ))}
               </div>
             )}
-            
+
             {step.endpoints && (
               <div className="endpoints-list">
                 <h4>API Endpoints:</h4>
                 {step.endpoints.map((endpoint, i) => (
                   <div key={i} className="endpoint-item">
-                    <h5>{endpoint.method} {endpoint.path}</h5>
-                    <p><strong>Middleware:</strong> {endpoint.middleware}</p>
-                    <p><strong>Controller:</strong> {endpoint.controller}</p>
-                    <p><strong>Purpose:</strong> {endpoint.purpose}</p>
+                    <h5>
+                      {endpoint.method} {endpoint.path}
+                    </h5>
+                    <p>
+                      <strong>Middleware:</strong> {endpoint.middleware}
+                    </p>
+                    <p>
+                      <strong>Controller:</strong> {endpoint.controller}
+                    </p>
+                    <p>
+                      <strong>Purpose:</strong> {endpoint.purpose}
+                    </p>
                   </div>
                 ))}
               </div>
             )}
-            
+
             {step.configuration && (
               <div className="configuration-list">
                 <h4>Server Configuration:</h4>
                 {step.configuration.map((config, i) => (
                   <div key={i} className="config-item">
                     <h5>{config.line}</h5>
-                    <p><strong>Purpose:</strong> {config.purpose}</p>
-                    <p><strong>Details:</strong> {config.details}</p>
+                    <p>
+                      <strong>Purpose:</strong> {config.purpose}
+                    </p>
+                    <p>
+                      <strong>Details:</strong> {config.details}
+                    </p>
                   </div>
                 ))}
               </div>
             )}
-            
+
             {step.structure && (
               <div className="structure-list">
                 <h4>Folder Structure:</h4>
@@ -401,15 +438,17 @@ app.use("/item", itemRouter);`,
                 </ul>
               </div>
             )}
-            
+
             {step.command && (
               <div className="code-block">
                 <code>{step.command}</code>
-                <button 
-                  className={`copy-btn ${copiedIndex === index ? 'copied' : ''}`}
+                <button
+                  className={`copy-btn ${
+                    copiedIndex === index ? "copied" : ""
+                  }`}
                   onClick={() => copyToClipboard(step.command, index)}
                 >
-                  {copiedIndex === index ? 'Copied!' : 'Copy'}
+                  {copiedIndex === index ? "Copied!" : "Copy"}
                 </button>
               </div>
             )}
@@ -417,19 +456,25 @@ app.use("/item", itemRouter);`,
             {step.image && (
               <div className="image-placeholder">
                 <div className="image-container">
-                  <img src={step.image} alt={step.title} className="step-image" />
+                  <img
+                    src={step.image}
+                    alt={step.title}
+                    className="step-image"
+                  />
                 </div>
               </div>
             )}
-            
+
             {step.code && (
               <div className="code-block">
                 <pre>{step.code}</pre>
-                <button 
-                  className={`copy-btn ${copiedIndex === index ? 'copied' : ''}`}
+                <button
+                  className={`copy-btn ${
+                    copiedIndex === index ? "copied" : ""
+                  }`}
                   onClick={() => copyToClipboard(step.code, index)}
                 >
-                  {copiedIndex === index ? 'Copied!' : 'Copy'}
+                  {copiedIndex === index ? "Copied!" : "Copy"}
                 </button>
               </div>
             )}
@@ -444,21 +489,28 @@ app.use("/item", itemRouter);`,
             <h2>Homework Assignment</h2>
             <div className="difficulty-badge">Intermediate Level</div>
           </div>
-          
+
           <div className="home-work-content">
             <h3>Develop Employee Backend CRUD Operations</h3>
-            
+
             <div className="objective-section">
               <h4>Objective</h4>
               <p>
-                Create a complete Employee backend system with CRUD operations following the same patterns and structure as the Item backend we just built. The employee system should handle employee data with image uploads.
+                Create a complete Employee backend system with CRUD operations
+                following the same patterns and structure as the Item backend we
+                just built. The employee system should handle employee data with
+                image uploads.
               </p>
             </div>
 
             <div className="requirements-section">
               <h4>Requirements</h4>
               <ul>
-                <li>Create Employee Model with fields: employeeName, employeeImage, position, department, salary, email, phone, hireDate, address</li>
+                <li>
+                  Create Employee Model with fields: employeeName,
+                  employeeImage, position, department, salary, email, phone,
+                  hireDate, address
+                </li>
                 <li>Implement Employee Controller with all CRUD operations</li>
                 <li>Create Employee Router with proper endpoints</li>
                 <li>Add file upload functionality for employee images</li>
@@ -471,7 +523,7 @@ app.use("/item", itemRouter);`,
 
             <div className="reference-section">
               <h4>Expected Output</h4>
-              
+
               {/* <div className="reference-grid">
                 <div className="reference-item">
                   <div className="image-container">
@@ -494,26 +546,83 @@ app.use("/item", itemRouter);`,
                 </div>
               </div> */}
 
-              <div className="video-tutorial">
-                <h5>Video Tutorial Reference</h5>
-                <div className="video-container">
-                  <video controls>
-                    <source src="/homework/homework.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  maxWidth: "800px",
+                  margin: "2rem auto",
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+                  backgroundColor: "#000",
+                }}
+              >
+                <div
+                  onContextMenu={(e) => e.preventDefault()}
+                  style={{ position: "relative" }}
+                >
+                  <video
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      display: "block",
+                      outline: "none",
+                      userSelect: "none",
+                      WebkitUserSelect: "none",
+                    }}
+                    controls
+                    controlsList="nodownload noremoteplayback"
+                    disablePictureInPicture
+                    disableRemotePlayback
+                    preload="metadata"
+                    poster=""
+                    onKeyDown={(e) => {
+                      if (e.ctrlKey && (e.key === "s" || e.key === "S")) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    <source src="/employeeCrudBackend.mp4" type="video/mp4" />
                   </video>
+
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      pointerEvents: "none",
+                      zIndex: 1,
+                    }}
+                  />
                 </div>
-                <p className="video-description">
-                  Watch this tutorial to learn how to implement a complete employee backend system with Node.js, Express, and MongoDB
-                </p>
+
+                <div
+                  style={{
+                    padding: "1rem",
+                    backgroundColor: "#f8f9fa",
+                    color: "#333",
+                    fontSize: "0.9rem",
+                    textAlign: "center",
+                    borderTop: "1px solid #eaeaea",
+                    userSelect: "none",
+                  }}
+                >
+                  Employee Backend CRUD Operations
+                </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
 
       <div className="notes-footer">
-        <p>Join us for Programming, Coding, Project Training and Internship opportunities.</p>
+        <p>
+          Join us for Programming, Coding, Project Training and Internship
+          opportunities.
+        </p>
         <p>Let's learn, code and build together.</p>
       </div>
 

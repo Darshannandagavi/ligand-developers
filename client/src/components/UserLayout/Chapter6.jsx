@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Chapter6 = () => {
   const [copiedIndex, setCopiedIndex] = useState(null);
@@ -14,12 +13,19 @@ const Chapter6 = () => {
     <div className="chapter-container">
       <div className="chapter-header">
         <h1>Chapter 6 - Landing Pages</h1>
-        <p style={{color:"white"}}>In this chapter we will see how to create Home page, About page and other pages.</p>
+        <p style={{ color: "white" }}>
+          In this chapter we will see how to create Home page, About page and
+          other pages.
+        </p>
       </div>
 
       <div className="content-section">
         <h2>1. Home Page:</h2>
-        <p>If you have not created <strong>Home.jsx</strong> file in <strong>guestLayout</strong> folder, please create one new file and write code like below:</p>
+        <p>
+          If you have not created <strong>Home.jsx</strong> file in{" "}
+          <strong>guestLayout</strong> folder, please create one new file and
+          write code like below:
+        </p>
 
         <div className="code-block">
           <pre>{`import React, { useState } from 'react';
@@ -101,8 +107,10 @@ const Home = () => {
 
 export default Home;`}</pre>
           <button
-            className={`copy-btn ${copiedIndex === 'homeCode' ? 'copied' : ''}`}
-            onClick={() => copyToClipboard(`import React, { useState } from 'react';
+            className={`copy-btn ${copiedIndex === "homeCode" ? "copied" : ""}`}
+            onClick={() =>
+              copyToClipboard(
+                `import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import About from './About';
 import Services from './Services';
@@ -179,20 +187,27 @@ const Home = () => {
   );
 };
 
-export default Home;`, 'homeCode')}
+export default Home;`,
+                "homeCode"
+              )
+            }
           >
-            {copiedIndex === 'homeCode' ? 'Copied!' : 'Copy Code'}
+            {copiedIndex === "homeCode" ? "Copied!" : "Copy Code"}
           </button>
         </div>
 
         <h3>You have to make changes in App.js file like below:</h3>
-        <p><strong>App.js:</strong></p>
+        <p>
+          <strong>App.js:</strong>
+        </p>
 
         <div className="image-placeholder">
           <img src="\c6Picture1.png" alt="App.js" />
         </div>
 
-        <p><strong>Code:</strong></p>
+        <p>
+          <strong>Code:</strong>
+        </p>
 
         <div className="code-block">
           <pre>{`import { Route, Routes } from 'react-router-dom';
@@ -216,8 +231,10 @@ function App() {
 
 export default App;`}</pre>
           <button
-            className={`copy-btn ${copiedIndex === 'appCode1' ? 'copied' : ''}`}
-            onClick={() => copyToClipboard(`import { Route, Routes } from 'react-router-dom';
+            className={`copy-btn ${copiedIndex === "appCode1" ? "copied" : ""}`}
+            onClick={() =>
+              copyToClipboard(
+                `import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GuestLayout from './components/guestLayout/GuestLayout';
@@ -236,9 +253,12 @@ function App() {
   );
 }
 
-export default App;`, 'appCode1')}
+export default App;`,
+                "appCode1"
+              )
+            }
           >
-            {copiedIndex === 'appCode1' ? 'Copied!' : 'Copy Code'}
+            {copiedIndex === "appCode1" ? "Copied!" : "Copy Code"}
           </button>
         </div>
 
@@ -253,10 +273,24 @@ import Services from './Services';
 import Contact from './Contact';`}</pre>
         </div>
         <ul>
-          <li><strong>React:</strong> This is the main React library needed to create components.</li>
-          <li><strong>useState:</strong> A React hook to manage the state within the component.</li>
-          <li><strong>Carousel:</strong> This is a pre-built carousel component from the react-bootstrap library. It helps in creating the image slider.</li>
-          <li><strong>About, Services, and Contact:</strong> These are custom components (most likely separate files) that will be displayed on the page.</li>
+          <li>
+            <strong>React:</strong> This is the main React library needed to
+            create components.
+          </li>
+          <li>
+            <strong>useState:</strong> A React hook to manage the state within
+            the component.
+          </li>
+          <li>
+            <strong>Carousel:</strong> This is a pre-built carousel component
+            from the react-bootstrap library. It helps in creating the image
+            slider.
+          </li>
+          <li>
+            <strong>About, Services, and Contact:</strong> These are custom
+            components (most likely separate files) that will be displayed on
+            the page.
+          </li>
         </ul>
 
         <h4>b. State Management</h4>
@@ -264,8 +298,14 @@ import Contact from './Contact';`}</pre>
           <pre>{`const [index, setIndex] = useState(0);`}</pre>
         </div>
         <ul>
-          <li><strong>index:</strong> This state variable keeps track of which carousel image is currently active.</li>
-          <li><strong>setIndex:</strong> This function is used to update the index value when the user selects a different carousel item.</li>
+          <li>
+            <strong>index:</strong> This state variable keeps track of which
+            carousel image is currently active.
+          </li>
+          <li>
+            <strong>setIndex:</strong> This function is used to update the index
+            value when the user selects a different carousel item.
+          </li>
         </ul>
 
         <h4>c. Carousel Selection Handler</h4>
@@ -274,7 +314,11 @@ import Contact from './Contact';`}</pre>
   setIndex(selectedIndex);
 };`}</pre>
         </div>
-        <p><strong>handleSelect:</strong> This function is triggered when a user selects a different item in the carousel. It updates the index state to the new selected index.</p>
+        <p>
+          <strong>handleSelect:</strong> This function is triggered when a user
+          selects a different item in the carousel. It updates the index state
+          to the new selected index.
+        </p>
 
         <h4>d. Carousel Image Style</h4>
         <div className="code-block">
@@ -286,9 +330,19 @@ import Contact from './Contact';`}</pre>
         </div>
         <p>This object defines the styles for each image in the carousel:</p>
         <ul>
-          <li><strong>height: '95vh':</strong> The image will take 95% of the viewport height (the visible area of the browser).</li>
-          <li><strong>objectFit: 'cover':</strong> Ensures the image covers the whole area without stretching. It might crop parts of the image if needed.</li>
-          <li><strong>width: '100%':</strong> Makes sure the image spans the entire width of the carousel container.</li>
+          <li>
+            <strong>height: '95vh':</strong> The image will take 95% of the
+            viewport height (the visible area of the browser).
+          </li>
+          <li>
+            <strong>objectFit: 'cover':</strong> Ensures the image covers the
+            whole area without stretching. It might crop parts of the image if
+            needed.
+          </li>
+          <li>
+            <strong>width: '100%':</strong> Makes sure the image spans the
+            entire width of the carousel container.
+          </li>
         </ul>
 
         <h4>e. Carousel Caption Style</h4>
@@ -306,13 +360,31 @@ import Contact from './Contact';`}</pre>
   textAlign: 'center' // Ensure the text is centered
 };`}</pre>
         </div>
-        <p>This object contains styles for the caption that appears over each image in the carousel:</p>
+        <p>
+          This object contains styles for the caption that appears over each
+          image in the carousel:
+        </p>
         <ul>
-          <li>The gradient background (background: 'radial-gradient') is applied to the text.</li>
-          <li>WebkitBackgroundClip: 'text' makes the gradient appear inside the text.</li>
-          <li>color: 'transparent' ensures that the text itself is invisible, allowing the background to show through.</li>
-          <li>textShadow adds a subtle shadow to the text for better readability.</li>
-          <li>Flexbox styles (display: 'flex', flexDirection: 'column', etc.) are used to center the text both horizontally and vertically within the caption.</li>
+          <li>
+            The gradient background (background: 'radial-gradient') is applied
+            to the text.
+          </li>
+          <li>
+            WebkitBackgroundClip: 'text' makes the gradient appear inside the
+            text.
+          </li>
+          <li>
+            color: 'transparent' ensures that the text itself is invisible,
+            allowing the background to show through.
+          </li>
+          <li>
+            textShadow adds a subtle shadow to the text for better readability.
+          </li>
+          <li>
+            Flexbox styles (display: 'flex', flexDirection: 'column', etc.) are
+            used to center the text both horizontally and vertically within the
+            caption.
+          </li>
         </ul>
 
         <h4>f. Carousel and Other Components</h4>
@@ -361,30 +433,72 @@ import Contact from './Contact';`}</pre>
 );`}</pre>
         </div>
         <ul>
-          <li><strong>Carousel:</strong> The carousel component displays multiple items (images) in a sliding fashion. Each carousel item contains an image and a caption.
+          <li>
+            <strong>Carousel:</strong> The carousel component displays multiple
+            items (images) in a sliding fashion. Each carousel item contains an
+            image and a caption.
             <ul>
-              <li>activeIndex=: This prop makes sure the correct image is shown based on the index state.</li>
-              <li>onSelect=: This tells the carousel to call handleSelect when the user clicks on a different item.</li>
-              <li>interval={2000}: This sets the interval between slides to 2000 milliseconds (or 2 seconds), so each image will change every 2 seconds.</li>
+              <li>
+                activeIndex=: This prop makes sure the correct image is shown
+                based on the index state.
+              </li>
+              <li>
+                onSelect=: This tells the carousel to call handleSelect when the
+                user clicks on a different item.
+              </li>
+              <li>
+                interval={2000}: This sets the interval between slides to 2000
+                milliseconds (or 2 seconds), so each image will change every 2
+                seconds.
+              </li>
             </ul>
           </li>
-          <li><strong>Carousel.Item:</strong> Each Carousel.Item contains an image and an empty caption (there's no text content in the caption in this code).</li>
-          <li><strong>About, Services, and Contact:</strong> These are custom components (About, Services, and Contact), which will be rendered after the carousel.</li>
+          <li>
+            <strong>Carousel.Item:</strong> Each Carousel.Item contains an image
+            and an empty caption (there's no text content in the caption in this
+            code).
+          </li>
+          <li>
+            <strong>About, Services, and Contact:</strong> These are custom
+            components (About, Services, and Contact), which will be rendered
+            after the carousel.
+          </li>
         </ul>
 
         <h3>Final Output</h3>
         <ul>
-          <li>The carousel will show three images, each with a unique background style applied to the text in the caption.</li>
-          <li>After the carousel, the About, Services, and Contact components will be displayed on the page.</li>
+          <li>
+            The carousel will show three images, each with a unique background
+            style applied to the text in the caption.
+          </li>
+          <li>
+            After the carousel, the About, Services, and Contact components will
+            be displayed on the page.
+          </li>
         </ul>
 
         <h3>Key Features</h3>
         <ul>
-          <li><strong>Dynamic Carousel:</strong> The carousel changes images automatically every 2 seconds, but users can also interact with it to select different slides.</li>
-          <li><strong>Responsive Image Styling:</strong> The images are responsive to the screen size, and they cover the entire width and height of the carousel container.</li>
-          <li><strong>Custom Styling for Captions:</strong> The captions have a stylish gradient background, and the text is transparent with a shadow effect.</li>
+          <li>
+            <strong>Dynamic Carousel:</strong> The carousel changes images
+            automatically every 2 seconds, but users can also interact with it
+            to select different slides.
+          </li>
+          <li>
+            <strong>Responsive Image Styling:</strong> The images are responsive
+            to the screen size, and they cover the entire width and height of
+            the carousel container.
+          </li>
+          <li>
+            <strong>Custom Styling for Captions:</strong> The captions have a
+            stylish gradient background, and the text is transparent with a
+            shadow effect.
+          </li>
         </ul>
-        <p>This code gives a nice, clean layout with an image carousel at the top, followed by sections like "About," "Services," and "Contact."</p>
+        <p>
+          This code gives a nice, clean layout with an image carousel at the
+          top, followed by sections like "About," "Services," and "Contact."
+        </p>
 
         <div className="image-placeholder">
           <img src="/c6Picture2.png" alt="" />
@@ -393,7 +507,10 @@ import Contact from './Contact';`}</pre>
 
       <div className="content-section">
         <h2>2. About Page:</h2>
-        <p>Create <strong>About.jsx</strong> file if not created and write below code:</p>
+        <p>
+          Create <strong>About.jsx</strong> file if not created and write below
+          code:
+        </p>
 
         <div className="code-block">
           <pre>{`import React from "react";
@@ -704,8 +821,12 @@ const About = () => {
 
 export default About;`}</pre>
           <button
-            className={`copy-btn ${copiedIndex === 'aboutCode' ? 'copied' : ''}`}
-            onClick={() => copyToClipboard(`import React from "react";
+            className={`copy-btn ${
+              copiedIndex === "aboutCode" ? "copied" : ""
+            }`}
+            onClick={() =>
+              copyToClipboard(
+                `import React from "react";
 
 const About = () => {
   return (
@@ -1011,9 +1132,12 @@ const About = () => {
   );
 };
 
-export default About;`, 'aboutCode')}
+export default About;`,
+                "aboutCode"
+              )
+            }
           >
-            {copiedIndex === 'aboutCode' ? 'Copied!' : 'Copy Code'}
+            {copiedIndex === "aboutCode" ? "Copied!" : "Copy Code"}
           </button>
         </div>
 
@@ -1024,7 +1148,10 @@ export default About;`, 'aboutCode')}
 
       <div className="content-section">
         <h2>3. Services Page:</h2>
-        <p>Create <strong>Services.jsx</strong> file if not created and write below code:</p>
+        <p>
+          Create <strong>Services.jsx</strong> file if not created and write
+          below code:
+        </p>
 
         <div className="code-block">
           <pre>{`import React from "react";
@@ -1269,8 +1396,12 @@ const Services = () => {
 
 export default Services;`}</pre>
           <button
-            className={`copy-btn ${copiedIndex === 'servicesCode' ? 'copied' : ''}`}
-            onClick={() => copyToClipboard(`import React from "react";
+            className={`copy-btn ${
+              copiedIndex === "servicesCode" ? "copied" : ""
+            }`}
+            onClick={() =>
+              copyToClipboard(
+                `import React from "react";
 
 const Services = () => {
   return (
@@ -1510,9 +1641,12 @@ const Services = () => {
   );
 };
 
-export default Services;`, 'servicesCode')}
+export default Services;`,
+                "servicesCode"
+              )
+            }
           >
-            {copiedIndex === 'servicesCode' ? 'Copied!' : 'Copy Code'}
+            {copiedIndex === "servicesCode" ? "Copied!" : "Copy Code"}
           </button>
         </div>
 
@@ -1523,7 +1657,10 @@ export default Services;`, 'servicesCode')}
 
       <div className="content-section">
         <h2>4. Contact Page:</h2>
-        <p>Create <strong>Contact.jsx</strong> file if not created and write below code:</p>
+        <p>
+          Create <strong>Contact.jsx</strong> file if not created and write
+          below code:
+        </p>
 
         <div className="code-block">
           <pre>{`import React, { useState } from "react";
@@ -1841,8 +1978,12 @@ const Contact = () => {
 
 export default Contact;`}</pre>
           <button
-            className={`copy-btn ${copiedIndex === 'contactCode' ? 'copied' : ''}`}
-            onClick={() => copyToClipboard(`import React, { useState } from "react";
+            className={`copy-btn ${
+              copiedIndex === "contactCode" ? "copied" : ""
+            }`}
+            onClick={() =>
+              copyToClipboard(
+                `import React, { useState } from "react";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -2155,9 +2296,12 @@ const Contact = () => {
   );
 };
 
-export default Contact;`, 'contactCode')}
+export default Contact;`,
+                "contactCode"
+              )
+            }
           >
-            {copiedIndex === 'contactCode' ? 'Copied!' : 'Copy Code'}
+            {copiedIndex === "contactCode" ? "Copied!" : "Copy Code"}
           </button>
         </div>
 
@@ -2198,8 +2342,10 @@ function App() {
 
 export default App;`}</pre>
           <button
-            className={`copy-btn ${copiedIndex === 'appCode2' ? 'copied' : ''}`}
-            onClick={() => copyToClipboard(`import { Route, Routes } from 'react-router-dom';
+            className={`copy-btn ${copiedIndex === "appCode2" ? "copied" : ""}`}
+            onClick={() =>
+              copyToClipboard(
+                `import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GuestLayout from './components/guestLayout/GuestLayout';
@@ -2224,16 +2370,22 @@ function App() {
   );
 }
 
-export default App;`, 'appCode2')}
+export default App;`,
+                "appCode2"
+              )
+            }
           >
-            {copiedIndex === 'appCode2' ? 'Copied!' : 'Copy Code'}
+            {copiedIndex === "appCode2" ? "Copied!" : "Copy Code"}
           </button>
         </div>
       </div>
 
       <div className="content-section">
         <h2>6. Update GuestLayout.jsx:</h2>
-        <p>Now you have to update GuestLayout.jsx file to include navigation to all pages:</p>
+        <p>
+          Now you have to update GuestLayout.jsx file to include navigation to
+          all pages:
+        </p>
 
         <div className="code-block">
           <pre>{`import React from 'react';
@@ -2266,8 +2418,12 @@ const GuestLayout = () => {
 
 export default GuestLayout;`}</pre>
           <button
-            className={`copy-btn ${copiedIndex === 'guestLayoutCode' ? 'copied' : ''}`}
-            onClick={() => copyToClipboard(`import React from 'react';
+            className={`copy-btn ${
+              copiedIndex === "guestLayoutCode" ? "copied" : ""
+            }`}
+            onClick={() =>
+              copyToClipboard(
+                `import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -2295,9 +2451,12 @@ const GuestLayout = () => {
   );
 };
 
-export default GuestLayout;`, 'guestLayoutCode')}
+export default GuestLayout;`,
+                "guestLayoutCode"
+              )
+            }
           >
-            {copiedIndex === 'guestLayoutCode' ? 'Copied!' : 'Copy Code'}
+            {copiedIndex === "guestLayoutCode" ? "Copied!" : "Copy Code"}
           </button>
         </div>
       </div>
@@ -2316,30 +2475,50 @@ export default GuestLayout;`, 'guestLayoutCode')}
             <div className="objective-section">
               <h4>Objective</h4>
               <p>
-                Replace all placeholder content in the Home, About, Services and Contact pages with real content for your project or institution. Make the site look like a professional product landing page for your project.
+                Replace all placeholder content in the Home, About, Services and
+                Contact pages with real content for your project or institution.
+                Make the site look like a professional product landing page for
+                your project.
               </p>
             </div>
 
             <div className="requirements-section">
               <h4>Requirements</h4>
               <ul>
-                <li>Update all texts (titles, captions, paragraphs) to reflect your project/company</li>
-                <li>Replace placeholder images and carousel slides with your own images or appropriate stock images</li>
-                <li>Change carousel captions to meaningful, tech-related taglines for your project</li>
-                <li>Ensure routing (App.js) points to the updated pages and navigation links work</li>
-                <li>Make the pages responsive and accessible (semantic HTML, alt text, labels)</li>
-                <li>Keep the existing component structure and only edit content/assets</li>
+                <li>
+                  Update all texts (titles, captions, paragraphs) to reflect
+                  your project/company
+                </li>
+                <li>
+                  Replace placeholder images and carousel slides with your own
+                  images or appropriate stock images
+                </li>
+                <li>
+                  Change carousel captions to meaningful, tech-related taglines
+                  for your project
+                </li>
+                <li>
+                  Ensure routing (App.js) points to the updated pages and
+                  navigation links work
+                </li>
+                <li>
+                  Make the pages responsive and accessible (semantic HTML, alt
+                  text, labels)
+                </li>
+                <li>
+                  Keep the existing component structure and only edit
+                  content/assets
+                </li>
               </ul>
             </div>
-
 
             <div className="example-section">
               <h4>Example</h4>
               <p>
-                Changed content and images — for example, for our institution website used information and visuals related to our institute.
+                Changed content and images — for example, for our institution
+                website used information and visuals related to our institute.
               </p>
             </div>
-
 
             <div className="reference-section">
               <h4>Expected Output</h4>
@@ -2364,21 +2543,74 @@ export default GuestLayout;`, 'guestLayoutCode')}
                 </div>
               </div>
 
-              <div className="video-tutorial">
-                <h5>Video Tutorial</h5>
-                <div className="video-container">
-                  <video controls>
-                    <source src="/homework/homework.mp4" type="video/mp4" />
-                    {/* <source src="/homework/landing-pages-tutorial.ogg" type="video/ogg" /> */}
-                    Your browser does not support the video tag.
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  maxWidth: "800px",
+                  margin: "2rem auto",
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+                  backgroundColor: "#000",
+                }}
+              >
+                <div
+                  onContextMenu={(e) => e.preventDefault()}
+                  style={{ position: "relative" }}
+                >
+                  <video
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      display: "block",
+                      outline: "none",
+                      userSelect: "none",
+                      WebkitUserSelect: "none",
+                    }}
+                    controls
+                    controlsList="nodownload noremoteplayback"
+                    disablePictureInPicture
+                    disableRemotePlayback
+                    preload="metadata"
+                    poster=""
+                    onKeyDown={(e) => {
+                      if (e.ctrlKey && (e.key === "s" || e.key === "S")) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    <source src="/LandingPages.mp4" type="video/mp4" />
                   </video>
+
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      pointerEvents: "none",
+                      zIndex: 1,
+                    }}
+                  />
                 </div>
-                <p className="video-description">
-                  Watch this tutorial to learn how to customize landing pages effectively
-                </p>
+
+                <div
+                  style={{
+                    padding: "1rem",
+                    backgroundColor: "#f8f9fa",
+                    color: "#333",
+                    fontSize: "0.9rem",
+                    textAlign: "center",
+                    borderTop: "1px solid #eaeaea",
+                    userSelect: "none",
+                  }}
+                >
+                 Create Landing Pages
+                </div>
               </div>
             </div>
-
 
             {/* <div className="submission-section">
               <h4>Submission Guidelines</h4>
@@ -2408,7 +2640,7 @@ export default GuestLayout;`, 'guestLayoutCode')}
           max-width: 1200px;
           margin: 0 auto;
           padding: 40px 20px;
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
           line-height: 1.6;
           color: #2d3748;
           background: white;
@@ -2498,7 +2730,7 @@ export default GuestLayout;`, 'guestLayoutCode')}
           padding: 25px;
           margin: 0;
           overflow-x: auto;
-          font-family: 'Fira Code', 'Consolas', monospace;
+          font-family: "Fira Code", "Consolas", monospace;
           font-size: 0.9rem;
           line-height: 1.5;
         }
@@ -2551,7 +2783,8 @@ export default GuestLayout;`, 'guestLayoutCode')}
           border-radius: 12px;
           padding: 40px;
           border: 1px solid #e2e8f0;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .home-work-header {
