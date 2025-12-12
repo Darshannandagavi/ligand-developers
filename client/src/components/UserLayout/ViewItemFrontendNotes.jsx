@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import './MyNotes.css';
+import React, { useState } from "react";
+import "./MyNotes.css";
 
 const ViewItemFrontendNotes = () => {
   const [copiedIndex, setCopiedIndex] = useState(null);
@@ -14,19 +13,22 @@ const ViewItemFrontendNotes = () => {
   const steps = [
     {
       title: "ViewItem Component Overview",
-      content: "The ViewItem component displays inventory items with animations, modals, and responsive design.",
-      explanation: "This component fetches and displays items from the backend API with a visually appealing card layout, image modals, and smooth animations.",
+      content:
+        "The ViewItem component displays inventory items with animations, modals, and responsive design.",
+      explanation:
+        "This component fetches and displays items from the backend API with a visually appealing card layout, image modals, and smooth animations.",
     },
     {
       title: "Create new file called ViewItem.jsx in UserLayout folder",
       content: "",
       explanation: "",
-      image: "/viewitem file craetions.png"
+      image: "/viewitem file craetions.png",
     },
     {
       title: "Complete ViewItem Component Code",
       content: "Full implementation of the ViewItem component:",
-      explanation: "This component combines React hooks, API calls, animations, and responsive design to create an engaging inventory display.",
+      explanation:
+        "This component combines React hooks, API calls, animations, and responsive design to create an engaging inventory display.",
       code: `import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Modal, Button } from "react-bootstrap";
 import axios from "axios";
@@ -339,13 +341,15 @@ const ViewItem = () => {
 };
 
 export default ViewItem;`,
-      image: "/viewitem-code.png"
+      image: "/viewitem-code.png",
     },
     // ... (other steps remain the same)
     {
       title: "Implementation Notes",
-      content: "Important considerations when implementing the ViewItem component:",
-      explanation: "These notes cover best practices and potential improvements for the ViewItem component.",
+      content:
+        "Important considerations when implementing the ViewItem component:",
+      explanation:
+        "These notes cover best practices and potential improvements for the ViewItem component.",
       notes: [
         "API URL: Consider using environment variables for the API base URL",
         "Error handling: Enhance error handling with user-friendly messages",
@@ -353,19 +357,20 @@ export default ViewItem;`,
         "Empty state: Handle empty items array with a friendly message",
         "Image optimization: Consider implementing lazy loading for images",
         "Pagination: For large inventories, implement pagination or infinite scroll",
-        "Accessibility: Ensure proper ARIA attributes for screen readers"
+        "Accessibility: Ensure proper ARIA attributes for screen readers",
       ],
-    }
+    },
   ];
 
   return (
     <div className="notes-container">
       <div className="notes-header">
         <h1>ViewItem Component Guide</h1>
-        <p>Learn how to implement an inventory display component with animations and modals</p>
+        <p>
+          Learn how to implement an inventory display component with animations
+          and modals
+        </p>
       </div>
-
-
 
       <div className="steps-container">
         {steps.map((step, index) => (
@@ -417,10 +422,12 @@ export default ViewItem;`,
               <div className="code-block">
                 <code>{step.command}</code>
                 <button
-                  className={`copy-btn ${copiedIndex === index ? 'copied' : ''}`}
+                  className={`copy-btn ${
+                    copiedIndex === index ? "copied" : ""
+                  }`}
                   onClick={() => copyToClipboard(step.command, index)}
                 >
-                  {copiedIndex === index ? 'Copied!' : 'Copy'}
+                  {copiedIndex === index ? "Copied!" : "Copy"}
                 </button>
               </div>
             )}
@@ -429,10 +436,12 @@ export default ViewItem;`,
               <div className="code-block">
                 <pre>{step.code}</pre>
                 <button
-                  className={`copy-btn ${copiedIndex === index ? 'copied' : ''}`}
+                  className={`copy-btn ${
+                    copiedIndex === index ? "copied" : ""
+                  }`}
                   onClick={() => copyToClipboard(step.code, index)}
                 >
-                  {copiedIndex === index ? 'Copied!' : 'Copy'}
+                  {copiedIndex === index ? "Copied!" : "Copy"}
                 </button>
               </div>
             )}
@@ -440,7 +449,11 @@ export default ViewItem;`,
             {step.image && (
               <div className="image-placeholder">
                 <div className="image-container">
-                  <img src={step.image} alt={step.title} className="step-image" />
+                  <img
+                    src={step.image}
+                    alt={step.title}
+                    className="step-image"
+                  />
                 </div>
               </div>
             )}
@@ -462,18 +475,27 @@ export default ViewItem;`,
             <div className="objective-section">
               <h4>Objective</h4>
               <p>
-                Create a ViewEmployee component that fetches and displays all employees in a beautiful card layout, similar to the ViewItem component. The component should include employee details, profile images, and interactive features.
+                Create a ViewEmployee component that fetches and displays all
+                employees in a beautiful card layout, similar to the ViewItem
+                component. The component should include employee details,
+                profile images, and interactive features.
               </p>
             </div>
 
             <div className="requirements-section">
               <h4>Requirements</h4>
               <ul>
-                <li>Create ViewEmployee.jsx component in the userLayout folder</li>
+                <li>
+                  Create ViewEmployee.jsx component in the userLayout folder
+                </li>
                 <li>Fetch all employees from the employee backend API</li>
                 <li>Display employees in a responsive card layout</li>
-                <li>Include employee photo, name, position, department, and email</li>
-                <li>Add click-to-view functionality for employee profile images</li>
+                <li>
+                  Include employee photo, name, position, department, and email
+                </li>
+                <li>
+                  Add click-to-view functionality for employee profile images
+                </li>
                 <li>Implement animations using Framer Motion or AOS</li>
                 <li>Add modal for viewing employee details</li>
                 <li>Make the design responsive and user-friendly</li>
@@ -505,25 +527,78 @@ export default ViewItem;`,
                   <p>Employee Details Modal</p>
                 </div>
               </div>
-
-
             </div>
-
-
-
-
-
-
-
 
             <div className="note-section">
               <h4>Important Note</h4>
               <div className="note-box">
                 <p>
-                  <strong>Homework: Employees fetch all employees and show in card form</strong><br />
-                  Your main task is to create a component that fetches all employees from the backend API and displays them in an attractive card layout.
-                  Follow the same patterns used in the ViewItem component but adapt them for employee data with additional fields like position, department, and contact information.
+                  <strong>
+                    Homework: Employees fetch all employees and show in card
+                    form
+                  </strong>
+                  <br />
+                  Your main task is to create a component that fetches all
+                  employees from the backend API and displays them in an
+                  attractive card layout. Follow the same patterns used in the
+                  ViewItem component but adapt them for employee data with
+                  additional fields like position, department, and contact
+                  information.
                 </p>
+              </div>
+            </div>
+
+            <div
+              style={{
+                position: "relative",
+                width: "100%",
+                maxWidth: "800px",
+                margin: "2rem auto",
+                borderRadius: "12px",
+                overflow: "hidden",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+                backgroundColor: "#000",
+              }}
+            >
+              <div
+                onContextMenu={(e) => e.preventDefault()}
+                style={{ position: "relative" }}
+              >
+                <video
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    display: "block",
+                    outline: "none",
+                    userSelect: "none",
+                    WebkitUserSelect: "none",
+                  }}
+                  controls
+                  controlsList="nodownload noremoteplayback"
+                  disablePictureInPicture
+                  disableRemotePlayback
+                  preload="metadata"
+                  poster=""
+                  onKeyDown={(e) => {
+                    if (e.ctrlKey && (e.key === "s" || e.key === "S")) {
+                      e.preventDefault();
+                    }
+                  }}
+                >
+                  <source src="/EmployeeDetailsFetch.mp4" type="video/mp4" />
+                </video>
+
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    pointerEvents: "none",
+                    zIndex: 1,
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -540,7 +615,10 @@ export default ViewItem;`,
       </div>
 
       <div className="notes-footer">
-        <p>Join us for Programming, Coding, Project Training and Internship opportunities.</p>
+        <p>
+          Join us for Programming, Coding, Project Training and Internship
+          opportunities.
+        </p>
         <p>Let's learn, code and build together.</p>
       </div>
 
@@ -549,7 +627,7 @@ export default ViewItem;`,
           max-width: 1200px;
           margin: 0 auto;
           padding: 40px 20px;
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
           line-height: 1.6;
           color: #2d3748;
           background: white;
@@ -676,7 +754,7 @@ export default ViewItem;`,
           padding: 25px;
           margin: 0;
           overflow-x: auto;
-          font-family: 'Fira Code', 'Consolas', monospace;
+          font-family: "Fira Code", "Consolas", monospace;
           font-size: 0.9rem;
           line-height: 1.5;
         }
@@ -686,7 +764,7 @@ export default ViewItem;`,
           padding: 20px;
           display: block;
           overflow-x: auto;
-          font-family: 'Fira Code', 'Consolas', monospace;
+          font-family: "Fira Code", "Consolas", monospace;
         }
 
         .copy-btn {
@@ -746,7 +824,8 @@ export default ViewItem;`,
           border-radius: 12px;
           padding: 40px;
           border: 1px solid #e2e8f0;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .home-work-header {

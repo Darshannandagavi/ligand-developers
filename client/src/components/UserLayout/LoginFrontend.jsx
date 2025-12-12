@@ -756,6 +756,62 @@ export default Login;`
             )}
           </div>
         ))}
+        <div
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "800px",
+          margin: "2rem auto",
+          borderRadius: "12px",
+          overflow: "hidden",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+          backgroundColor: "#000",
+        }}
+      >
+        <div
+          onContextMenu={(e) => e.preventDefault()}
+          style={{ position: "relative" }}
+        >
+          <video
+            style={{
+              width: "100%",
+              height: "auto",
+              display: "block",
+              outline: "none",
+              userSelect: "none",
+              WebkitUserSelect: "none",
+            }}
+            controls
+            controlsList="nodownload noremoteplayback"
+            disablePictureInPicture
+            disableRemotePlayback
+            preload="metadata"
+            poster=""
+            onKeyDown={(e) => {
+              if (e.ctrlKey && (e.key === "s" || e.key === "S")) {
+                e.preventDefault();
+              }
+            }}
+          >
+            <source src="/loginFrontend.mp4" type="video/mp4" />
+          </video>
+
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              pointerEvents: "none",
+              zIndex: 1,
+            }}
+          />
+        </div>
+
+        
+      </div>
+
       </div>
       <div style={styles.companyInfo}>
         <h2 style={styles.companyH2}>LIGAND SOFTWARE SOLUTIONS</h2>

@@ -245,6 +245,7 @@ Server is running on Port:8000`,
           establish a successful connection to MongoDB.{" "}
         </p>{" "}
       </div>
+      
       <div className="notes-footer">
         <p>
           Join us for Programming, Coding, Project Training and Internship

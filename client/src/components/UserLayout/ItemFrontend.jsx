@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './MyNotes.css';
+import React, { useState } from "react";
+import "./MyNotes.css";
 
 const ItemFrontend = () => {
   const [copiedIndex, setCopiedIndex] = useState(null);
@@ -14,8 +14,10 @@ const ItemFrontend = () => {
     // ... (all your existing steps remain the same)
     {
       title: "Complete Item Frontend Component",
-      content: "Below is the complete code for the item management frontend component:",
-      explanation: "This component provides a complete CRUD interface for managing items with image uploads, including form handling, API communication, and a responsive table display.",
+      content:
+        "Below is the complete code for the item management frontend component:",
+      explanation:
+        "This component provides a complete CRUD interface for managing items with image uploads, including form handling, API communication, and a responsive table display.",
       code: `import React, { useEffect, useState } from "react";
 import {
   Row,
@@ -243,7 +245,7 @@ const Items = () => {
 };
 
 export default Items;`,
-      image: "/item-frontend-complete.png"
+      image: "/item-frontend-complete.png",
     },
     // ... (other steps remain the same)
   ];
@@ -252,7 +254,10 @@ export default Items;`,
     <div className="notes-container">
       <div className="notes-header">
         <h1>Item Frontend Guide</h1>
-        <p>Follow these steps to create a complete item management interface with React</p>
+        <p>
+          Follow these steps to create a complete item management interface with
+          React
+        </p>
       </div>
 
       <div className="company-info">
@@ -269,14 +274,14 @@ export default Items;`,
           <div key={index} className="step-card">
             <h3>{step.title}</h3>
             <p>{step.content}</p>
-            
+
             {step.explanation && (
               <div className="explanation-box">
                 <h4>Explanation:</h4>
                 <p>{step.explanation}</p>
               </div>
             )}
-            
+
             {step.breakdown && (
               <div className="breakdown-list">
                 <h4>Breakdown:</h4>
@@ -291,35 +296,43 @@ export default Items;`,
                 )}
               </div>
             )}
-            
+
             {step.command && (
               <div className="code-block">
                 <code>{step.command}</code>
-                <button 
-                  className={`copy-btn ${copiedIndex === index ? 'copied' : ''}`}
+                <button
+                  className={`copy-btn ${
+                    copiedIndex === index ? "copied" : ""
+                  }`}
                   onClick={() => copyToClipboard(step.command, index)}
                 >
-                  {copiedIndex === index ? 'Copied!' : 'Copy'}
+                  {copiedIndex === index ? "Copied!" : "Copy"}
                 </button>
               </div>
             )}
-            
+
             {step.code && (
               <div className="code-block">
                 <pre>{step.code}</pre>
-                <button 
-                  className={`copy-btn ${copiedIndex === index ? 'copied' : ''}`}
+                <button
+                  className={`copy-btn ${
+                    copiedIndex === index ? "copied" : ""
+                  }`}
                   onClick={() => copyToClipboard(step.code, index)}
                 >
-                  {copiedIndex === index ? 'Copied!' : 'Copy'}
+                  {copiedIndex === index ? "Copied!" : "Copy"}
                 </button>
               </div>
             )}
-            
+
             {step.image && (
               <div className="image-placeholder">
                 <div className="image-container">
-                  <img src={step.image} alt={step.title} className="step-image" />
+                  <img
+                    src={step.image}
+                    alt={step.title}
+                    className="step-image"
+                  />
                 </div>
               </div>
             )}
@@ -334,14 +347,18 @@ export default Items;`,
             <h2>Homework Assignment</h2>
             <div className="difficulty-badge">Intermediate Level</div>
           </div>
-          
+
           <div className="home-work-content">
             <h3>Develop Employee Frontend CRUD Operations</h3>
-            
+
             <div className="objective-section">
               <h4>Objective</h4>
               <p>
-                Create a complete Employee frontend system with CRUD operations following the same patterns and structure as the Item frontend we just built. The employee system should handle employee data with image uploads and provide a professional user interface in different floder  .
+                Create a complete Employee frontend system with CRUD operations
+                following the same patterns and structure as the Item frontend
+                we just built. The employee system should handle employee data
+                with image uploads and provide a professional user interface in
+                different floder .
               </p>
             </div>
 
@@ -349,11 +366,17 @@ export default Items;`,
               <h4>Requirements</h4>
               <ul>
                 <li>Create Employee.jsx component with all CRUD operations</li>
-                <li>Include form fields: employeeName, position, department, salary, email, phone, hireDate, address, employeeImage</li>
+                <li>
+                  Include form fields: employeeName, position, department,
+                  salary, email, phone, hireDate, address, employeeImage
+                </li>
                 <li>Implement form validation for all required fields</li>
                 <li>Add image upload functionality for employee photos</li>
                 <li>Create a responsive table to display employee data</li>
-                <li>Implement edit and delete functionality with confirmation dialogs</li>
+                <li>
+                  Implement edit and delete functionality with confirmation
+                  dialogs
+                </li>
                 <li>Add proper error handling and loading states</li>
                 <li>Make the design responsive and user-friendly</li>
                 <li>Connect with the Employee backend API endpoints</li>
@@ -362,44 +385,85 @@ export default Items;`,
 
             <div className="reference-section">
               <h4>Expected Employee Form OutPut</h4>
-              
+
               <div className="reference-grid">
                 <div className="reference-item">
                   <div className="image-container">
-                    <img 
-                      src="/homework/home work emp fileds.png" 
-                      alt="Employee Form Design" 
+                    <img
+                      src="/homework/home work emp fileds.png"
+                      alt="Employee Form Design"
                     />
                   </div>
                   <p>Employee Form Design</p>
                 </div>
-                
+
                 <div className="reference-item">
                   <div className="image-container">
-                    <img 
-                      src="/homework/home work emp output.png" 
-                      alt="Employee Table Design" 
+                    <img
+                      src="/homework/home work emp output.png"
+                      alt="Employee Table Design"
                     />
                   </div>
                   <p>Employee Table Design</p>
                 </div>
               </div>
 
-              <div className="video-tutorial">
-                <h5>Video Tutorial Reference</h5>
-                <div className="video-container">
-                  <video controls>
-                    <source src="/homework/homework.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  maxWidth: "800px",
+                  margin: "2rem auto",
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+                  backgroundColor: "#000",
+                }}
+              >
+                <div
+                  onContextMenu={(e) => e.preventDefault()}
+                  style={{ position: "relative" }}
+                >
+                  <video
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      display: "block",
+                      outline: "none",
+                      userSelect: "none",
+                      WebkitUserSelect: "none",
+                    }}
+                    controls
+                    controlsList="nodownload noremoteplayback"
+                    disablePictureInPicture
+                    disableRemotePlayback
+                    preload="metadata"
+                    poster=""
+                    onKeyDown={(e) => {
+                      if (e.ctrlKey && (e.key === "s" || e.key === "S")) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    <source src="/employee_crud.mp4" type="video/mp4" />
                   </video>
+
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: "100%",
+                      height: "100%",
+                      pointerEvents: "none",
+                      zIndex: 1,
+                    }}
+                  />
                 </div>
-                <p className="video-description">
-                  Watch this tutorial to learn how to implement a complete employee frontend system with React, Bootstrap, and API integration
-                </p>
+
               </div>
             </div>
 
-            
             <div className="api-endpoints-section">
               <h4>API Endpoints Reference</h4>
               <div className="endpoints-table">
@@ -446,7 +510,10 @@ export default Items;`,
       </div>
 
       <div className="notes-footer">
-        <p>Join us for Programming, Coding, Project Training and Internship opportunities.</p>
+        <p>
+          Join us for Programming, Coding, Project Training and Internship
+          opportunities.
+        </p>
         <p>Let's learn, code and build together.</p>
       </div>
 
@@ -455,7 +522,7 @@ export default Items;`,
           max-width: 1200px;
           margin: 0 auto;
           padding: 40px 20px;
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
           line-height: 1.6;
           color: #2d3748;
           background: white;
@@ -580,7 +647,7 @@ export default Items;`,
           padding: 25px;
           margin: 0;
           overflow-x: auto;
-          font-family: 'Fira Code', 'Consolas', monospace;
+          font-family: "Fira Code", "Consolas", monospace;
           font-size: 0.9rem;
           line-height: 1.5;
         }
@@ -590,7 +657,7 @@ export default Items;`,
           padding: 20px;
           display: block;
           overflow-x: auto;
-          font-family: 'Fira Code', 'Consolas', monospace;
+          font-family: "Fira Code", "Consolas", monospace;
         }
 
         .copy-btn {
@@ -650,7 +717,8 @@ export default Items;`,
           border-radius: 12px;
           padding: 40px;
           border: 1px solid #e2e8f0;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .home-work-header {
