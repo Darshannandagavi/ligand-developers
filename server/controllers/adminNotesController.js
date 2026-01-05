@@ -69,7 +69,7 @@ export const deleteNote = async (req, res) => {
 // Get all notes (for admin view)
 export const getAllnotes = async (req, res) => {
   try {
-    const notes = await Notes.find().sort({ createdAt: 1 });
+    const notes = await Notes.find().sort({ chapterNumber: 1 });
     res.json(notes);
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });

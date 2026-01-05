@@ -1,42 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-// import axios from "axios";
-
-// const Notes = () => {
-//   const [notes, setNotes] = useState([]);
-
-//   useEffect(() => {
-//     const fetchNotes = async () => {
-//       try {
-//         const res = await axios.get("https://ligand-dev-7.onrender.com/api/notes/active");
-//         setNotes(res.data);
-//       } catch (err) {
-//         console.error("Error fetching notes", err);
-//       }
-//     };
-//     fetchNotes();
-//   }, []);
-
-//   return (
-//     <div className="p-6">
-//       <h2 className="text-2xl font-bold mb-4">Available Chapters</h2>
-//       <ul className="space-y-2">
-//         {notes.map((note) => (
-//           <li key={note._id}>
-//             <Link
-//               to={note.path}
-//               className="block p-3 bg-gray-100 rounded-lg shadow hover:bg-gray-200"
-//             >
-//               {note.title}
-//             </Link>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default Notes;
 
 
 
@@ -60,6 +21,7 @@ const Notes = ({ user }) => {
         const res = await axios.get(`https://ligand-dev-7.onrender.com/api/notes/foruser/${collegeName}`);
         setNotes(res.data);
         setError(null);
+        
       } catch (err) {
         console.error("Error fetching notes", err);
         setError("Failed to load chapters. Please try again later.");
@@ -306,7 +268,7 @@ const Notes = ({ user }) => {
             >
               <div style={styles.cardContent}>
                 <div style={styles.cardIcon}>📖</div>
-                <h3 style={styles.cardDescription}>Chapter No: {idx+1}</h3>
+                <h3 style={styles.cardDescription}>Chapter No:{note.chapterNumber}</h3>
                 <h3 style={styles.cardTitle}>{note.title}</h3>
                 <p style={styles.cardDescription}>
                   {note.description || "Explore this chapter to enhance your knowledge."}
