@@ -38,6 +38,8 @@
 
 // export default Notes;
 
+
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -291,7 +293,7 @@ const Notes = ({ user }) => {
             <p style={styles.emptyText}>Check back later for new content.</p>
           </div>
         ) : (
-          notes.map((note) => (
+          notes.map((note,idx) => (
             <Link
               key={note._id}
               to={note.path}
@@ -304,6 +306,7 @@ const Notes = ({ user }) => {
             >
               <div style={styles.cardContent}>
                 <div style={styles.cardIcon}>📖</div>
+                <h3 style={styles.cardDescription}>Chapter No: {idx+1}</h3>
                 <h3 style={styles.cardTitle}>{note.title}</h3>
                 <p style={styles.cardDescription}>
                   {note.description || "Explore this chapter to enhance your knowledge."}

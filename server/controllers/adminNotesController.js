@@ -3,16 +3,29 @@ import Notes from "../models/notes.js";
 
 // Add new note
 export const addNote = async (req, res) => {
-    console.log("first")
   try {
-    const { title, path } = req.body;
-    const newNote = new Notes({ title, path });
+    const { title, path, chapterNumber } = req.body;
+
+    if (!chapterNumber) {
+      return res.status(400).json({ message: "Chapter number is required" });
+    }
+
+    const newNote = new Notes({
+      title,
+      path,
+      chapterNumber,
+    });
+
     await newNote.save();
     res.status(201).json(newNote);
   } catch (err) {
-    res.status(500).json({ message: "Error adding note", error: err.message });
+    res.status(500).json({
+      message: "Error adding note",
+      error: err.message
+    });
   }
 };
+
 
 // Update note (title or path)
 export const updateNote = async (req, res) => {

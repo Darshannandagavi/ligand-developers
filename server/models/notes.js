@@ -5,6 +5,11 @@ const notesSchema = new mongoose.Schema(
   {
     collegeName: { type: String, required: false,default:null },
     visibleTo: { type: [String], default: [] },
+    chapterNumber: {
+      type: Number,
+      required: true,
+      min: 1
+    },
     title: {
       type: String,
       required: true,

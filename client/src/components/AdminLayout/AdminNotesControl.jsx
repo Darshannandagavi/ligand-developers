@@ -4,7 +4,12 @@ import Loader from "../StyleComponents/Loader";
 
 const AdminNotesControl = () => {
   const [notes, setNotes] = useState([]);
-  const [form, setForm] = useState({ title: "", path: "", description: "" });
+  const [form, setForm] = useState({
+    title: "",
+    path: "",
+    chapterNumber: "",
+  });
+
   const [editingId, setEditingId] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +17,9 @@ const AdminNotesControl = () => {
   const fetchNotes = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("https://ligand-dev-7.onrender.com/api/notes/admin"); 
+      const res = await axios.get(
+        "https://ligand-dev-7.onrender.com/api/notes/admin"
+      );
       setNotes(res.data);
     } catch (err) {
       console.error("Error fetching notes", err);
@@ -30,7 +37,10 @@ const AdminNotesControl = () => {
     e.preventDefault();
     try {
       if (editingId) {
-        await axios.put(`https://ligand-dev-7.onrender.com/api/notes/${editingId}`, form);
+        await axios.put(
+          `https://ligand-dev-7.onrender.com/api/notes/${editingId}`,
+          form
+        );
       } else {
         await axios.post("https://ligand-dev-7.onrender.com/api/notes", form);
       }
@@ -44,7 +54,11 @@ const AdminNotesControl = () => {
 
   // Edit note
   const handleEdit = (note) => {
-    setForm({ title: note.title, path: note.path, description: note.description || "" });
+    setForm({
+      title: note.title,
+      path: note.path,
+      chapterNumber: note.chapterNumber,
+    });
     setEditingId(note._id);
   };
 
@@ -63,7 +77,9 @@ const AdminNotesControl = () => {
   // Toggle active/inactive
   const handleToggle = async (id) => {
     try {
-      await axios.patch(`https://ligand-dev-7.onrender.com/api/notes/${id}/toggle`);
+      await axios.patch(
+        `https://ligand-dev-7.onrender.com/api/notes/${id}/toggle`
+      );
       fetchNotes();
     } catch (err) {
       console.error("Error toggling note", err);
@@ -82,18 +98,18 @@ const AdminNotesControl = () => {
       minHeight: "100vh",
       backgroundColor: "#f8fafc",
       padding: "20px",
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
     },
     header: {
       textAlign: "center",
       marginBottom: "40px",
-      padding: "20px 0"
+      padding: "20px 0",
     },
     title: {
       fontSize: "32px",
       fontWeight: "700",
       color: "#1e293b",
-      marginBottom: "8px"
+      marginBottom: "8px",
     },
     formContainer: {
       backgroundColor: "#ffffff",
@@ -102,13 +118,13 @@ const AdminNotesControl = () => {
       padding: "24px",
       marginBottom: "32px",
       maxWidth: "800px",
-      margin: "0 auto 32px"
+      margin: "0 auto 32px",
     },
     formTitle: {
       fontSize: "20px",
       fontWeight: "600",
       color: "#1e293b",
-      marginBottom: "20px"
+      marginBottom: "20px",
     },
     input: {
       width: "100%",
@@ -117,7 +133,7 @@ const AdminNotesControl = () => {
       borderRadius: "8px",
       fontSize: "16px",
       marginBottom: "16px",
-      boxSizing: "border-box"
+      boxSizing: "border-box",
     },
     textarea: {
       width: "100%",
@@ -128,7 +144,7 @@ const AdminNotesControl = () => {
       marginBottom: "16px",
       minHeight: "100px",
       resize: "vertical",
-      boxSizing: "border-box"
+      boxSizing: "border-box",
     },
     button: {
       padding: "12px 20px",
@@ -138,25 +154,25 @@ const AdminNotesControl = () => {
       border: "none",
       fontSize: "16px",
       transition: "all 0.2s ease",
-      marginRight: "12px"
+      marginRight: "12px",
     },
     submitButton: {
       backgroundColor: "#0369a1",
-      color: "white"
+      color: "white",
     },
     submitButtonHover: {
-      backgroundColor: "#0284c7"
+      backgroundColor: "#0284c7",
     },
     cancelButton: {
       backgroundColor: "#94a3b8",
-      color: "white"
+      color: "white",
     },
     cancelButtonHover: {
-      backgroundColor: "#64748b"
+      backgroundColor: "#64748b",
     },
     notesList: {
       maxWidth: "1000px",
-      margin: "0 auto"
+      margin: "0 auto",
     },
     noteItem: {
       backgroundColor: "#ffffff",
@@ -166,41 +182,41 @@ const AdminNotesControl = () => {
       marginBottom: "16px",
       display: "flex",
       justifyContent: "space-between",
-      alignItems: "center"
+      alignItems: "center",
     },
     noteInfo: {
-      flex: "1"
+      flex: "1",
     },
     noteTitle: {
       fontSize: "18px",
       fontWeight: "600",
       color: "#1e293b",
-      marginBottom: "8px"
+      marginBottom: "8px",
     },
     notePath: {
       fontSize: "14px",
       color: "#64748b",
-      marginBottom: "8px"
+      marginBottom: "8px",
     },
     noteDescription: {
       fontSize: "14px",
       color: "#64748b",
-      marginBottom: "8px"
+      marginBottom: "8px",
     },
     status: {
       fontSize: "14px",
       fontWeight: "500",
-      marginBottom: "12px"
+      marginBottom: "12px",
     },
     activeStatus: {
-      color: "#16a34a"
+      color: "#16a34a",
     },
     inactiveStatus: {
-      color: "#dc2626"
+      color: "#dc2626",
     },
     actionButtons: {
       display: "flex",
-      gap: "8px"
+      gap: "8px",
     },
     toggleButton: {
       padding: "8px 12px",
@@ -209,7 +225,7 @@ const AdminNotesControl = () => {
       border: "none",
       borderRadius: "6px",
       cursor: "pointer",
-      fontSize: "14px"
+      fontSize: "14px",
     },
     editButton: {
       padding: "8px 12px",
@@ -218,7 +234,7 @@ const AdminNotesControl = () => {
       border: "none",
       borderRadius: "6px",
       cursor: "pointer",
-      fontSize: "14px"
+      fontSize: "14px",
     },
     deleteButton: {
       padding: "8px 12px",
@@ -227,13 +243,13 @@ const AdminNotesControl = () => {
       border: "none",
       borderRadius: "6px",
       cursor: "pointer",
-      fontSize: "14px"
+      fontSize: "14px",
     },
     loadingContainer: {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      minHeight: "200px"
+      minHeight: "200px",
     },
     spinner: {
       width: "48px",
@@ -241,7 +257,7 @@ const AdminNotesControl = () => {
       border: "4px solid #e2e8f0",
       borderTop: "4px solid #0369a1",
       borderRadius: "50%",
-      animation: "spin 1s linear infinite"
+      animation: "spin 1s linear infinite",
     },
     emptyState: {
       backgroundColor: "#ffffff",
@@ -250,19 +266,19 @@ const AdminNotesControl = () => {
       padding: "40px",
       textAlign: "center",
       maxWidth: "600px",
-      margin: "0 auto"
+      margin: "0 auto",
     },
     emptyIcon: {
       color: "#cbd5e1",
       fontSize: "64px",
-      marginBottom: "20px"
+      marginBottom: "20px",
     },
     emptyTitle: {
       fontSize: "24px",
       fontWeight: "600",
       color: "#1e293b",
-      marginBottom: "12px"
-    }
+      marginBottom: "12px",
+    },
   };
 
   // State for button hover effects
@@ -273,7 +289,9 @@ const AdminNotesControl = () => {
     <div style={styles.container}>
       <header style={styles.header}>
         <h1 style={styles.title}>Admin Notes Control</h1>
-        <p style={{ color: "#64748b" }}>Manage all chapters and their visibility</p>
+        <p style={{ color: "#64748b" }}>
+          Manage all chapters and their visibility
+        </p>
       </header>
 
       {/* Add / Edit Form */}
@@ -282,6 +300,18 @@ const AdminNotesControl = () => {
           {editingId ? "Edit Chapter" : "Add New Chapter"}
         </h3>
         <form onSubmit={handleSubmit}>
+          <input
+            type="number"
+            placeholder="Chapter Number (e.g. 1)"
+            value={form.chapterNumber}
+            onChange={(e) =>
+              setForm({ ...form, chapterNumber: Number(e.target.value) })
+            }
+            style={styles.input}
+            min="1"
+            required
+          />
+
           <input
             type="text"
             placeholder="Title"
@@ -298,14 +328,14 @@ const AdminNotesControl = () => {
             style={styles.input}
             required
           />
-         
+
           <div>
             <button
               type="submit"
               style={{
                 ...styles.button,
                 ...styles.submitButton,
-                ...(submitHover && styles.submitButtonHover)
+                ...(submitHover && styles.submitButtonHover),
               }}
               onMouseOver={() => setSubmitHover(true)}
               onMouseOut={() => setSubmitHover(false)}
@@ -319,7 +349,7 @@ const AdminNotesControl = () => {
                 style={{
                   ...styles.button,
                   ...styles.cancelButton,
-                  ...(cancelHover && styles.cancelButtonHover)
+                  ...(cancelHover && styles.cancelButtonHover),
                 }}
                 onMouseOver={() => setCancelHover(true)}
                 onMouseOut={() => setCancelHover(false)}
@@ -334,20 +364,37 @@ const AdminNotesControl = () => {
       {/* Notes List */}
       <div style={styles.notesList}>
         <h3 style={{ ...styles.formTitle, marginLeft: "8px" }}>All Chapters</h3>
-        
+
         {loading ? (
-          <div style={{minHeight:"200px",height:"100%",width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}><Loader/></div>
+          <div
+            style={{
+              minHeight: "200px",
+              height: "100%",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Loader />
+          </div>
         ) : notes.length === 0 ? (
           <div style={styles.emptyState}>
             <div style={styles.emptyIcon}>📚</div>
             <h3 style={styles.emptyTitle}>No chapters available</h3>
-            <p style={{ color: "#64748b" }}>Add your first chapter using the form above.</p>
+            <p style={{ color: "#64748b" }}>
+              Add your first chapter using the form above.
+            </p>
           </div>
         ) : (
           notes.map((note) => (
             <div key={note._id} style={styles.noteItem}>
               <div style={styles.noteInfo}>
-                <h4 style={styles.noteTitle}>{note.title}</h4>
+                <h4 style={styles.noteTitle}>
+                  Chapter {note.chapterNumber}: {note.title}
+                </h4>
+
+                
                 <p style={styles.notePath}>
                   <strong>Path:</strong> {note.path}
                 </p>
@@ -356,10 +403,14 @@ const AdminNotesControl = () => {
                     <strong>Description:</strong> {note.description}
                   </p>
                 )}
-                <p style={{
-                  ...styles.status,
-                  ...(note.isActive ? styles.activeStatus : styles.inactiveStatus)
-                }}>
+                <p
+                  style={{
+                    ...styles.status,
+                    ...(note.isActive
+                      ? styles.activeStatus
+                      : styles.inactiveStatus),
+                  }}
+                >
                   Status: {note.isActive ? "Active" : "Inactive"}
                 </p>
               </div>
