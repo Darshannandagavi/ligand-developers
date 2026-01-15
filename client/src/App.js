@@ -57,6 +57,8 @@ import StudentDelete from "./components/AdminLayout/StudentDelete";
 import AdminStudentDashboard from "./components/AdminLayout/AdminStudentDashboard";
 import StudentAnalytics from "./components/UserLayout/StudentAnalytics";
 import StudentGroupingPage from "./components/AdminLayout/StudentGroupingPage";
+import NotFoundPage from "./components/StyleComponents/NotFoundPage";
+import SpaceInvaders from "./components/Games/SpaceInvaders/SpaceInvaders";
 
 function App() {
   return (
@@ -68,12 +70,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/ForgotPassword" element={<ForgotPassword />} />
           <Route path="/teacher-login" element={<TeacherLogin />} />
+          <Route path="/404INVADERS" element={<SpaceInvaders />} />
           <Route path="teacher-forgot-pwd" element={<TeacherForgot />} />
-          
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
-
-
-
 
         <Route path="/user" element={<UserLayout />}>
           <Route index element={<AttendExam />} />
@@ -86,10 +86,16 @@ function App() {
           <Route path="/user/ServerSetup" element={<ServerSetup />} />
           <Route path="/user/PostmanSetup" element={<PostmanSetup />} />
           <Route path="/user/userbackend" element={<UserBackend />} />
-          <Route path="/user/CreateAppPassword" element={<CreateAppPassword/>} />
-          <Route path="/user/ProfileNotes" element={<ProfileNotes/>} />
-           <Route path="/user/analytics" element={<StudentAnalytics/>} />
-          <Route path="/user/NoteForgotChangePassword" element={<NoteForgotChangePassword/>} />
+          <Route
+            path="/user/CreateAppPassword"
+            element={<CreateAppPassword />}
+          />
+          <Route path="/user/ProfileNotes" element={<ProfileNotes />} />
+          <Route path="/user/analytics" element={<StudentAnalytics />} />
+          <Route
+            path="/user/NoteForgotChangePassword"
+            element={<NoteForgotChangePassword />}
+          />
           <Route
             path="/user/RegistrationFrontend"
             element={<RegistrationFrontend />}
@@ -106,10 +112,8 @@ function App() {
           <Route path="/user/profile" element={<Profile />} />
           <Route path="/user/changepassword" element={<ChangePassword />} />
           <Route path="/user/interview" element={<InterviewPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
-
-
-
 
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<ManageExam />} />
@@ -120,18 +124,27 @@ function App() {
           <Route path="/admin/payments" element={<AdminPayments />} />
           <Route path="/admin/payments/mark" element={<AdminPaymentsMark />} />
           <Route path="/admin/deletestudents" element={<StudentDelete />} />
-          <Route path="/admin/getstudentprogress" element={<AdminStudentDashboard />} />
-          
+          <Route
+            path="/admin/getstudentprogress"
+            element={<AdminStudentDashboard />}
+          />
+
           <Route
             path="/admin/payments/dashboard"
             element={<AdminPaymentsDashboard />}
           />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/admindashboard" element={<AdminNewDashboard />} />
-          <Route path="/admin/interviewcontrller" element={<InterviewControl />} />
+          <Route
+            path="/admin/interviewcontrller"
+            element={<InterviewControl />}
+          />
           <Route path="/admin/adminoptions" element={<AdminOptions />} />
           <Route path="/admin/history" element={<AdminExamAttempts />} />
-          <Route path="/admin/groupedstudents" element={<StudentGroupingPage />} />
+          <Route
+            path="/admin/groupedstudents"
+            element={<StudentGroupingPage />}
+          />
           <Route path="/admin/changepassword" element={<ChangePassword />} />
           <Route
             path="/admin/manageexamsvisibility"
@@ -144,13 +157,12 @@ function App() {
           <Route path="/admin/add-teacher" element={<TeacherRegister />} />
           <Route path="/admin/manage-teacher" element={<ManageTeachers />} />
           <Route path="/admin/student/homework" element={<Homework />} />
-          <Route path="/admin/student/approve" element={<AdminApproveStudents />} />
+          <Route
+            path="/admin/student/approve"
+            element={<AdminApproveStudents />}
+          />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
-
-
-
-
-
 
         <Route path="/teacher" element={<TeacherLayout />}>
           <Route path="/teacher/students" element={<TeacherStudent />} />
@@ -170,6 +182,7 @@ function App() {
           />
           <Route path="/teacher/students" element={<TeacherStudent />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   );
