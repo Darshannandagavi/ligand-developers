@@ -224,7 +224,7 @@ export const forgotPassword = async (req, res) => {
       subject: "Your Temporary Password",
       text: `Your temporary password is: ${tempPassword}. Please log in and change it immediately.`,
     };
-
+    await transporter.verify();
     await transporter.sendMail(mailOptions);
 
     res.json({ message: "Temporary password sent to your email" });
