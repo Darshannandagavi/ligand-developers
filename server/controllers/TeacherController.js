@@ -44,12 +44,12 @@ export const registerTeacher = async (req, res) => {
     // ---- Send Welcome Email ----
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
-      },
+  port: 465,
+  secure: true, // MUST be true
+  auth: {
+    user: process.env.EMAIL,          // full gmail address
+    pass: process.env.EMAIL_PASSWORD, // 16-char app password
+  },
     });
 
     const mailOptions = {
@@ -181,12 +181,12 @@ export const toggleActiveStatus = async (req, res) => {
     // ----- SEND NOTIFICATION EMAIL -----
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
-      },
+  port: 465,
+  secure: true, // MUST be true
+  auth: {
+    user: process.env.EMAIL,          // full gmail address
+    pass: process.env.EMAIL_PASSWORD, // 16-char app password
+  },
     });
 
     let statusMsg = teacher.activeStatus
@@ -242,12 +242,12 @@ export const forgotPassword = async (req, res) => {
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
-      },
+  port: 465,
+  secure: true, // MUST be true
+  auth: {
+    user: process.env.EMAIL,          // full gmail address
+    pass: process.env.EMAIL_PASSWORD, // 16-char app password
+  },
     });
 
     const mailOptions = {
