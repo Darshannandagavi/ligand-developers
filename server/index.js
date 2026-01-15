@@ -55,3 +55,6 @@ app.use("/api/fee-payment", feePaymentRoutes);
 app.use("/api/fee-groups", feeGroupRoutes);
 app.use("/api/teacher", TeacherRouter);
 app.use("/api/homeworkstatus",homeworkstatusRouter);
+app.get("/active", (req, res) => {
+  res.status(200).send("Server is Active");
+});
