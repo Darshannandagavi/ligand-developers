@@ -1373,7 +1373,7 @@ const AdminNewDashboard = () => {
         }
 
         .usn, .amount {
-          font-family: 'Courier New', monospace;
+          font-family: 'inter', monospace;
           font-weight: 600;
         }
 
