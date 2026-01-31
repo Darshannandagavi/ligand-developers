@@ -1,7 +1,7 @@
 import React, { useState,  useEffect } from "react";
 import axios from "axios";
 import "./InterviewPage.css";
-import Loader from "../StyleComponents/Loader";
+
 
 const API_BASE = "https://ligand-dev-7.onrender.com/api"; 
 const GROQ_API_KEY = process.env.REACT_APP_GROQ_API_KEY || "";
