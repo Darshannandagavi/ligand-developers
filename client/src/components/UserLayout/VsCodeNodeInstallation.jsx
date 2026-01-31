@@ -185,33 +185,6 @@ npm -v   # Displays the installed npm version`,
     },
   ];
 
-  const settingsCode = `{
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 1000,
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "editor.tabSize": 2,
-  "editor.insertSpaces": true,
-  "prettier.singleQuote": true,
-  "prettier.trailingComma": "es5",
-  "emmet.includeLanguages": {
-    "javascript": "javascriptreact"
-  }
-}`;
 
   return (
     <div className="installation-container">
