@@ -280,14 +280,7 @@ const StudentDelete = () => {
         )}
       </div>
 
-      {/* Footer */}
-      <footer className="page-footer">
-        <p>Use with caution. Deleting a student will permanently remove their records.</p>
-        <p className="footer-note">
-          <i className="fas fa-exclamation-triangle"></i> 
-          This action cannot be undone
-        </p>
-      </footer>
+      
 
       <style>{`
 

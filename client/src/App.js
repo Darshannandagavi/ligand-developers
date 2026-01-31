@@ -59,6 +59,8 @@ import StudentAnalytics from "./components/UserLayout/StudentAnalytics";
 import StudentGroupingPage from "./components/AdminLayout/StudentGroupingPage";
 import NotFoundPage from "./components/StyleComponents/NotFoundPage";
 import SpaceInvaders from "./components/Games/SpaceInvaders/SpaceInvaders";
+import VsCodeNodeInstallation from "./components/UserLayout/VsCodeNodeInstallation";
+import IntroductionHTML from "./components/UserLayout/IntroductionHTML";
 
 function App() {
   return (
@@ -86,6 +88,8 @@ function App() {
           <Route path="/user/ServerSetup" element={<ServerSetup />} />
           <Route path="/user/PostmanSetup" element={<PostmanSetup />} />
           <Route path="/user/userbackend" element={<UserBackend />} />
+          <Route path="/user/installation" element={<VsCodeNodeInstallation />} />
+          <Route path="/user/introductionHTML" element={<IntroductionHTML />} />
           <Route
             path="/user/CreateAppPassword"
             element={<CreateAppPassword />}
