@@ -101,13 +101,13 @@ MONGOURL="mongodb+srv://username:password@cluster0.ofadrht.mongodb.net/dbname?re
      
       content:
         "Open package.json and update the scripts section in package.json file, bellow main add type as module and in scripts add start command",
-      codeBefore: `{
-  "name": "bank",
-  "version": "1.0.0",
-  "main": "index.js",
-      "scripts": {
-  "test": 'echo \"Error: no test specified\" && exit 1'
-}`,
+        codeBefore: `{
+      "name": "bank",
+      "version": "1.0.0",
+      "main": "index.js",
+        "scripts": {
+      "test": "echo 'Error: no test specified' && exit 1"
+    }`,
       codeAfter: `{
   "name": "bank",
   "version": "1.0.0",

@@ -369,7 +369,6 @@ export const updateProfile = async (req, res) => {
     {
       title: "Router Configuration (userRouter.js)",
       content: "Add profile routes to your userRouter.js file",
-      image: "/userrouter-folder.png",
       code: `import express from "express";
 import { 
   loginUser, 
@@ -635,7 +634,6 @@ export default Profile;`,
     {
       title: "App.js Route Configuration",
       content: "Add the profile route to your main App.js file",
-      image: "/appjs-config.png",
       code: `import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Profile from './components/Profile';

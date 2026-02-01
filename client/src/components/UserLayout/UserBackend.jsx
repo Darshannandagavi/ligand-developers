@@ -405,7 +405,7 @@ export const loginUser = async (req, res) => {
               <br />
               <b>❌ Do not use:</b> $ {"{ user.name }"}
               <br />
-              <b>✅ Use:</b> {"${user.name}"}
+              <b>✅ Use:</b> {"${" + "user.name}"}
               <br />
               <br />
               <b>The HTML email content MUST be wrapped using backticks.</b>
