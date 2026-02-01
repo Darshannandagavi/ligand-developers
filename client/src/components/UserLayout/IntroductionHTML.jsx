@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import Notes from './Notes';
+import React, { useState } from "react";
 
 const IntroductionHTML = () => {
   const [copiedIndex, setCopiedIndex] = useState(null);
-
 
   const copyToClipboard = (text, index) => {
     navigator.clipboard.writeText(text);
@@ -11,938 +9,7 @@ const IntroductionHTML = () => {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
-  // Internal CSS matching Chapter3 style
-  const styles = {
-    container: {
-      fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
-      margin: "0 auto",
-      padding: "20px",
-      backgroundColor: "#f9f9f9",
-      color: "#333",
-      lineHeight: "1.6"
-    },
-    header: {
-      textAlign: "center",
-      marginBottom: "30px",
-      padding: "30px",
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      color: "white",
-      borderRadius: "12px",
-      boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
-      fontFamily: "cursive"
-    },
-    headerH1: {
-      margin: "0 0 15px 0",
-      fontSize: "2.8rem",
-      fontWeight: "700"
-    },
-    headerP: {
-      margin: "0",
-      fontSize: "1.3rem",
-      opacity: "0.95"
-    },
-    companyInfo: {
-      textAlign: "center",
-      margin: "40px 0",
-      padding: "25px",
-      background: "linear-gradient(135deg, #764ba2 0%, #667eea 100%)",
-      color: "white",
-      borderRadius: "12px",
-      boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)"
-    },
-    companyH2: {
-      margin: "0 0 15px 0",
-      fontSize: "2rem",
-      fontWeight: "600"
-    },
-    companyP: {
-      margin: "8px 0",
-      fontSize: "1.1rem"
-    },
-    sectionsContainer: {
-      display: "flex",
-      flexDirection: "column",
-      gap: "30px"
-    },
-    sectionCard: {
-      backgroundColor: "white",
-      padding: "30px",
-      borderRadius: "12px",
-      boxShadow: "0 8px 16px rgba(0, 0, 0, 0.08)",
-      borderLeft: "6px solid #667eea"
-    },
-    sectionH2: {
-      color: "#2c3e50",
-      marginTop: "0",
-      marginBottom: "25px",
-      fontSize: "1.9rem",
-      borderBottom: "3px solid #f0f0f0",
-      paddingBottom: "15px",
-      textAlign: "left"
-    },
-    contentBlock: {
-      marginBottom: "25px",
-      textAlign: "left"
-    },
-    subtitleH3: {
-      color: "#667eea",
-      margin: "25px 0 15px 0",
-      fontSize: "1.5rem",
-      textAlign: "left"
-    },
-    subtitleH4: {
-      color: "#4a5568",
-      margin: "20px 0 10px 0",
-      fontSize: "1.3rem",
-      textAlign: "left"
-    },
-    textP: {
-      margin: "0 0 18px 0",
-      fontSize: "1.15rem",
-      lineHeight: "1.7",
-      textAlign: "left"
-    },
-    listBlock: {
-      backgroundColor: "#f8f9fa",
-      padding: "20px 25px 20px 45px",
-      borderRadius: "10px",
-      margin: "20px 0",
-      borderLeft: "4px solid #667eea",
-      textAlign: "left"
-    },
-    listH4: {
-      margin: "0 0 15px 0",
-      color: "#2c3e50",
-      fontSize: "1.3rem",
-      textAlign: "left"
-    },
-    listUl: {
-      margin: "0",
-      padding: "0",
-      textAlign: "left"
-    },
-    listOl: {
-      margin: "0 0 0 25px",
-      padding: "0",
-      textAlign: "left"
-    },
-    listLi: {
-      marginBottom: "12px",
-      fontSize: "1.1rem",
-      paddingLeft: "5px",
-      textAlign: "left"
-    },
-    codeBlock: {
-      position: "relative",
-      backgroundColor: "#2d3436",
-      color: "#dfe6e9",
-      padding: "18px",
-      borderRadius: "8px",
-      margin: "20px 0",
-      overflowX: "auto",
-      border: "1px solid #444",
-      textAlign: "left"
-    },
-    code: {
-      fontFamily: "'Fira Code', 'Monaco', 'Consolas', monospace",
-      fontSize: "1rem",
-      whiteSpace: "pre-wrap",
-      textAlign: "left"
-    },
-    pre: {
-      fontFamily: "'Fira Code', 'Monaco', 'Consolas', monospace",
-      fontSize: "1rem",
-      whiteSpace: "pre-wrap",
-      margin: "0",
-      lineHeight: "1.5",
-      textAlign: "left"
-    },
-    copyBtn: {
-      position: "absolute",
-      top: "12px",
-      right: "12px",
-      backgroundColor: "#3498db",
-      color: "white",
-      border: "none",
-      padding: "8px 15px",
-      borderRadius: "6px",
-      cursor: "pointer",
-      fontSize: "0.9rem",
-      transition: "all 0.3s ease"
-    },
-    copiedBtn: {
-      backgroundColor: "#27ae60"
-    },
-    table: {
-      width: "100%",
-      borderCollapse: "collapse",
-      margin: "20px 0",
-      textAlign: "left"
-    },
-    tableHead: {
-      backgroundColor: "#667eea",
-      color: "white"
-    },
-    tableRow: {
-      borderBottom: "1px solid #ddd"
-    },
-    tableCell: {
-      padding: "12px 15px",
-      border: "1px solid #ddd"
-    },
-    footer: {
-      textAlign: "center",
-      marginTop: "50px",
-      padding: "30px",
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      color: "white",
-      borderRadius: "12px",
-      boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)"
-    },
-    footerP: {
-      margin: "8px 0",
-      fontSize: "1.15rem"
-    },
-    noteBox: {
-      backgroundColor: "#fff3cd",
-      borderLeft: "6px solid #ffc107",
-      padding: "20px",
-      margin: "20px 0",
-      borderRadius: "8px"
-    }
-  };
-
-  const htmlExample = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Web Page</title>
-</head>
-<body>
-    <h1>Welcome to HTML!</h1>
-    <p>This is a paragraph.</p>
-    <a href="https://www.example.com">Visit Example</a>
-</body>
-</html>`;
-
-  const htmlListExample = `<!-- Unordered List -->
-<ul>
-    <li>Apple</li>
-    <li>Banana</li>
-    <li>Cherry</li>
-</ul>
-
-<!-- Ordered List -->
-<ol>
-    <li>First item</li>
-    <li>Second item</li>
-    <li>Third item</li>
-</ol>
-
-<!-- Description List -->
-<dl>
-    <dt>HTML</dt>
-    <dd>HyperText Markup Language</dd>
-    <dt>CSS</dt>
-    <dd>Cascading Style Sheets</dd>
-</dl>`;
-
-  const cssListExample = `/* Styling Lists */
-ul.custom-list {
-    list-style-type: square; /* circle, disc, none */
-    list-style-position: inside;
-    padding-left: 20px;
-}
-
-ol.custom-ol {
-    list-style-type: upper-roman; /* decimal, lower-alpha, etc. */
-}
-
-/* Custom List Item Markers */
-li.special::before {
-    content: "✓ ";
-    color: green;
-    font-weight: bold;
-}
-
-/* Removing Default List Styles */
-.no-bullets {
-    list-style-type: none;
-    padding-left: 0;
-}`;
-
-  const cssDisplayExample = `/* Display Property Examples */
-.block-element {
-    display: block; /* Takes full width, starts new line */
-    width: 100%;
-    margin: 10px 0;
-}
-
-.inline-element {
-    display: inline; /* Only takes needed width, no new line */
-    padding: 5px;
-}
-
-.inline-block-element {
-    display: inline-block; /* Like inline but accepts width/height */
-    width: 100px;
-    height: 100px;
-}
-
-.hidden-element {
-    display: none; /* Completely removed from layout */
-}
-
-.visible-element {
-    visibility: visible; /* Element takes space but is invisible */
-}
-
-.hidden-visibility {
-    visibility: hidden; /* Element takes space but is invisible */
-}`;
-
-  const cssPositionExample = `/* Positioning Examples */
-.static {
-    position: static; /* Default, normal flow */
-}
-
-.relative {
-    position: relative; /* Relative to normal position */
-    top: 10px;
-    left: 20px;
-}
-
-.absolute {
-    position: absolute; /* Relative to nearest positioned ancestor */
-    top: 0;
-    right: 0;
-}
-
-.fixed {
-    position: fixed; /* Relative to viewport */
-    top: 0;
-    left: 0;
-    width: 100%;
-}
-
-.sticky {
-    position: sticky; /* Toggles between relative and fixed */
-    top: 0;
-}
-
-/* z-index Example */
-.layer-1 {
-    position: relative;
-    z-index: 1;
-    background: red;
-}
-
-.layer-2 {
-    position: relative;
-    z-index: 2;
-    background: blue;
-    margin-top: -20px;
-}`;
-
-  const sections = [
-    {
-      title: "HTML Basics",
-      content: [
-        {
-          subtitle: "What is HTML?",
-          text: "HTML (HyperText Markup Language) is the foundation of all websites. It's not a programming language, but a markup language that structures content on the web. Think of HTML as the skeleton of a webpage - it defines the structure and content."
-        },
-        {
-          subtitle: "Basic HTML Document Structure",
-          text: "Every HTML document has a specific structure that browsers understand:",
-          code: {
-            text: htmlExample,
-            index: 0
-          },
-          list: {
-            items: [
-              "<!DOCTYPE html>: Tells the browser this is an HTML5 document",
-              "<html>: The root element wrapping all content",
-              "<head>: Contains meta information (not visible on page)",
-              "<title>: Sets the browser tab title",
-              "<body>: Contains all visible content"
-            ]
-          }
-        },
-        {
-          subtitle: "HTML Elements and Tags",
-          text: "HTML uses tags to create elements. Tags usually come in pairs: opening tag and closing tag.",
-          list: {
-            title: "Common HTML Elements:",
-            items: [
-              "<h1> to <h6>: Headings (h1 is most important, h6 is least)",
-              "<p>: Paragraphs for text content",
-              "<a href='url'>: Links to other pages",
-              "<img src='image.jpg' alt='description'>: Images",
-              "<div>: Generic container (block-level)",
-              "<span>: Generic container (inline)",
-              "<br>: Line break (self-closing)",
-              "<hr>: Horizontal rule (self-closing)"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      title: "HTML Structure & Elements",
-      content: [
-        {
-          subtitle: "Semantic HTML Elements",
-          text: "Semantic elements clearly describe their meaning to both browser and developer.",
-          list: {
-            items: [
-              "<header>: Introductory content or navigation",
-              "<nav>: Navigation links",
-              "<main>: Main content of the document",
-              "<section>: Thematic grouping of content",
-              "<article>: Self-contained composition",
-              "<aside>: Side content (like sidebar)",
-              "<footer>: Footer for document or section"
-            ]
-          },
-          note: "Using semantic elements improves SEO and accessibility!"
-        },
-        {
-          subtitle: "HTML Attributes",
-          text: "Attributes provide additional information about elements. They are always in the opening tag.",
-          list: {
-            items: [
-              "class: Specifies one or more class names",
-              "id: Specifies a unique id",
-              "style: Inline CSS styling",
-              "src: Source for images, scripts",
-              "href: URL for links",
-              "alt: Alternative text for images",
-              "title: Extra information (tooltip)"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      title: "HTML Lists",
-      content: [
-        {
-          subtitle: "Types of HTML Lists",
-          text: "HTML provides three types of lists for organizing content:",
-          code: {
-            text: htmlListExample,
-            index: 1
-          },
-          list: {
-            items: [
-              "Unordered List (<ul>): Bulleted lists for items without specific order",
-              "Ordered List (<ol>): Numbered lists for sequential items",
-              "Description List (<dl>): Terms and their descriptions"
-            ]
-          }
-        },
-        {
-          subtitle: "Nested Lists",
-          text: "You can put lists inside other lists to create hierarchies:",
-          code: {
-            text: `<ul>
-    <li>Fruits
-        <ul>
-            <li>Apple</li>
-            <li>Banana</li>
-        </ul>
-    </li>
-    <li>Vegetables
-        <ul>
-            <li>Carrot</li>
-            <li>Broccoli</li>
-        </ul>
-    </li>
-</ul>`,
-            index: 2
-          }
-        }
-      ]
-    },
-    {
-      title: "HTML Visuals & Media",
-      content: [
-        {
-          subtitle: "Images in HTML",
-          text: "The <img> tag is used to embed images. Always include alt text for accessibility.",
-          list: {
-            items: [
-              "src: Path to image file",
-              "alt: Alternative text (required)",
-              "width/height: Image dimensions",
-              "title: Tooltip text"
-            ]
-          },
-          code: {
-            text: `<img src="photo.jpg" alt="Beautiful sunset" width="800" height="600">
-<img src="logo.png" alt="Company Logo" title="Click to go home">`,
-            index: 3
-          }
-        },
-        {
-          subtitle: "Audio and Video",
-          text: "HTML5 provides native audio and video support:",
-          code: {
-            text: `<!-- Audio Player -->
-<audio controls>
-    <source src="audio.mp3" type="audio/mpeg">
-    Your browser does not support audio.
-</audio>
-
-<!-- Video Player -->
-<video width="640" height="360" controls>
-    <source src="video.mp4" type="video/mp4">
-    Your browser does not support video.
-</video>`,
-            index: 4
-          }
-        },
-        {
-          subtitle: "Embedding Content",
-          text: "Use iframes to embed external content:",
-          code: {
-            text: `<!-- Embed YouTube Video -->
-<iframe width="560" height="315" 
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-        frameborder="0" 
-        allowfullscreen>
-</iframe>
-
-<!-- Embed Google Map -->
-<iframe src="https://maps.google.com/maps?q=mumbai&output=embed" 
-        width="600" 
-        height="450">
-</iframe>`,
-            index: 5
-          }
-        }
-      ]
-    },
-    {
-      title: "HTML Layouts & Designs",
-      content: [
-        {
-          subtitle: "Traditional Layout with Divs",
-          text: "Before semantic HTML5, layouts were created using <div> elements:",
-          code: {
-            text: `<div class="header">Header Content</div>
-<div class="nav">Navigation</div>
-<div class="main">
-    <div class="sidebar">Sidebar</div>
-    <div class="content">Main Content</div>
-</div>
-<div class="footer">Footer</div>`,
-            index: 6
-          }
-        },
-        {
-          subtitle: "Modern Semantic Layout",
-          text: "HTML5 semantic elements provide better structure:",
-          code: {
-            text: `<header>
-    <h1>Website Title</h1>
-    <nav>Navigation Links</nav>
-</header>
-
-<main>
-    <article>
-        <h2>Article Title</h2>
-        <p>Article content...</p>
-    </article>
-    
-    <aside>
-        <h3>Related Links</h3>
-        <p>Sidebar content...</p>
-    </aside>
-</main>
-
-<footer>
-    <p>&copy; 2024 Company Name</p>
-</footer>`,
-            index: 7
-          }
-        }
-      ]
-    },
-    {
-      title: "CSS Lists",
-      content: [
-        {
-          subtitle: "Styling Lists with CSS",
-          text: "CSS provides extensive control over list appearance:",
-          code: {
-            text: cssListExample,
-            index: 8
-          },
-          table: {
-            headers: ["Property", "Values", "Description"],
-            rows: [
-              ["list-style-type", "disc, circle, square, none, decimal, lower-roman", "Type of list item marker"],
-              ["list-style-position", "inside, outside", "Position of marker relative to content"],
-              ["list-style-image", "url('image.png')", "Custom image as marker"],
-              ["list-style", "shorthand for all list properties", "Combine type, position, image"]
-            ]
-          }
-        },
-        {
-          subtitle: "Custom List Styles",
-          text: "Create completely custom list styles using CSS pseudo-elements:",
-          code: {
-            text: `/* Custom Numbered List */
-.custom-numbers {
-    counter-reset: section;
-    list-style-type: none;
-}
-
-.custom-numbers li::before {
-    counter-increment: section;
-    content: "Step " counter(section) ": ";
-    font-weight: bold;
-    color: #667eea;
-}
-
-/* Icon List */
-.icon-list {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.icon-list li::before {
-    content: "▶";
-    color: green;
-    margin-right: 10px;
-}`,
-            index: 9
-          }
-        }
-      ]
-    },
-    {
-      title: "CSS Tables",
-      content: [
-        {
-          subtitle: "Styling HTML Tables",
-          text: "CSS can transform plain HTML tables into beautiful, functional components:",
-          code: {
-            text: `/* Basic Table Styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-th {
-    background-color: #667eea;
-    color: white;
-    padding: 12px;
-    text-align: left;
-}
-
-td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-tr:hover {
-    background-color: #f5f5f5;
-}
-
-/* Zebra Striping */
-tr:nth-child(even) {
-    background-color: #f8f9fa;
-}
-
-/* Responsive Table */
-@media (max-width: 768px) {
-    table {
-        display: block;
-        overflow-x: auto;
-    }
-}`,
-            index: 10
-          }
-        },
-        {
-          subtitle: "Advanced Table Features",
-          text: "Create modern table designs with CSS:",
-          code: {
-            text: `/* Modern Table Design */
-.modern-table {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.modern-table th {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.modern-table td {
-    transition: background-color 0.3s;
-}
-
-.modern-table tr:hover td {
-    background-color: rgba(102, 126, 234, 0.1);
-}
-
-/* Fixed Header Table */
-.table-container {
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.table-container thead {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}`,
-            index: 11
-          }
-        }
-      ]
-    },
-    {
-      title: "CSS Display Property",
-      content: [
-        {
-          subtitle: "Understanding Display",
-          text: "The display property determines how an element is rendered on the page.",
-          code: {
-            text: cssDisplayExample,
-            index: 12
-          },
-          table: {
-            headers: ["Display Value", "Behavior", "Common Elements"],
-            rows: [
-              ["block", "Takes full width, new line", "div, h1-h6, p, section"],
-              ["inline", "Only needed width, no new line", "span, a, strong, em"],
-              ["inline-block", "Inline with width/height", "button, input, img"],
-              ["none", "Completely hidden", "N/A"],
-              ["flex", "Flexbox layout", "Containers for flexible layouts"],
-              ["grid", "Grid layout", "Containers for grid layouts"]
-            ]
-          }
-        },
-        {
-          subtitle: "Display vs Visibility",
-          text: "Important differences between display: none and visibility: hidden",
-          list: {
-            items: [
-              "display: none: Element is completely removed from layout (no space taken)",
-              "visibility: hidden: Element is invisible but still takes up space",
-              "opacity: 0: Element is transparent but still interactive",
-              "All three hide the element, but affect layout differently"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      title: "CSS max-width Property",
-      content: [
-        {
-          subtitle: "Containing Element Width",
-          text: "The max-width property sets the maximum width of an element.",
-          code: {
-            text: `/* Prevent element from becoming too wide */
-.container {
-    max-width: 1200px;
-    margin: 0 auto; /* Center the container */
-    padding: 20px;
-}
-
-/* Responsive images */
-.responsive-img {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Fluid typography */
-.article {
-    max-width: 800px;
-    margin: 0 auto;
-    line-height: 1.6;
-}
-
-/* Mobile-first approach */
-.card {
-    max-width: 100%; /* Full width on mobile */
-}
-
-@media (min-width: 768px) {
-    .card {
-        max-width: 300px; /* Fixed width on desktop */
-    }
-}`,
-            index: 13
-          }
-        },
-        {
-          subtitle: "max-width vs width",
-          text: "Understanding when to use each:",
-          list: {
-            items: [
-              "width: Sets fixed width (element won't shrink below this)",
-              "max-width: Sets maximum width (element can be smaller but not larger)",
-              "min-width: Sets minimum width (element can be larger but not smaller)",
-              "Use max-width for responsive containers",
-              "Use width for elements that must stay exact size"
-            ]
-          },
-          note: "Always use max-width: 100% for images to prevent them from overflowing containers!"
-        }
-      ]
-    },
-    {
-      title: "CSS Positioning Elements",
-      content: [
-        {
-          subtitle: "Position Property Values",
-          text: "CSS position property controls how elements are positioned.",
-          code: {
-            text: cssPositionExample,
-            index: 14
-          },
-          table: {
-            headers: ["Position Value", "Reference Point", "Use Case"],
-            rows: [
-              ["static (default)", "Normal document flow", "Default positioning"],
-              ["relative", "Its normal position", "Minor adjustments, creating containing blocks"],
-              ["absolute", "Nearest positioned ancestor", "Tooltips, dropdowns, overlays"],
-              ["fixed", "Viewport (browser window)", "Headers, footers, chat buttons"],
-              ["sticky", "Scroll position", "Sticky headers, table headers"]
-            ]
-          }
-        },
-        {
-          subtitle: "Position Offsets",
-          text: "When position is relative, absolute, fixed, or sticky, you can use offset properties:",
-          list: {
-            items: [
-              "top: Moves element down from top edge",
-              "right: Moves element left from right edge",
-              "bottom: Moves element up from bottom edge",
-              "left: Moves element right from left edge",
-              "Values can be pixels, percentages, or other units"
-            ]
-          }
-        }
-      ]
-    },
-    {
-      title: "CSS z-index Property",
-      content: [
-        {
-          subtitle: "Understanding Stacking Context",
-          text: "z-index controls the stacking order of positioned elements (elements with position other than static).",
-          code: {
-            text: `/* Basic z-index usage */
-.modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000; /* Appears above everything */
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 999; /* Below modal */
-}
-
-.dropdown {
-    position: absolute;
-    z-index: 100;
-}
-
-.tooltip {
-    position: absolute;
-    z-index: 200;
-}
-
-/* Negative z-index */
-.background-element {
-    position: relative;
-    z-index: -1; /* Goes behind parent */
-}`,
-            index: 15
-          }
-        },
-        {
-          subtitle: "z-index Guidelines",
-          text: "Best practices for using z-index:",
-          list: {
-            items: [
-              "Only works on positioned elements (position: relative, absolute, fixed, sticky)",
-              "Higher values appear in front of lower values",
-              "Can be negative (goes behind content)",
-              "Creates stacking context for child elements",
-              "Common ranges: 0-10 (normal content), 100-200 (dropdowns/modals), 1000+ (overlays/alerts)",
-              "Avoid extremely high values (like 999999)",
-              "Use CSS variables for consistent z-index values"
-            ]
-          },
-          note: "Remember: z-index only works within the same stacking context!"
-        }
-      ]
-    },
-    {
-      title: "Projects & Advanced Topics",
-      content: [
-        {
-          subtitle: "Beginner Projects",
-          text: "Practice these projects to reinforce your HTML/CSS skills:",
-          list: {
-            items: [
-              "Personal Portfolio Website: Showcase your work with about, projects, and contact sections",
-              "Restaurant Menu: Create a beautiful menu with images and descriptions",
-              "Blog Layout: Design a blog with header, articles, sidebar, and footer",
-              "Product Landing Page: Single page for a product with features and testimonials",
-              "Responsive Resume: Create a digital resume that looks good on all devices"
-            ]
-          }
-        },
-        {
-          subtitle: "Advanced CSS Concepts",
-          text: "Once you master basics, explore these advanced topics:",
-          list: {
-            items: [
-              "CSS Flexbox: One-dimensional layout system for efficient space distribution",
-              "CSS Grid: Two-dimensional layout system for complex designs",
-              "CSS Animations: Create smooth transitions and animations",
-              "CSS Variables: Reusable values for consistent theming",
-              "CSS Preprocessors: SASS/SCSS for more powerful CSS",
-              "CSS Frameworks: Bootstrap, Tailwind CSS for faster development",
-              "Responsive Design: Media queries for different screen sizes"
-            ]
-          }
-        },
-        {
-          subtitle: "HOME WORK ->  Practice Assignment",
-          text: "This practice assignment is designed to help students apply HTML and CSS concepts. Analyze each section carefully and recreate the entire page yourself to strengthen your understanding.",
-          code: {
-            text: `
-<!DOCTYPE html>
+  const htmlCode = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1656,108 +723,1189 @@ tr:nth-child(even) {
         });
     </script>
 </body>
-</html>
-            `,
-            index: 16
-          }
-        }
-      ]
-    }
-  ];
+</html>`;
 
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        <h1 style={styles.headerH1}>Complete HTML & CSS Tutorial</h1>
-        <p style={styles.headerP}>From Basics to Advanced Concepts - Everything Beginners Need to Know</p>
+    <div className="notes-container">
+      <div className="header-section">
+        <h1>HTML & CSS Fundamentals for React Developers</h1>
+        <p>Complete guide to HTML tags, CSS styling, and applying them in React</p>
       </div>
 
-      <div style={styles.sectionsContainer}>
-        {sections.map((section, sectionIndex) => (
-          <div key={sectionIndex} style={styles.sectionCard}>
-            <h2 style={styles.sectionH2}>{section.title}</h2>
+      {/* Company Info */}
+      <div className="company-info">
+        <h2>LIGAND SOFTWARE SOLUTIONS</h2>
+        <p>Your Launchpad To Tech Success</p>
+        <p>Happy Coding!!!!!</p>
+        <p>Sankeshwar</p>
+        <p>8722585715</p>
+        <p>www.ligandsoftware.com</p>
+      </div>
 
-            {section.content.map((content, contentIndex) => (
-              <div key={contentIndex} style={styles.contentBlock}>
-                {content.subtitle && <h3 style={styles.subtitleH3}>{content.subtitle}</h3>}
-                {content.text && <p style={styles.textP}>{content.text}</p>}
+      {/* Part 1: HTML Basics */}
+      <div className="section-header">
+        <h2>📄 HTML Basics - Essential Tags You Must Know</h2>
+      </div>
 
-                {content.list && (
-                  <div style={styles.listBlock}>
-                    {content.list.title && <h4 style={styles.listH4}>{content.list.title}</h4>}
-                    <ul style={styles.listUl}>
-                      {content.list.items.map((item, itemIndex) => (
-                        <li key={itemIndex} style={styles.listLi}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+      <div className="notes-card">
+        <h3>HTML Document Structure</h3>
+        <p>Every HTML document starts with these essential tags:</p>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 0 ? 'copied' : ''}`} onClick={() => copyToClipboard(`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Title</title>
+</head>
+<body>
+    <!-- Content goes here -->
+</body>
+</html>`, 0)}>
+            {copiedIndex === 0 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Title</title>
+</head>
+<body>
+    <!-- Content goes here -->
+</body>
+</html>`}</pre>
+        </div>
+      </div>
 
-                {content.table && (
-                  <table style={styles.table}>
-                    <thead style={styles.tableHead}>
-                      <tr>
-                        {content.table.headers.map((header, idx) => (
-                          <th key={idx} style={styles.tableCell}>{header}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {content.table.rows.map((row, rowIndex) => (
-                        <tr key={rowIndex} style={styles.tableRow}>
-                          {row.map((cell, cellIndex) => (
-                            <td key={cellIndex} style={styles.tableCell}>{cell}</td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
+      <div className="notes-card">
+        <h3>HTML Form Elements (Used in the Assignment)</h3>
+        <p>Form elements are crucial for user input. Here are the key ones:</p>
+        
+        <h4>Text Inputs:</h4>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 1 ? 'copied' : ''}`} onClick={() => copyToClipboard(`<input type="text">    <!-- Regular text -->
+<input type="password"> <!-- Hidden text -->
+<input type="email">    <!-- Email validation -->
+<input type="tel">      <!-- Phone number -->
+<input type="url">      <!-- Website URL -->`, 1)}>
+            {copiedIndex === 1 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`<input type="text">    <!-- Regular text -->
+<input type="password"> <!-- Hidden text -->
+<input type="email">    <!-- Email validation -->
+<input type="tel">      <!-- Phone number -->
+<input type="url">      <!-- Website URL -->`}</pre>
+        </div>
 
-                {content.code && (
-                  <div style={styles.codeBlock}>
-                    <pre style={styles.pre}>
-                      <code style={styles.code}>{content.code.text}</code>
-                    </pre>
-                    <button
-                      style={{
-                        ...styles.copyBtn,
-                        ...(copiedIndex === content.code.index ? styles.copiedBtn : {})
-                      }}
-                      onClick={() => copyToClipboard(content.code.text, content.code.index)}
-                    >
-                      {copiedIndex === content.code.index ? '✓ Copied!' : 'Copy Code'}
-                    </button>
-                  </div>
-                )}
+        <h4>Selection Elements:</h4>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 2 ? 'copied' : ''}`} onClick={() => copyToClipboard(`<input type="radio">     <!-- Single choice -->
+<input type="checkbox">   <!-- Multiple choices -->
+<select>                 <!-- Dropdown -->
+  <option>Choice 1</option>
+</select>`, 2)}>
+            {copiedIndex === 2 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`<input type="radio">     <!-- Single choice -->
+<input type="checkbox">   <!-- Multiple choices -->
+<select>                 <!-- Dropdown -->
+  <option>Choice 1</option>
+</select>`}</pre>
+        </div>
 
-                {content.note && (
-                  <div style={styles.noteBox}>
-                    <strong>Note: </strong>{content.note}
-                  </div>
-                )}
+        <h4>Date & Time Inputs:</h4>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 3 ? 'copied' : ''}`} onClick={() => copyToClipboard(`<input type="date">
+<input type="time">
+<input type="datetime-local">
+<input type="month">
+<input type="week">`, 3)}>
+            {copiedIndex === 3 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`<input type="date">
+<input type="time">
+<input type="datetime-local">
+<input type="month">
+<input type="week">`}</pre>
+        </div>
+
+        <h4>Other Important Inputs:</h4>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 4 ? 'copied' : ''}`} onClick={() => copyToClipboard(`<input type="number">
+<input type="range">
+<input type="color">
+<input type="file">
+<textarea rows="5"></textarea>`, 4)}>
+            {copiedIndex === 4 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`<input type="number">
+<input type="range">
+<input type="color">
+<input type="file">
+<textarea rows="5"></textarea>`}</pre>
+        </div>
+
+        <h4>Media Elements:</h4>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 5 ? 'copied' : ''}`} onClick={() => copyToClipboard(`<img src="image.jpg" alt="description">
+<audio controls>
+  <source src="audio.mp3" type="audio/mpeg">
+</audio>
+<video controls>
+  <source src="video.mp4" type="video/mp4">
+</video>`, 5)}>
+            {copiedIndex === 5 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`<img src="image.jpg" alt="description">
+<audio controls>
+  <source src="audio.mp3" type="audio/mpeg">
+</audio>
+<video controls>
+  <source src="video.mp4" type="video/mp4">
+</video>`}</pre>
+        </div>
+
+        <h4>Structural Elements:</h4>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 6 ? 'copied' : ''}`} onClick={() => copyToClipboard(`<table>    <!-- Data tables -->
+<ul>       <!-- Unordered lists -->
+<ol>       <!-- Ordered lists -->
+<dl>       <!-- Description lists -->
+<div>      <!-- Division/Container -->
+<span>     <!-- Inline container -->
+<header>   <!-- Header section -->
+<footer>   <!-- Footer section -->
+<section>  <!-- Content section -->
+<form>     <!-- Form container -->`, 6)}>
+            {copiedIndex === 6 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`<table>    <!-- Data tables -->
+<ul>       <!-- Unordered lists -->
+<ol>       <!-- Ordered lists -->
+<dl>       <!-- Description lists -->
+<div>      <!-- Division/Container -->
+<span>     <!-- Inline container -->
+<header>   <!-- Header section -->
+<footer>   <!-- Footer section -->
+<section>  <!-- Content section -->
+<form>     <!-- Form container -->`}</pre>
+        </div>
+      </div>
+
+      {/* Part 2: CSS Basics */}
+      <div className="section-header">
+        <h2>🎨 CSS Fundamentals - The 3 Levels of CSS</h2>
+      </div>
+
+      <div className="notes-card">
+        <h3>What is CSS?</h3>
+        <p>
+          CSS (Cascading Style Sheets) is used to style HTML elements. It controls:
+        </p>
+        <ul>
+          <li>Colors and backgrounds</li>
+          <li>Fonts and text styling</li>
+          <li>Layout and positioning</li>
+          <li>Responsive design</li>
+          <li>Animations and transitions</li>
+        </ul>
+      </div>
+
+      <div className="notes-card">
+        <h3>Level 1: Inline CSS (Highest Priority)</h3>
+        <p>Applied directly to HTML elements using the <code>style</code> attribute:</p>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 7 ? 'copied' : ''}`} onClick={() => copyToClipboard(`<div style="color: red; font-size: 16px;">
+  This text is red and 16px
+</div>
+
+<button style="
+  background: blue; 
+  color: white; 
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+">
+  Click Me
+</button>`, 7)}>
+            {copiedIndex === 7 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`<div style="color: red; font-size: 16px;">
+  This text is red and 16px
+</div>
+
+<button style="
+  background: blue; 
+  color: white; 
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+">
+  Click Me
+</button>`}</pre>
+        </div>
+        <div className="note-box">
+          <p><strong>Pros:</strong> Highest priority, good for quick testing</p>
+          <p><strong>Cons:</strong> Hard to maintain, not reusable, mixes content with style</p>
+        </div>
+      </div>
+
+      <div className="notes-card">
+        <h3>Level 2: Internal/Embedded CSS (Medium Priority)</h3>
+        <p>Placed inside a <code>&lt;style&gt;</code> tag in the HTML head:</p>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 8 ? 'copied' : ''}`} onClick={() => copyToClipboard(`<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .button {
+      background: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+    
+    #header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+    }
+  </style>
+</head>`, 8)}>
+            {copiedIndex === 8 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .button {
+      background: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+    
+    #header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px;
+    }
+  </style>
+</head>`}</pre>
+        </div>
+        <div className="note-box">
+          <p><strong>Pros:</strong> Better organization, can use classes and IDs</p>
+          <p><strong>Cons:</strong> Only applies to single HTML file</p>
+        </div>
+      </div>
+
+      <div className="notes-card">
+        <h3>Level 3: External CSS (Lowest Priority)</h3>
+        <p>Separate .css file linked in HTML:</p>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 9 ? 'copied' : ''}`} onClick={() => copyToClipboard(`<!-- In HTML head -->
+<link rel="stylesheet" href="styles.css">
+
+/* In styles.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.button-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}`, 9)}>
+            {copiedIndex === 9 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`<!-- In HTML head -->
+<link rel="stylesheet" href="styles.css">
+
+/* In styles.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.button-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}`}</pre>
+        </div>
+        <div className="note-box">
+          <p><strong>Pros:</strong> Best practice, reusable, maintainable, fast loading</p>
+          <p><strong>Cons:</strong> Separate file to manage</p>
+        </div>
+      </div>
+
+      <div className="notes-card">
+        <h3>CSS Priority Order (Specificity)</h3>
+        <p>When multiple styles conflict, CSS follows this priority order:</p>
+        <ol>
+          <li><strong>Inline styles</strong> (style attribute) - Highest priority</li>
+          <li><strong>ID selectors</strong> (#id-name)</li>
+          <li><strong>Class selectors</strong> (.class-name)</li>
+          <li><strong>Element selectors</strong> (div, p, h1)</li>
+          <li><strong>Universal selector</strong> (*) - Lowest priority</li>
+        </ol>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 10 ? 'copied' : ''}`} onClick={() => copyToClipboard(`/* Example of CSS specificity */
+* { color: black; }              /* Lowest priority */
+p { color: blue; }               /* Higher than * */
+.text { color: green; }          /* Higher than element */
+#special { color: orange; }      /* Higher than class */
+<p style="color: red;">          /* Highest priority */`, 10)}>
+            {copiedIndex === 10 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`/* Example of CSS specificity */
+* { color: black; }              /* Lowest priority */
+p { color: blue; }               /* Higher than * */
+.text { color: green; }          /* Higher than element */
+#special { color: orange; }      /* Higher than class */
+<p style="color: red;">          /* Highest priority */`}</pre>
+        </div>
+      </div>
+
+      {/* Part 3: Applying CSS in React */}
+      <div className="section-header">
+        <h2>⚛️ How to Apply CSS in React</h2>
+      </div>
+
+      <div className="notes-card">
+        <h3>Method 1: Inline Styles in React</h3>
+        <p>Use JavaScript objects with camelCase property names:</p>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 11 ? 'copied' : ''}`} onClick={() => copyToClipboard(`function MyComponent() {
+  const buttonStyle = {
+    backgroundColor: '#3498db',
+    color: 'white',
+    padding: '10px 20px',
+    borderRadius: '5px',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '16px'
+  };
+
+  const containerStyle = {
+    maxWidth: '800px',
+    margin: '0 auto',
+    padding: '20px'
+  };
+
+  return (
+    <div style={containerStyle}>
+      <h1 style={{ color: '#2c3e50', textAlign: 'center' }}>
+        Welcome to React
+      </h1>
+      <button style={buttonStyle}>
+        Click Me
+      </button>
+    </div>
+  );
+}`, 11)}>
+            {copiedIndex === 11 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`function MyComponent() {
+  const buttonStyle = {
+    backgroundColor: '#3498db',
+    color: 'white',
+    padding: '10px 20px',
+    borderRadius: '5px',
+    border: 'none',
+    cursor: 'pointer',
+    fontSize: '16px'
+  };
+
+  const containerStyle = {
+    maxWidth: '800px',
+    margin: '0 auto',
+    padding: '20px'
+  };
+
+  return (
+    <div style={containerStyle}>
+      <h1 style={{ color: '#2c3e50', textAlign: 'center' }}>
+        Welcome to React
+      </h1>
+      <button style={buttonStyle}>
+        Click Me
+      </button>
+    </div>
+  );
+}`}</pre>
+        </div>
+      </div>
+
+      <div className="notes-card">
+        <h3>Method 2: CSS Modules (Recommended)</h3>
+        <p>Create separate .module.css files for each component:</p>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 12 ? 'copied' : ''}`} onClick={() => copyToClipboard(`/* Button.module.css */
+.button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Button.jsx */
+import styles from './Button.module.css';
+
+function Button() {
+  return (
+    <button className={styles.button}>
+      Click Me
+    </button>
+  );
+}`, 12)}>
+            {copiedIndex === 12 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`/* Button.module.css */
+.button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Button.jsx */
+import styles from './Button.module.css';
+
+function Button() {
+  return (
+    <button className={styles.button}>
+      Click Me
+    </button>
+  );
+}`}</pre>
+        </div>
+      </div>
+
+      <div className="notes-card">
+        <h3>Method 3: Styled Components (CSS-in-JS)</h3>
+        <p>Write CSS directly in JavaScript using tagged template literals:</p>
+        <div className="code-block">
+          <button className={`copy-button ${copiedIndex === 13 ? 'copied' : ''}`} onClick={() => copyToClipboard(`import styled from 'styled-components';
+
+const Container = styled.div\`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+\`;
+
+const Button = styled.button\`
+  background: \${props => props.primary ? '#3498db' : '#95a5a6'};
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: \${props => props.primary ? '#2980b9' : '#7f8c8d'};
+  }
+\`;
+
+function MyComponent() {
+  return (
+    <Container>
+      <Button primary>Primary Button</Button>
+      <Button>Secondary Button</Button>
+    </Container>
+  );
+}`, 13)}>
+            {copiedIndex === 13 ? 'Copied!' : 'Copy'}
+          </button>
+          <pre>{`import styled from 'styled-components';
+
+const Container = styled.div\`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+\`;
+
+const Button = styled.button\`
+  background: \${props => props.primary ? '#3498db' : '#95a5a6'};
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: \${props => props.primary ? '#2980b9' : '#7f8c8d'};
+  }
+\`;
+
+function MyComponent() {
+  return (
+    <Container>
+      <Button primary>Primary Button</Button>
+      <Button>Secondary Button</Button>
+    </Container>
+  );
+}`}</pre>
+        </div>
+      </div>
+
+      {/* Assignment Section */}
+      <div className="section-header">
+        <h2>📝 Practice the Code</h2>
+      </div>
+
+      <div className="practice-card">
+        <h3>Complete HTML Form Code</h3>
+        <p>Study this complete HTML form code. It contains examples of all 3 levels of CSS:</p>
+        
+        <div className="code-explanation">
+          <h4>CSS Levels Used in This Code:</h4>
+          <div className="levels-grid">
+            <div className="level-card">
+              <h5>🎯 Inline CSS</h5>
+              <p>Used in specific elements:</p>
+              <div className="code-example">
+                <pre>{`<div style="flex: 1;">
+<col style="background-color:#f2f2f2">
+<td style="text-align:right">`}</pre>
               </div>
-            ))}
+            </div>
+            
+            <div className="level-card">
+              <h5>📁 Internal CSS</h5>
+              <p>Main styling in &lt;style&gt; tag:</p>
+              <div className="code-example">
+                <pre>{`<style>
+  body { background-color: #f0f2f5; }
+  .container { max-width: 800px; }
+  h1 { color: #2c3e50; }
+</style>`}</pre>
+              </div>
+            </div>
+            
+            <div className="level-card">
+              <h5>🎨 External CSS (Concept)</h5>
+              <p>Could be moved to external file:</p>
+              <div className="code-example">
+                <pre>{`/* In separate styles.css */
+* { margin: 0; padding: 0; }
+.form-section { padding: 20px; }
+button { background: #3498db; }`}</pre>
+              </div>
+            </div>
           </div>
-        ))}
+        </div>
+
+        <div className="complete-code">
+          <h4>Complete HTML Form Code:</h4>
+          <div className="code-block-large">
+            <button className={`copy-button ${copiedIndex === 14 ? 'copied' : ''}`} onClick={() => copyToClipboard(htmlCode, 14)}>
+              {copiedIndex === 14 ? 'Copied!' : 'Copy'}
+            </button>
+            <pre>{htmlCode}</pre>
+          </div>
+        </div>
+
+        <div className="practice-instructions">
+          <h4>Practice Instructions:</h4>
+          <ol>
+            <li>Copy this entire code into a new HTML file</li>
+            <li>Save it as <code>complete-form.html</code></li>
+            <li>Open it in your browser to see the form</li>
+            <li>Try modifying the CSS in these ways:
+              <ul>
+                <li>Change color schemes (try different colors)</li>
+                <li>Modify layout (change from flex to grid)</li>
+                <li>Adjust responsive breakpoints</li>
+                <li>Add new form elements</li>
+              </ul>
+            </li>
+            <li>Practice identifying all 3 CSS levels in the code</li>
+          </ol>
+        </div>
       </div>
 
-      <div style={styles.companyInfo}>
-        <h2 style={styles.companyH2}>LIGAND SOFTWARE SOLUTIONS</h2>
-        <p style={styles.companyP}>Your Launchpad To Tech Success</p>
-        <p style={styles.companyP}>Master Web Development from Scratch</p>
-        <p style={styles.companyP}>Happy Learning!!!!!</p>
-        <p style={styles.companyP}>Sankeshwar</p>
-        <p style={styles.companyP}>8722585715</p>
-        <p style={styles.companyP}>www.ligandsoftware.com</p>
+      {/* Homework Section */}
+      <div className="homework-section">
+        <h2>📚 Homework Assignment</h2>
+        <div className="homework-card">
+          <h3>Task 1: Analyze the Code</h3>
+          <p>Study the complete HTML form code and identify:</p>
+          <ul>
+            <li>All HTML form elements used</li>
+            <li>Examples of inline CSS (find at least 5)</li>
+            <li>Internal CSS selectors and properties</li>
+            <li>How responsive design is implemented</li>
+          </ul>
+          
+          <h3>Task 2: Recreate from Memory</h3>
+          <p>Without looking at the code, try to recreate:</p>
+          <ul>
+            <li>The complete form structure</li>
+            <li>CSS styling for at least 3 sections</li>
+            <li>Responsive design for mobile</li>
+            <li>Form validation features</li>
+          </ul>
+          
+          <h3>Task 3: Improve the Code</h3>
+          <p>Make these improvements:</p>
+          <ul>
+            <li>Convert inline CSS to classes</li>
+            <li>Move CSS to external file</li>
+            <li>Add more form validation</li>
+            <li>Improve accessibility features</li>
+          </ul>
+          
+          <div className="deadline">
+            <p><strong>Due Date:</strong> [Enter Due Date]</p>
+            <p><strong>Student Name:</strong> ________________</p>
+          </div>
+        </div>
       </div>
 
-      <div style={styles.footer}>
-        <p style={styles.footerP}>Practice all concepts with hands-on projects.</p>
-        <p style={styles.footerP}>Next: JavaScript Fundamentals and DOM Manipulation</p>
+      {/* Key Takeaways */}
+      <div className="key-takeaways">
+        <h2>🎯 Key Takeaways</h2>
+        <div className="takeaways-grid">
+          <div className="takeaway-card">
+            <h3>HTML Mastery</h3>
+            <ul>
+              <li>Form elements for user input</li>
+              <li>Semantic HTML structure</li>
+              <li>Proper element nesting</li>
+              <li>Accessibility features</li>
+            </ul>
+          </div>
+          
+          <div className="takeaway-card">
+            <h3>CSS Levels</h3>
+            <ul>
+              <li>Inline: style attribute</li>
+              <li>Internal: &lt;style&gt; tag</li>
+              <li>External: .css files</li>
+              <li>Specificity hierarchy</li>
+            </ul>
+          </div>
+          
+          <div className="takeaway-card">
+            <h3>Best Practices</h3>
+            <ul>
+              <li>Use external CSS files</li>
+              <li>Follow mobile-first design</li>
+              <li>Maintain consistent naming</li>
+              <li>Test across browsers</li>
+            </ul>
+          </div>
+        </div>
       </div>
-      
-      <Notes />
+
+      {/* Footer */}
+      <div className="footer-section">
+        <div className="congratulations">
+          <h2>Practice Makes Perfect! 💪</h2>
+          <p>Code daily to master HTML, CSS, and web development!</p>
+          <h3>Every skilled web developer once started with HTML and CSS.</h3>
+        </div>
+        
+        <div className="notes-footer">
+          <p>
+            Join us for Programming, Coding, Project Training and Internship opportunities.
+          </p>
+          <p>Let's learn, code and build together.</p>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .notes-container {
+          width: 100%;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 20px;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          color: #333;
+          line-height: 1.6;
+        }
+
+        .header-section {
+          text-align: center;
+          margin-bottom: 30px;
+          padding-bottom: 20px;
+          border-bottom: 3px solid #3498db;
+        }
+
+        .header-section h1 {
+          color: #2c3e50;
+          margin-bottom: 10px;
+          font-size: 2.5rem;
+        }
+
+        .header-section p {
+          color: #7f8c8d;
+          font-size: 1.2rem;
+        }
+
+        .company-info {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          padding: 25px;
+          border-radius: 10px;
+          margin-bottom: 30px;
+          text-align: center;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .company-info h2 {
+          margin-bottom: 10px;
+          font-size: 1.8rem;
+        }
+
+        .company-info p {
+          margin: 5px 0;
+          font-size: 1.1rem;
+        }
+
+        .section-header {
+          background-color: #2c3e50;
+          color: white;
+          padding: 15px 25px;
+          border-radius: 6px;
+          margin: 40px 0 20px 0;
+        }
+
+        .section-header h2 {
+          margin: 0;
+          font-size: 1.5rem;
+        }
+
+        .notes-card {
+          background-color: white;
+          border-radius: 8px;
+          padding: 25px;
+          margin-bottom: 25px;
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+          border-left: 4px solid #3498db;
+        }
+
+        .notes-card h3 {
+          color: #2c3e50;
+          margin-top: 0;
+          margin-bottom: 15px;
+          font-size: 1.3rem;
+        }
+
+        .notes-card h4 {
+          color: #34495e;
+          margin: 15px 0 10px 0;
+        }
+
+        .notes-card p {
+          color: #34495e;
+          margin-bottom: 15px;
+          line-height: 1.7;
+        }
+
+        .notes-card ul, .notes-card ol {
+          margin-left: 20px;
+          margin-bottom: 15px;
+        }
+
+        .notes-card li {
+          margin-bottom: 8px;
+          color: #34495e;
+        }
+
+        .note-box {
+          background-color: #fff3cd;
+          border-left: 4px solid #ffc107;
+          padding: 15px;
+          margin: 15px 0;
+          border-radius: 4px;
+        }
+
+        .note-box p {
+          margin: 5px 0;
+          color: #856404;
+        }
+
+        .code-block {
+          position: relative;
+          background-color: #2d3748;
+          color: #e2e8f0;
+          padding: 20px;
+          border-radius: 6px;
+          margin: 15px 0;
+          overflow-x: auto;
+          max-height: 400px;
+          overflow-y: auto;
+        }
+
+        .copy-button {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background-color: #3498db;
+          color: white;
+          border: none;
+          padding: 8px 15px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 0.9rem;
+          transition: all 0.3s ease;
+        }
+
+        .copy-button:hover {
+          background-color: #2980b9;
+        }
+
+        .copy-button.copied {
+          background-color: #27ae60;
+        }
+
+        .code-block pre {
+          margin: 0;
+          white-space: pre-wrap;
+          font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+          font-size: 14px;
+          line-height: 1.5;
+        }
+
+        .code-block code {
+          font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+          font-size: 14px;
+          color: #e2e8f0;
+        }
+
+        .practice-card {
+          background-color: #f0f9ff;
+          border-radius: 10px;
+          padding: 30px;
+          margin-bottom: 30px;
+          border: 2px solid #3498db;
+        }
+
+        .practice-card h3 {
+          color: #2c3e50;
+          margin-top: 0;
+          margin-bottom: 20px;
+        }
+
+        .code-explanation {
+          margin: 25px 0;
+        }
+
+        .levels-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 20px;
+          margin-top: 15px;
+        }
+
+        .level-card {
+          background-color: white;
+          border-radius: 8px;
+          padding: 20px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .level-card h5 {
+          color: #2c3e50;
+          margin-top: 0;
+          margin-bottom: 10px;
+          font-size: 1.1rem;
+        }
+
+        .code-example {
+          background-color: #f8f9fa;
+          padding: 10px;
+          border-radius: 4px;
+          margin-top: 10px;
+          font-size: 12px;
+        }
+
+        .code-example pre {
+          margin: 0;
+          font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        .complete-code {
+          margin: 30px 0;
+        }
+
+        .code-block-large {
+          position: relative;
+          background-color: #2d3748;
+          color: #e2e8f0;
+          padding: 20px;
+          border-radius: 6px;
+          margin: 15px 0;
+          overflow-x: auto;
+          max-height: 600px;
+          overflow-y: auto;
+          border: 1px solid #4a5568;
+        }
+
+        .code-block-large pre {
+          margin: 0;
+          font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+          font-size: 12px;
+          line-height: 1.4;
+        }
+
+        .practice-instructions {
+          background-color: #e8f4fc;
+          padding: 20px;
+          border-radius: 8px;
+          margin-top: 25px;
+          border-left: 4px solid #3498db;
+        }
+
+        .practice-instructions h4 {
+          color: #2c3e50;
+          margin-top: 0;
+          margin-bottom: 15px;
+        }
+
+        .practice-instructions ol {
+          margin-left: 20px;
+        }
+
+        .practice-instructions li {
+          margin-bottom: 10px;
+        }
+
+        .practice-instructions ul {
+          margin-left: 20px;
+          margin-top: 5px;
+        }
+
+        .homework-section {
+          margin: 50px 0;
+        }
+
+        .homework-section h2 {
+          color: #2c3e50;
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 2rem;
+        }
+
+        .homework-card {
+          background-color: #f8f9fa;
+          border-radius: 10px;
+          padding: 30px;
+        }
+
+        .homework-card h3 {
+          color: #2c3e50;
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+
+        .deadline {
+          background-color: #fff3cd;
+          padding: 15px;
+          border-radius: 6px;
+          margin-top: 20px;
+          border-left: 4px solid #ffc107;
+        }
+
+        .key-takeaways {
+          margin: 40px 0;
+        }
+
+        .takeaways-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 20px;
+          margin-top: 20px;
+        }
+
+        .takeaway-card {
+          background-color: white;
+          border-radius: 8px;
+          padding: 20px;
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+          border-top: 4px solid #2ecc71;
+        }
+
+        .takeaway-card h3 {
+          color: #2c3e50;
+          margin-top: 0;
+          margin-bottom: 15px;
+        }
+
+        .footer-section {
+          margin-top: 50px;
+          padding-top: 30px;
+          border-top: 2px solid #f0f0f0;
+        }
+
+        .congratulations {
+          text-align: center;
+          margin: 40px 0;
+          padding: 30px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border-radius: 10px;
+        }
+
+        .congratulations h2 {
+          font-size: 2.5rem;
+          margin-bottom: 15px;
+        }
+
+        .congratulations p {
+          font-size: 1.2rem;
+          margin-bottom: 15px;
+        }
+
+        .congratulations h3 {
+          font-size: 1.5rem;
+          font-weight: 300;
+        }
+
+        .notes-footer {
+          text-align: center;
+          margin-top: 40px;
+          padding: 20px;
+          background-color: #f8f9fa;
+          border-radius: 8px;
+        }
+
+        .notes-footer p {
+          color: #7f8c8d;
+          margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+          .notes-container {
+            padding: 15px;
+          }
+          
+          .header-section h1 {
+            font-size: 2rem;
+          }
+          
+          .levels-grid, .takeaways-grid {
+            grid-template-columns: 1fr;
+          }
+          
+          .notes-card, .practice-card {
+            padding: 20px;
+          }
+          
+          .homework-card {
+            padding: 20px;
+          }
+          
+          .code-block-large {
+            max-height: 400px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .company-info {
+            padding: 15px;
+          }
+          
+          .company-info h2 {
+            font-size: 1.5rem;
+          }
+          
+          .header-section h1 {
+            font-size: 1.8rem;
+          }
+          
+          .code-block-large {
+            font-size: 10px;
+            padding: 10px;
+          }
+        }
+      `}</style>
     </div>
   );
 };
