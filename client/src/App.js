@@ -58,7 +58,6 @@ import AdminStudentDashboard from "./components/AdminLayout/AdminStudentDashboar
 import StudentAnalytics from "./components/UserLayout/StudentAnalytics";
 import StudentGroupingPage from "./components/AdminLayout/StudentGroupingPage";
 import NotFoundPage from "./components/StyleComponents/NotFoundPage";
-import SpaceInvaders from "./components/Games/SpaceInvaders/SpaceInvaders";
 import VsCodeNodeInstallation from "./components/UserLayout/VsCodeNodeInstallation";
 import IntroductionHTML from "./components/UserLayout/IntroductionHTML";
 
@@ -72,7 +71,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/ForgotPassword" element={<ForgotPassword />} />
           <Route path="/teacher-login" element={<TeacherLogin />} />
-          <Route path="/404INVADERS" element={<SpaceInvaders />} />
           <Route path="teacher-forgot-pwd" element={<TeacherForgot />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

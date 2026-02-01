@@ -248,7 +248,7 @@ const NotFoundPage = () => {
             className="error-header"
             variants={glitchVariants}
             >
-            <NavLink to='/404INVADERS' style={{textDecoration:"none"}}><h1 className="error-code">
+            <h1 className="error-code">
               4
               <motion.span
                 animate={{ opacity: [1, 0, 1] }}
@@ -257,7 +257,7 @@ const NotFoundPage = () => {
                 0
               </motion.span>
               4
-            </h1></NavLink>
+            </h1>
 
             <motion.h2
               className="main-heading"
