@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Loader from "../StyleComponents/Loader";
 
 const StudentDelete = () => {
   const [students, setStudents] = useState([]);
@@ -125,8 +126,7 @@ const StudentDelete = () => {
   if (loading) {
     return (
       <div className="loading-container">
-        <div className="spinner"></div>
-        <p>Loading students data...</p>
+        <Loader/>
       </div>
     );
   }
@@ -312,11 +312,10 @@ body {
 /* Loading State */
 .loading-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 70vh;
-  gap: 20px;
+  width:100vw;
 }
 
 .spinner {

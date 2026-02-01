@@ -442,13 +442,13 @@ const AdminNavbar = () => {
           -webkit-text-fill-color: transparent;
           background-clip: text;
           font-weight: 800;
-          font-size: 1.4rem;
+          font-size: 1.3rem;
           line-height: 1.2;
         }
 
         .logo-subtitle {
           color: rgba(255, 255, 255, 0.9);
-          font-size: 0.8rem;
+          font-size: 0.7rem;
           font-weight: 500;
           line-height: 1.2;
         }
@@ -500,7 +500,7 @@ const AdminNavbar = () => {
           cursor: pointer;
           border: none;
           font-family: inherit;
-          font-size: inherit;
+          font-size: 14px;
         }
 
         .nav-link:hover {
@@ -543,7 +543,7 @@ const AdminNavbar = () => {
           white-space: nowrap;
           border: none;
           font-family: inherit;
-          font-size: inherit;
+          font-size: 14px;
         }
 
         .dropdown-toggle:hover,
