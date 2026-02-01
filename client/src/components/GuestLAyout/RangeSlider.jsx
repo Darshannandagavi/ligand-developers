@@ -342,7 +342,7 @@ const RangeSlider = () => {
         }
 
         .cta-card {
-          background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+          background: linear-gradient(to right, #667eea, #764ba2);
           border-radius: 10px;
           padding: 1.5rem;
           text-align: center;

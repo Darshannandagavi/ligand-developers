@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { NavLink } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -327,7 +328,7 @@ const Register = () => {
         </form>
 
         <div className="login-redirect" data-aos="fade-in" data-aos-delay="300">
-          Already have an account? <a href="/login">Login here 👉</a>
+          Already have an account? <NavLink to="/login">Login here 👉</NavLink>
         </div>
       </div>
 

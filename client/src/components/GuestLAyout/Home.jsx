@@ -1,28 +1,15 @@
-
 import { useEffect } from "react";
 import {
-  Users,
-  TrendingUp,
-  Shield,
-  Zap,
-  BookOpen,
   Clock,
-  FileText,
   Video,
   Briefcase,
   BarChart,
-  Building,
   Code,
   CheckCircle,
   ChevronRight,
-  PlayCircle,
-  Settings,
   GraduationCap,
   Cpu,
   Database,
-  Cloud,
-  Monitor,
-  Smartphone,
   BookMarked,
   Award,
   Target,
@@ -31,7 +18,7 @@ import {
   Star,
 } from "lucide-react";
 import RangeSlider from "./RangeSlider";
-
+import { SiReact, SiNodedotjs, SiMongodb, SiExpress } from "react-icons/si";
 const Home = () => {
   useEffect(() => {
     // Initialize scroll animations
@@ -124,10 +111,26 @@ const Home = () => {
   ];
 
   const techStack = [
-    { icon: <Code className="ligand-tech-icon" />, label: "React" },
-    { icon: <Database className="ligand-tech-icon" />, label: "Node.js" },
-    { icon: <Cloud className="ligand-tech-icon" />, label: "MongoDB" },
-    { icon: <Cpu className="ligand-tech-icon" />, label: "Express.js" },
+    {
+      icon: <SiReact className="ligand-tech-icon react" />,
+      label: "React",
+      url: "https://react.dev",
+    },
+    {
+      icon: <SiNodedotjs className="ligand-tech-icon node" />,
+      label: "Node.js",
+      url: "https://nodejs.org",
+    },
+    {
+      icon: <SiMongodb className="ligand-tech-icon mongo" />,
+      label: "MongoDB",
+      url: "https://www.mongodb.com",
+    },
+    {
+      icon: <SiExpress className="ligand-tech-icon express" />,
+      label: "Express.js",
+      url: "https://expressjs.com",
+    },
   ];
 
   return (
@@ -202,27 +205,34 @@ const Home = () => {
                     </div>
                     <div className="ligand-dashboard-grid">
                       {techStack.map((tech, i) => (
-                        <div
-                          key={i}
-                          className={`ligand-dashboard-card ${
-                            i % 2 === 0
-                              ? "ligand-card-gradient"
-                              : "ligand-card-gray"
-                          }`}
+                        <a
+                          key={tech.label}
+                          href={tech.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ligand-dashboard-link"
                         >
-                          <div className="ligand-tech-icon-wrapper">
-                            {tech.icon}
-                            <span className="ligand-tech-label">
-                              {tech.label}
-                            </span>
+                          <div
+                            className={`ligand-dashboard-card ${
+                              i % 2 === 0
+                                ? "ligand-card-gradient"
+                                : "ligand-card-gray"
+                            }`}
+                          >
+                            <div className="ligand-tech-icon-wrapper">
+                              {tech.icon}
+                              <span className="ligand-tech-label">
+                                {tech.label}
+                              </span>
+                            </div>
                           </div>
-                        </div>
+                        </a>
                       ))}
                     </div>
                     <div className="ligand-media-player">
-                      <div className="ligand-class-indicator">
-                        <div className="ligand-live-dot"></div>
-                        <span>Recording Class MERN Stack </span>
+                      <div className="ligand-badge">
+                        <div className="ligand-badge-dot"></div>
+                        <span>A Dedicated Learning Platform for Ligand Students</span>
                       </div>
                     </div>
                   </div>
@@ -411,7 +421,7 @@ const Home = () => {
             </div>
           </div>
         </section>
-        <RangeSlider/>
+        <RangeSlider />
 
         {/* Vision Section */}
         <section className="ligand-vision">
@@ -427,12 +437,10 @@ const Home = () => {
             </div>
           </div>
         </section>
-
-       
       </div>
-     
-        <style>
-          {`
+
+      <style>
+        {`
           /* Ligand Landing Page CSS */
           @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap');
 
@@ -1006,7 +1014,25 @@ const Home = () => {
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
           }
+          .ligand-tech-icon {
+  font-size: 40px;
+}
 
+.ligand-tech-icon.react {
+  color: #61dafb;
+}
+
+.ligand-tech-icon.node {
+  color: #339933;
+}
+
+.ligand-tech-icon.mongo {
+  color: #47a248;
+}
+
+.ligand-tech-icon.express {
+  color: #000000;
+}
           .ligand-college-card {
             background: #f9fafb;
             border-radius: 1rem;
@@ -1167,7 +1193,19 @@ const Home = () => {
             max-width: 576px;
             margin: 0 auto 2.5rem;
           }
+          .ligand-dashboard-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+  .ligand-dashboard-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
+.ligand-dashboard-card:hover {
+  transform: translateY(-4px);
+}
           .ligand-cta-buttons-final {
             display: flex;
             flex-direction: column;
@@ -1387,7 +1425,7 @@ const Home = () => {
             }
           }
         `}
-        </style>
+      </style>
     </>
   );
 };
