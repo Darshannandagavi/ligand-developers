@@ -3,54 +3,92 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 // Register user
+
+// export const register = async (req, res) => {
+//   try {
+//     const {
+//       name,
+//       email,
+//       contact,
+//       password,
+//       usn,
+//       year,
+//       batch,
+//       collegeName,
+//       programName,
+//       technology,
+//     } = req.body;
+
+//     console.log(
+//       "req.body is here",
+//       name,
+//       email,
+//       contact,
+//       password,
+//       usn,
+//       year,
+//       batch,
+//       collegeName,
+//       programName,
+//       technology
+//     );
+//     console.log(req.body);
+//     const existingUser = await User.findOne({ email });
+//     if (existingUser)
+//       return res.status(400).json({ error: "Email already exists" });
+
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     const profilePic = req.file ? req.file.filename : "";
+
+//     const user = new User({
+//       ...req.body, // takes all fields from frontend
+//       profilePic: req.file ? req.file.filename : "",
+//       password: hashedPassword, // override with hashed one
+//     });
+
+//     await user.save();
+//     res.json({ message: "User registered successfully", user });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
+
 export const register = async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      contact,
-      password,
-      usn,
-      year,
-      batch,
-      collegeName,
-      programName,
-      technology,
-    } = req.body;
+    const { email, password } = req.body;
 
-    console.log(
-      "req.body is here",
-      name,
-      email,
-      contact,
-      password,
-      usn,
-      year,
-      batch,
-      collegeName,
-      programName,
-      technology
-    );
-    console.log(req.body);
     const existingUser = await User.findOne({ email });
-    if (existingUser)
+    if (existingUser) {
       return res.status(400).json({ error: "Email already exists" });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const profilePic = req.file ? req.file.filename : "";
 
     const user = new User({
-      ...req.body, // takes all fields from frontend
-      profilePic: req.file ? req.file.filename : "",
-      password: hashedPassword, // override with hashed one
+      ...req.body,
+      password: hashedPassword,
+      profilePic: req.file
+        ? {
+            url: req.file.path,        // Cloudinary URL
+            publicId: req.file.filename // Cloudinary public_id
+          }
+        : null,
     });
 
     await user.save();
-    res.json({ message: "User registered successfully", user });
+
+    res.json({
+      message: "User registered successfully",
+      user,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+
 
 // Login user
 export const login = async (req, res) => {
@@ -318,6 +356,78 @@ export const approveByDate = async (req, res) => {
     });
 
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+
+
+
+export const getStudentProfile = async (req, res) => {
+  try {
+  
+    const userId = req.user.id; // from auth middleware
+
+    const user = await User.findById(userId)
+      .select("-password")
+      .populate("teacher", "name email");
+
+    if (!user) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    res.json({
+      success: true,
+      profile: user,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+
+export const updateStudentProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    // ONLY update if value is present and non-empty
+    if (typeof req.body.name === "string" && req.body.name.trim() !== "") {
+      user.name = req.body.name.trim();
+    }
+
+    if (typeof req.body.contact === "string" && req.body.contact.trim() !== "") {
+      user.contact = req.body.contact.trim();
+    }
+
+    // Profile picture
+    if (req.file) {
+      if (user.profilePic?.publicId) {
+        const cloudinary = (await import("../config/cloudinary.js")).default;
+        await cloudinary.uploader.destroy(user.profilePic.publicId);
+      }
+
+      user.profilePic = {
+        url: req.file.path,
+        publicId: req.file.filename,
+      };
+    }
+
+    await user.save(); // required fields remain untouched
+
+    res.json({
+      success: true,
+      message: "Profile updated successfully",
+      profile: user,
+    });
+  } catch (err) {
+    console.log(err)
     res.status(500).json({ error: err.message });
   }
 };

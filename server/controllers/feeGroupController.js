@@ -580,8 +580,12 @@ export const recordPayment = async (req, res) => {
     studentEntry.currentFee = studentEntry.totalFee - studentEntry.paidFee;
     studentEntry.status = studentEntry.currentFee <= 0 ? "Paid" : "Pending";
 
-    // Prepare receipt file storage
-    const receiptPath = req.file ? req.file.filename : "";
+    const receipt = req.file
+  ? {
+      url: req.file.path,        // Cloudinary URL
+      publicId: req.file.filename // Cloudinary public_id
+    }
+  : null;
 
     // Push payment history entry
     studentEntry.paymentHistory.push({
@@ -591,7 +595,7 @@ export const recordPayment = async (req, res) => {
       paymentMode,
       transactionId: transactionId || "",
       remark: remark || "",
-      receipt: receiptPath,
+      receipt: receipt,
     });
 
     await group.save();

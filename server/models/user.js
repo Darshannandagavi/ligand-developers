@@ -22,7 +22,7 @@ const homeworkStatusSchema = new mongoose.Schema(
       default: Date.now,
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const userSchema = new mongoose.Schema(
@@ -36,7 +36,17 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     contact: { type: String, required: true, unique: true },
-    profilePic: { type: String, default: "" },
+    profilePic: {
+      url: {
+        type: String,
+        required: false,
+      },
+      publicId: {
+        type: String,
+        required: false,
+      },
+    },
+
     password: { type: String, required: true },
     role: { type: String, enum: ["student", "admin"], default: "student" },
     isPassout: { type: Boolean, default: false },
@@ -51,10 +61,9 @@ const userSchema = new mongoose.Schema(
     },
     // ✅ Add homework tracking
     homeworkStatus: [homeworkStatusSchema],
-    isApproved: { type: Boolean, default: false }
-
+    isApproved: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("User", userSchema);

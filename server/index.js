@@ -1,9 +1,8 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import path from "path";
 import userrouter from "./routes/userRoutes.js";
 import router from "./routes/exanRouter.js";
 import examAttemptRouter from "./routes/examAttemptRoutes.js";
@@ -25,9 +24,8 @@ app.use(cors({
   credentials: true
 }));
 
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+// app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
-dotenv.config();
 const PORT = process.env.PORT || 7000;
 const URL = process.env.MONGOURL;
 

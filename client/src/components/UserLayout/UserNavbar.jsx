@@ -1,28 +1,226 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { FaSignInAlt, FaBars, FaTimes, FaBook } from "react-icons/fa";
-import { MdOutlinePublishedWithChanges, MdOutlineSpaceDashboard } from "react-icons/md";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { NavLink, useLocation } from "react-router-dom";
+import {
+  FaSignInAlt,
+  FaBars,
+  FaTimes,
+  FaBook,
+  FaChevronDown,
+  FaChevronUp,
+  FaUser,
+  FaLaptopCode,
+} from "react-icons/fa";
+import { MdOutlineSpaceDashboard, MdOutlinePublishedWithChanges } from "react-icons/md";
 import { TbHistoryToggle } from "react-icons/tb";
-import { FaLaptopCode } from "react-icons/fa";
+import { GiProgression } from "react-icons/gi";
 
 const UserNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+  const navbarRef = useRef(null);
+  const dropdownTimeoutRef = useRef(null);
+  const location = useLocation();
 
-  const toggleNavbar = () => {
-    setIsOpen(!isOpen);
-  };
+  // Detect screen size with debounce
+  useEffect(() => {
+    let resizeTimer;
+    
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const width = window.innerWidth;
+        setIsMobile(width <= 768);
+        setIsTablet(width > 768 && width <= 1024);
+        
+        // Close mobile menu on resize to desktop
+        if (width > 768 && isOpen) {
+          setIsOpen(false);
+        }
+      }, 150);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      clearTimeout(resizeTimer);
+    };
+  }, [isOpen]);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navbarRef.current && !navbarRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+      if (dropdownTimeoutRef.current) {
+        clearTimeout(dropdownTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Close dropdowns when route changes
+  useEffect(() => {
+    setOpenDropdown(null);
+    if (isMobile || isTablet) {
+      setIsOpen(false);
+    }
+  }, [location.pathname, isMobile, isTablet]);
+
+  const toggleNavbar = useCallback(() => {
+    setIsOpen(prev => !prev);
+    if (!isMobile && !isTablet) {
+      setOpenDropdown(null);
+    }
+  }, [isMobile, isTablet]);
+
+  const toggleDropdown = useCallback((dropdownName) => {
+    setOpenDropdown(prev => prev === dropdownName ? null : dropdownName);
+  }, []);
+
+  const handleDropdownHover = useCallback((dropdownName) => {
+    if (!isMobile && !isTablet) {
+      if (dropdownTimeoutRef.current) {
+        clearTimeout(dropdownTimeoutRef.current);
+      }
+      setOpenDropdown(dropdownName);
+    }
+  }, [isMobile, isTablet]);
+
+  const handleDropdownLeave = useCallback(() => {
+    if (!isMobile && !isTablet) {
+      dropdownTimeoutRef.current = setTimeout(() => {
+        setOpenDropdown(null);
+      }, 200);
+    }
+  }, [isMobile, isTablet]);
+
+  // Memoized navigation structure
+  const navStructure = useMemo(() => [
+    {
+      name: "Dashboard",
+      to: "/user/analytics",
+      icon: MdOutlineSpaceDashboard,
+      single: true
+    },
+    {
+      name: "Exams",
+      to: "/user",
+      icon: FaLaptopCode,
+      single: true
+    },
+    
+    {
+      name: "History",
+      to: "/user/history",
+      icon: TbHistoryToggle,
+      single: true
+    },
+    {
+      name: "Resources",
+      icon: FaBook,
+      dropdown: "resources",
+      links: [
+        {
+          name: "Study Notes",
+          to: "/user/notes",
+          icon: FaBook
+        },
+        {
+          name: "Interview Coach",
+          to: "/user/interview",
+          icon: FaUser
+        },
+      ]
+    },
+    {
+      name: "Profile",
+      icon: FaUser,
+      dropdown: "profile",
+      links: [
+        {
+          name: "My Profile",
+          to: "/user/profile",
+          icon: FaUser
+        },
+        {
+          name: "Change Password",
+          to: "/user/changepassword",
+          icon: MdOutlinePublishedWithChanges
+        }
+      ]
+    }
+  ], []);
+
+  // Check if dropdown has active child
+  const isDropdownActive = useCallback((dropdownLinks) => {
+    return dropdownLinks.some(link => location.pathname === link.to);
+  }, [location.pathname]);
+
+  const handleLogout = useCallback((e) => {
+    e.preventDefault();
+    const confirmLogout = window.confirm("Do you want to logout?");
+    if (confirmLogout) {
+      setIsOpen(false);
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("username");
+      localStorage.removeItem("usn");
+      localStorage.removeItem("role");
+      window.location.href = "/";
+    }
+  }, []);
+
+  // Memoized NavLink component - FIXED: Use exact matching for Exams
+  const NavLinkItem = useCallback(({ to, icon: Icon, name, onClick, isDropdownItem = false, exact = false }) => (
+    <NavLink
+      to={to}
+      end={exact} // Use 'end' prop for exact matching
+      className={({ isActive }) =>
+        `nav-link ${isActive ? "active" : ""} ${isDropdownItem ? "dropdown-item" : ""}`
+      }
+      onClick={() => {
+        onClick?.();
+        if (isMobile || isTablet) {
+          setIsOpen(false);
+        }
+      }}
+    >
+      <Icon className="nav-icon" />
+      <span>{name}</span>
+    </NavLink>
+  ), [isMobile, isTablet]);
+
+  // Custom function to check if Exams tab should be active
+  const isExamsActive = useCallback(() => {
+    const path = location.pathname;
+    // Exams should be active only on exact "/user" route, not on "/user/analytics", etc.
+    return path === "/user" || path === "/user/";
+  }, [location.pathname]);
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" ref={navbarRef}>
       <div className="navbar-container">
-        {/* Brand/Logo with animated logo image */}
+        {/* Brand/Logo */}
         <div className="navbar-brand">
           <NavLink to="/user" className="brand-link">
             <div className="logo-container">
               <img
-                src="/logo2.jpg" // Replace with your logo path
+                src="/logo2.jpg"
                 alt="Ligand Software Solutions Logo"
                 className="logo-image"
+                loading="lazy"
               />
               <span className="logo-text-container">
                 <span className="logo-gradient">Ligand Software Solutions</span>
@@ -39,107 +237,107 @@ const UserNavbar = () => {
           className={`navbar-toggle ${isOpen ? "active" : ""}`}
           onClick={toggleNavbar}
           aria-label="Toggle navigation"
+          aria-expanded={isOpen}
         >
-          {isOpen ? (
-            <FaTimes className="toggle-icon" />
-          ) : (
-            <FaBars className="toggle-icon" />
-          )}
+          {isOpen ? <FaTimes className="toggle-icon" /> : <FaBars className="toggle-icon" />}
         </button>
 
         {/* Navigation links */}
         <div className={`navbar-menu ${isOpen ? "active" : ""}`}>
           <div className="navbar-nav">
-
-            <NavLink
-              to="/user/analytics"
-              end
-              className={({ isActive }) =>
-                `nav-link ${isActive ? "active" : ""}`
-              }
-              onClick={() => setIsOpen(false)}
-            >
-              <MdOutlineSpaceDashboard className="nav-icon" />
-              <span>Dashboard</span>
-            </NavLink>
-
-            <NavLink
-              to="/user"
-              end
-              className={({ isActive }) =>
-                `nav-link ${isActive ? "active" : ""}`
-              }
-              onClick={() => setIsOpen(false)}
-            >
-              <FaLaptopCode className="nav-icon" />
-              <span>Exams</span>
-            </NavLink>
-
-            <NavLink
-              to="/user/history"
-              className={({ isActive }) =>
-                `nav-link ${isActive ? "active" : ""}`
-              }
-              onClick={() => setIsOpen(false)}
-            >
-              <TbHistoryToggle className="nav-icon" />
-              <span>History</span>
-            </NavLink>
-
-            <NavLink
-              to="/user/notes"
-              className={({ isActive }) =>
-                `nav-link ${isActive ? "active" : ""}`
-              }
-              onClick={() => setIsOpen(false)}
-            >
-              <FaBook className="nav-icon" />
-              <span>Notes</span>
-            </NavLink>
-              <NavLink
-              to="/user/interview"
-              className={({ isActive }) =>
-                `nav-link ${isActive ? "active" : ""}`
-              }
-              onClick={() => setIsOpen(false)}
-            >
-              <FaBook className="nav-icon" />
-              <span>Interview Coach</span>
-            </NavLink>
-            <NavLink
-              to="/user/changepassword"
-              className={({ isActive }) =>
-                `nav-link ${isActive ? "active" : ""}`
-              }
-              onClick={() => setIsOpen(false)}
-            >
-              <MdOutlinePublishedWithChanges className="nav-icon" />
-              <span>Change Password</span>
-            </NavLink>
-
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `nav-link ${isActive ? "active" : ""}`
-              }
-              onClick={(e) => {
-                e.preventDefault(); // stop immediate navigation
-                const confirmLogout = window.confirm("Do you want to logout?");
-                if (confirmLogout) {
-                  setIsOpen(false);
-                  localStorage.removeItem("token");
-                  localStorage.removeItem("userId");
-                  localStorage.removeItem("username");
-                  localStorage.removeItem("usn");
-                  localStorage.removeItem("role");
-                  // redirect to home/login
-                  window.location.href = "/";
+            {navStructure.map((item, index) => {
+              if (item.single) {
+                // Special handling for Exams tab
+                if (item.name === "Exams") {
+                  const isActive = isExamsActive();
+                  
+                  return (
+                    <NavLink
+                      key={item.name}
+                      to={item.to}
+                      end // This ensures exact matching
+                      className={`nav-link ${isActive ? "active" : ""}`}
+                      onClick={() => {
+                        setIsOpen(false);
+                      }}
+                    >
+                      <item.icon className="nav-icon" />
+                      <span>{item.name}</span>
+                    </NavLink>
+                  );
                 }
-              }}
+                
+                return (
+                  <NavLinkItem
+                    key={item.name}
+                    to={item.to}
+                    icon={item.icon}
+                    name={item.name}
+                    onClick={() => setIsOpen(false)}
+                    exact={item.name === "Dashboard"} // Use exact for Dashboard too
+                  />
+                );
+              }
+
+              if (item.dropdown) {
+                const isDropdownOpen = openDropdown === item.dropdown;
+                const hasActiveChild = isDropdownActive(item.links);
+
+                return (
+                  <div 
+                    key={item.name} 
+                    className="dropdown-container"
+                    onMouseEnter={() => handleDropdownHover(item.dropdown)}
+                    onMouseLeave={handleDropdownLeave}
+                  >
+                    <button
+                      className={`dropdown-toggle ${hasActiveChild ? 'active' : ''} ${isDropdownOpen ? 'open' : ''}`}
+                      onClick={() => toggleDropdown(item.dropdown)}
+                      aria-expanded={isDropdownOpen}
+                      aria-haspopup="true"
+                    >
+                      <item.icon className="nav-icon" />
+                      <span>{item.name}</span>
+                      <span className="dropdown-arrow-container">
+                        {isDropdownOpen ? 
+                          <FaChevronUp className="dropdown-arrow" /> : 
+                          <FaChevronDown className="dropdown-arrow" />
+                        }
+                      </span>
+                    </button>
+                    <div 
+                      className={`dropdown-menu ${isDropdownOpen ? 'open' : ''}`}
+                      onMouseEnter={() => handleDropdownHover(item.dropdown)}
+                      onMouseLeave={handleDropdownLeave}
+                      role="menu"
+                      aria-labelledby={`dropdown-${item.dropdown}`}
+                    >
+                      {item.links.map((link) => (
+                        <NavLinkItem
+                          key={link.name}
+                          to={link.to}
+                          icon={link.icon}
+                          name={link.name}
+                          onClick={() => setOpenDropdown(null)}
+                          isDropdownItem={true}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              return null;
+            })}
+
+            {/* Logout button */}
+            <button
+              className="nav-link logout-link"
+              onClick={handleLogout}
             >
               <FaSignInAlt className="nav-icon" />
               <span>Logout</span>
-            </NavLink>
+            </button>
           </div>
         </div>
       </div>
@@ -150,13 +348,14 @@ const UserNavbar = () => {
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
           padding: 0.8rem 1.5rem;
           position: relative;
+          z-index: 1000;
         }
 
         .navbar-container {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          max-width: 100vw;
+          max-width: 1600px;
           margin: 0 auto;
         }
 
@@ -182,11 +381,13 @@ const UserNavbar = () => {
         .logo-image {
           height: 40px;
           width: 40px;
-          object-fit: cpver;
+          object-fit: contain;
+          animation: pulse 2s infinite, float 3s ease-in-out infinite;
           border-radius: 50%;
           background: rgba(255, 255, 255, 0.1);
           backdrop-filter: blur(10px);
-          
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          padding: 5px;
         }
 
         .logo-text-container {
@@ -200,13 +401,13 @@ const UserNavbar = () => {
           -webkit-text-fill-color: transparent;
           background-clip: text;
           font-weight: 800;
-          font-size: 1.4rem;
+          font-size: 1.3rem;
           line-height: 1.2;
         }
 
         .logo-subtitle {
           color: rgba(255, 255, 255, 0.9);
-          font-size: 0.8rem;
+          font-size: 0.7rem;
           font-weight: 500;
           line-height: 1.2;
         }
@@ -219,6 +420,12 @@ const UserNavbar = () => {
           padding: 0.5rem;
           color: white;
           font-size: 1.5rem;
+          z-index: 1001;
+          transition: transform 0.3s ease;
+        }
+
+        .navbar-toggle:hover {
+          transform: scale(1.1);
         }
 
         .navbar-menu {
@@ -231,7 +438,8 @@ const UserNavbar = () => {
           list-style: none;
           margin: 0;
           padding: 0;
-          gap: 1rem;
+          gap: 0.5rem;
+          align-items: center;
         }
 
         .nav-link {
@@ -247,6 +455,11 @@ const UserNavbar = () => {
           background: rgba(255, 255, 255, 0.1);
           backdrop-filter: blur(10px);
           border: 1px solid rgba(255, 255, 255, 0.2);
+          white-space: nowrap;
+          cursor: pointer;
+          border: none;
+          font-family: inherit;
+          font-size: 14px;
         }
 
         .nav-link:hover {
@@ -264,44 +477,166 @@ const UserNavbar = () => {
 
         .nav-icon {
           font-size: 1.1rem;
+          flex-shrink: 0;
+        }
+
+        /* Dropdown Styles */
+        .dropdown-container {
+          position: relative;
+        }
+
+        .dropdown-toggle {
+          text-decoration: none;
+          color: rgba(255, 255, 255, 0.9);
+          font-weight: 500;
+          padding: 0.6rem 1rem;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          cursor: pointer;
+          white-space: nowrap;
+          border: none;
+          font-family: inherit;
+          font-size: 14px;
+        }
+
+        .dropdown-toggle:hover,
+        .dropdown-toggle.open {
+          color: #fff;
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-toggle.active {
+          color: #fff;
+          background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+          box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .dropdown-arrow-container {
+          display: flex;
+          align-items: center;
+          margin-left: 0.25rem;
+        }
+
+        .dropdown-arrow {
+          font-size: 0.8rem;
+          transition: transform 0.3s ease;
+        }
+
+        .dropdown-toggle.open .dropdown-arrow {
+          transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border-radius: 8px;
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+          min-width: 200px;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-10px);
+          transition: all 0.3s ease;
+          z-index: 1000;
+          margin-top: 0.8rem;
+          padding: 0.5rem 0;
+          overflow: hidden;
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dropdown-menu.open {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+
+        .dropdown-menu .nav-link {
+          border-radius: 0;
+          border: none;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          background: transparent;
+          padding: 0.8rem 1rem;
+          margin: 0;
+          justify-content: flex-start;
+        }
+
+        .dropdown-menu .nav-link:last-child {
+          border-bottom: none;
+        }
+
+        .dropdown-menu .nav-link:hover {
+          background: rgba(255, 255, 255, 0.15);
+          color: #fff;
+        }
+
+        .logout-link {
+          margin-left: 0.5rem;
+        }
+
+        .logout-link:hover {
+          background: rgba(255, 107, 107, 0.3);
         }
 
         /* Logo animations */
         @keyframes pulse {
-          0% {
-            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
-          }
-          70% {
-            box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
-          }
-          100% {
-            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-          }
+          0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+          70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
         }
 
         @keyframes float {
-          0% {
-            transform: translateY(0px);
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-5px); }
+          100% { transform: translateY(0px); }
+        }
+
+        /* Tablet styles (768px - 1024px) */
+        @media (max-width: 1024px) {
+          .navbar {
+            padding: 0.7rem 1rem;
           }
-          50% {
-            transform: translateY(-5px);
+
+          .logo-gradient {
+            font-size: 1.2rem;
           }
-          100% {
-            transform: translateY(0px);
+
+          .logo-subtitle {
+            font-size: 0.7rem;
+          }
+
+          .nav-link, .dropdown-toggle {
+            padding: 0.5rem 0.8rem;
+            font-size: 0.9rem;
+          }
+
+          .dropdown-menu {
+            min-width: 180px;
           }
         }
 
-        /* Mobile styles */
+        /* Mobile styles (up to 768px) */
         @media (max-width: 768px) {
           .navbar {
             padding: 0.6rem 1rem;
+            position: sticky;
+            top: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           }
 
           .navbar-toggle {
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
           }
 
           .logo-container {
@@ -314,11 +649,12 @@ const UserNavbar = () => {
           }
 
           .logo-gradient {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
           }
 
           .logo-subtitle {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
+            display: none;
           }
 
           .navbar-menu {
@@ -326,18 +662,22 @@ const UserNavbar = () => {
             top: 0;
             right: 0;
             height: 100vh;
-            width: 70%;
-            max-width: 300px;
+            width: 85%;
+            max-width: 320px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2);
             flex-direction: column;
             align-items: flex-start;
-            padding: 5rem 1.5rem 2rem;
+            padding: 70px 1rem 2rem;
             transform: translateX(100%);
             opacity: 0;
             visibility: hidden;
-            transition: all 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 999;
+            overflow-y: auto;
+            overscroll-behavior: contain;
           }
 
           .navbar-menu.active {
@@ -349,25 +689,99 @@ const UserNavbar = () => {
           .navbar-nav {
             flex-direction: column;
             width: 100%;
-            gap: 1rem;
+            gap: 0.5rem;
+            align-items: stretch;
           }
 
-          .nav-link {
-            display: flex;
-            padding: 1rem;
+          .nav-link, .dropdown-toggle {
             width: 100%;
+            padding: 0.9rem 1rem;
             border-radius: 6px;
+            justify-content: space-between;
+            font-size: 1rem;
+          }
+
+          .dropdown-container {
+            width: 100%;
+          }
+
+          .dropdown-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          .dropdown-menu {
+            position: static;
+            box-shadow: none;
+            background: rgba(255, 255, 255, 0.08);
+            margin-top: 0.5rem;
+            border-radius: 6px;
+            min-width: auto;
+            transform: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            opacity: 1;
+            visibility: visible;
+            display: block;
+            padding: 0;
+          }
+
+          .dropdown-menu.open {
+            max-height: 500px;
+          }
+
+          .dropdown-menu .nav-link {
+            padding: 0.7rem 1rem 0.7rem 2rem;
+            font-size: 0.95rem;
+          }
+
+          .logout-link {
+            margin-left: 0;
+            margin-top: 1rem;
+            background: rgba(255, 107, 107, 0.2);
+          }
+
+          .logout-link:hover {
+            background: rgba(255, 107, 107, 0.3);
+          }
+
+          /* Mobile menu backdrop overlay */
+          .navbar-menu.active::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -1;
           }
         }
 
-        /* For very small screens */
+        /* Small mobile devices */
         @media (max-width: 480px) {
           .logo-gradient {
-            font-size: 1.1rem;
+            font-size: 1rem;
           }
 
-          .logo-subtitle {
-            font-size: 0.65rem;
+          .logo-image {
+            height: 32px;
+            width: 32px;
+          }
+
+          .navbar-menu {
+            width: 90%;
+          }
+
+          .nav-link, .dropdown-toggle {
+            padding: 0.8rem;
+            font-size: 0.95rem;
+          }
+
+          .dropdown-menu .nav-link {
+            padding: 0.6rem 1rem 0.6rem 2rem;
           }
         }
 
@@ -383,28 +797,29 @@ const UserNavbar = () => {
           }
         }
 
-        .navbar-menu.active .nav-link {
-          animation: slideIn 0.3s ease forwards;
+        /* Optimize animations */
+        @media (prefers-reduced-motion: no-preference) {
+          .navbar-menu.active .nav-link,
+          .navbar-menu.active .dropdown-toggle {
+            animation: slideIn 0.3s ease forwards;
+          }
         }
 
-        .navbar-menu.active .nav-link:nth-child(1) {
-          animation-delay: 0.1s;
-        }
-
-        .navbar-menu.active .nav-link:nth-child(2) {
-          animation-delay: 0.2s;
-        }
-
-        .navbar-menu.active .nav-link:nth-child(3) {
-          animation-delay: 0.3s;
-        }
-
-        .navbar-menu.active .nav-link:nth-child(4) {
-          animation-delay: 0.4s;
+        @media (prefers-reduced-motion: reduce) {
+          .navbar-menu.active .nav-link,
+          .navbar-menu.active .dropdown-toggle {
+            animation: none;
+            opacity: 1;
+            transform: none;
+          }
+          
+          .dropdown-arrow {
+            transition: none;
+          }
         }
       `}</style>
     </nav>
   );
 };
 
-export default UserNavbar;
+export default React.memo(UserNavbar);

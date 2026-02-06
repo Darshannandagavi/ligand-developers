@@ -35,7 +35,6 @@ const videoRef = React.useRef(null);
         const res = await axios.get(
           `https://ligand-dev-7.onrender.com/api/exams/foruser/${collegeName}/${studentId}`
         );
-        console.log(res.data);
         setExams(res.data.exams || []);
       } catch (err) {
         console.error("Error fetching exams:", err);

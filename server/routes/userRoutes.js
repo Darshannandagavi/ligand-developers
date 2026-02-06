@@ -1,8 +1,7 @@
 import express from "express";
-import multer from "multer";
-import path from "path";
-import { register, login, getAllUsers, getUserById, updateUser, deleteUser, changePassword, forgotPassword, makeBatchPassout, toggleApproval, approveByDate } from "../controllers/userController.js";
+import { register, login, getAllUsers, getUserById, updateUser, deleteUser, changePassword, forgotPassword, makeBatchPassout, toggleApproval, approveByDate, getStudentProfile, updateStudentProfile } from "../controllers/userController.js";
 import { auth } from "../middleware/auth.js";
+import upload from "../middleware/upload.js";
 
 const userrouter = express.Router();
 const adminOnly = (req, res, next) => {
@@ -13,13 +12,15 @@ const adminOnly = (req, res, next) => {
 };
 
 // Multer config
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, "uploads/"),
-    filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
-});
-const upload = multer({ storage });
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => cb(null, "uploads/"),
+//     filename: (req, file, cb) => cb(null, Date.now() + path.extname(file.originalname))
+// });
+
 
 // Public routes
+userrouter.get("/profile", auth, getStudentProfile);
+userrouter.put("/profile", auth,upload.single("profilePic"), updateStudentProfile);
 userrouter.post("/register", upload.single("profilePic"), register);
 userrouter.post("/login", login);
 userrouter.post("/forgotpassword", forgotPassword);

@@ -78,6 +78,7 @@ function App() {
         <Route path="/user" element={<UserLayout />}>
           <Route index element={<AttendExam />} />
           <Route path="/user/notes" element={<Notes />} />
+          <Route path="/user/profile" element={<Profile />} />
           <Route path="/user/clientsetup" element={<MyNotes />} />
           <Route path="/user/BootstrapinReact" element={<Chapter4 />} />
           <Route path="/user/CommonLayouts" element={<Chapter5 />} />
@@ -111,7 +112,7 @@ function App() {
             element={<ViewItemFrontendNotes />}
           />
           <Route path="/user/history" element={<ExamHistory />} />
-          <Route path="/user/profile" element={<Profile />} />
+         
           <Route path="/user/changepassword" element={<ChangePassword />} />
           <Route path="/user/interview" element={<InterviewPage />} />
           <Route path="*" element={<NotFoundPage />} />
