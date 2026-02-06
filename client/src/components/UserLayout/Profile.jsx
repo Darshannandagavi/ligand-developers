@@ -52,7 +52,8 @@ export default function Profile() {
       setProfile(res.data.profile);
       setFile(null);
       alert("Profile updated successfully");
-    } catch {
+    } catch(err) {
+      console.log(err)
       alert("Profile update failed");
     } finally {
       setLoading(false);

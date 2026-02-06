@@ -2,6 +2,8 @@ import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import cloudinary from "../config/cloudinary.js";
+
 // Register user
 
 // export const register = async (req, res) => {
@@ -388,8 +390,6 @@ export const getStudentProfile = async (req, res) => {
 };
 
 
-
-
 export const updateStudentProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -397,20 +397,26 @@ export const updateStudentProfile = async (req, res) => {
       return res.status(404).json({ error: "Student not found" });
     }
 
-    // ONLY update if value is present and non-empty
-    if (typeof req.body.name === "string" && req.body.name.trim() !== "") {
+    // ONLY update allowed text fields
+    if (typeof req.body.name === "string" && req.body.name.trim()) {
       user.name = req.body.name.trim();
     }
 
-    if (typeof req.body.contact === "string" && req.body.contact.trim() !== "") {
+    if (typeof req.body.contact === "string" && req.body.contact.trim()) {
       user.contact = req.body.contact.trim();
     }
+console.log("REQ.FILE =", req.file);
 
-    // Profile picture
+    // Profile picture update
     if (req.file) {
+      // delete old image safely
       if (user.profilePic?.publicId) {
-        const cloudinary = (await import("../config/cloudinary.js")).default;
-        await cloudinary.uploader.destroy(user.profilePic.publicId);
+        try {
+          await cloudinary.uploader.destroy(user.profilePic.publicId);
+        } catch (e) {
+          console.error("Cloudinary delete failed:", e.message);
+          // DO NOT crash the request
+        }
       }
 
       user.profilePic = {
@@ -419,7 +425,7 @@ export const updateStudentProfile = async (req, res) => {
       };
     }
 
-    await user.save(); // required fields remain untouched
+    await user.save();
 
     res.json({
       success: true,
@@ -427,7 +433,7 @@ export const updateStudentProfile = async (req, res) => {
       profile: user,
     });
   } catch (err) {
-    console.log(err)
+    console.error("UPDATE PROFILE ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 };
