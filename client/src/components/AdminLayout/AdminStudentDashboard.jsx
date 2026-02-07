@@ -601,7 +601,7 @@ const AdminStudentDashboard = () => {
                   <div className="admin-dashboard-details-avatar">
                     {selectedStudent.profilePic ? (
                       <img
-                        src={selectedStudent.profilePic}
+                        src={selectedStudent.profilePic.url}
                         alt={selectedStudent.name}
                         className="admin-dashboard-details-avatar-img"
                       />
