@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
-import {jsPDF} from "jspdf";
+import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import Loader from "../StyleComponents/Loader";
 
@@ -12,33 +12,36 @@ const API = "https://ligand-dev-7.onrender.com/api";
 // Custom API hook with error handling
 const useApi = () => {
   const token = localStorage.getItem("token");
-  
-  const authHeader = useMemo(() => ({
-    headers: { Authorization: `Bearer ${token}` },
-  }), [token]);
+
+  const authHeader = useMemo(
+    () => ({
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+    [token],
+  );
 
   const safeRequest = async (method, url, data = null) => {
     try {
       const config = { ...authHeader };
       let response;
-      
+
       switch (method.toLowerCase()) {
-        case 'get':
+        case "get":
           response = await axios.get(url, config);
           break;
-        case 'post':
+        case "post":
           response = await axios.post(url, data, config);
           break;
-        case 'put':
+        case "put":
           response = await axios.put(url, data, config);
           break;
-        case 'delete':
+        case "delete":
           response = await axios.delete(url, config);
           break;
         default:
           throw new Error(`Unsupported method: ${method}`);
       }
-      
+
       return { data: response?.data, error: null };
     } catch (error) {
       console.error(`API Error (${method} ${url}):`, error);
@@ -69,46 +72,45 @@ const AdminStudentDashboard = () => {
   };
 
   const exportPDF = async () => {
-  try {
-    const element = document.querySelector(".admin-dashboard-container");
+    try {
+      const element = document.querySelector(".admin-dashboard-container");
 
-    if (!element) {
-      alert("Nothing to export");
-      return;
+      if (!element) {
+        alert("Nothing to export");
+        return;
+      }
+
+      const canvas = await window.html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new window.jspdf.jsPDF("p", "mm", "a4");
+
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * pageWidth) / canvas.width;
+
+      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      pdf.save("students-report.pdf");
+    } catch (error) {
+      console.error("PDF Export Error:", error);
+      alert("Failed to export PDF");
     }
-
-    const canvas = await window.html2canvas(element, {
-      scale: 2,
-      useCORS: true
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new window.jspdf.jsPDF("p", "mm", "a4");
-
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * pageWidth) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    pdf.save("students-report.pdf");
-  } catch (error) {
-    console.error("PDF Export Error:", error);
-    alert("Failed to export PDF");
-  }
-};
-
+  };
 
   // Fetch all students
   const fetchStudents = async () => {
     setLoading(true);
-    const { data, error } = await safeRequest('get', `${API}/users`);
-    
+    const { data, error } = await safeRequest("get", `${API}/users`);
+
     if (error) {
       showNotification("Failed to load students", "error");
       setLoading(false);
       return;
     }
-    
+
     if (Array.isArray(data)) {
       setStudents(data);
     } else {
@@ -130,28 +132,32 @@ const AdminStudentDashboard = () => {
 
     setDetailsLoading(true);
     setSelectedStudent({ ...student, loading: true });
-    
+
     const id = student._id;
     const usn = student.usn;
 
     const endpoints = [
-      { key: 'homework', url: `${API}/homeworkstatus/${id}` },
-      { key: 'interviewScores', url: `${API}/topics/interviewscore/${usn}` },
-      { key: 'examHistory', url: `${API}/attempts/student/${id}` },
-      { key: 'attendance', url: `${API}/attendance?student=${id}` }
+      { key: "homework", url: `${API}/homeworkstatus/${id}` },
+      { key: "interviewScores", url: `${API}/topics/interviewscore/${usn}` },
+      { key: "examHistory", url: `${API}/attempts/student/${id}` },
+      { key: "attendance", url: `${API}/attendance?student=${id}` },
     ];
 
     try {
       const results = await Promise.allSettled(
-        endpoints.map(({ url }) => axios.get(url, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        }))
+        endpoints.map(({ url }) =>
+          axios.get(url, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }),
+        ),
       );
 
       const details = {};
       results.forEach((result, index) => {
         const { key } = endpoints[index];
-        if (result.status === 'fulfilled') {
+        if (result.status === "fulfilled") {
           details[key] = result.value?.data?.data || result.value?.data || [];
         } else {
           details[key] = [];
@@ -162,22 +168,22 @@ const AdminStudentDashboard = () => {
       setSelectedStudent({
         ...student,
         ...details,
-        loading: false
+        loading: false,
       });
-      
+
       showNotification(`Loaded details for ${student.name}`, "success");
     } catch (error) {
       console.error("Error loading student details:", error);
       showNotification("Failed to load student details", "error");
     }
-    
+
     setDetailsLoading(false);
   };
 
   // Get unique programs for filter dropdown
   const uniquePrograms = useMemo(() => {
     const programs = new Set();
-    students.forEach(student => {
+    students.forEach((student) => {
       if (student.programName) programs.add(student.programName);
     });
     return Array.from(programs);
@@ -185,16 +191,22 @@ const AdminStudentDashboard = () => {
 
   // Filter and sort students
   const filteredAndSortedStudents = useMemo(() => {
-    let filtered = students.filter(student => {
+    let filtered = students.filter((student) => {
       // Search filter
-      const matchesSearch = searchTerm === "" || 
-        (student.name && student.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (student.usn && student.usn.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (student.email && student.email.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesSearch =
+        searchTerm === "" ||
+        (student.name &&
+          student.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (student.usn &&
+          student.usn.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (student.email &&
+          student.email.toLowerCase().includes(searchTerm.toLowerCase()));
 
       // Program filter
-      const matchesFilter = filterBy === "all" || 
-        (student.programName && student.programName.toLowerCase() === filterBy.toLowerCase());
+      const matchesFilter =
+        filterBy === "all" ||
+        (student.programName &&
+          student.programName.toLowerCase() === filterBy.toLowerCase());
 
       return matchesSearch && matchesFilter;
     });
@@ -202,30 +214,30 @@ const AdminStudentDashboard = () => {
     // Sorting
     filtered.sort((a, b) => {
       let aValue, bValue;
-      
+
       switch (sortBy) {
-        case 'name':
-          aValue = a.name || '';
-          bValue = b.name || '';
+        case "name":
+          aValue = a.name || "";
+          bValue = b.name || "";
           break;
-        case 'usn':
-          aValue = a.usn || '';
-          bValue = b.usn || '';
+        case "usn":
+          aValue = a.usn || "";
+          bValue = b.usn || "";
           break;
-        case 'program':
-          aValue = a.programName || '';
-          bValue = b.programName || '';
+        case "program":
+          aValue = a.programName || "";
+          bValue = b.programName || "";
           break;
-        case 'batch':
-          aValue = a.batch || '';
-          bValue = b.batch || '';
+        case "batch":
+          aValue = a.batch || "";
+          bValue = b.batch || "";
           break;
         default:
-          aValue = a.name || '';
-          bValue = b.name || '';
+          aValue = a.name || "";
+          bValue = b.name || "";
       }
 
-      if (sortOrder === 'asc') {
+      if (sortOrder === "asc") {
         return aValue.localeCompare(bValue);
       } else {
         return bValue.localeCompare(aValue);
@@ -238,27 +250,29 @@ const AdminStudentDashboard = () => {
   // Calculate statistics
   const stats = useMemo(() => {
     const total = students.length;
-    const active = students.filter(s => s.isActive !== false).length;
-    const uniqueTechs = new Set(students.map(s => s.technology).filter(Boolean)).size;
+    const active = students.filter((s) => s.isActive !== false).length;
+    const uniqueTechs = new Set(
+      students.map((s) => s.technology).filter(Boolean),
+    ).size;
     const totalPrograms = uniquePrograms.length;
-    
+
     return { total, active, uniqueTechs, totalPrograms };
   }, [students, uniquePrograms]);
 
   // Format date
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
   // Calculate attendance percentage
   const calculateAttendancePercentage = (attendance) => {
     if (!attendance || attendance.length === 0) return 0;
-    const present = attendance.filter(a => a?.status === 'present').length;
+    const present = attendance.filter((a) => a?.status === "present").length;
     return Math.round((present / attendance.length) * 100);
   };
 
@@ -272,17 +286,28 @@ const AdminStudentDashboard = () => {
   // Toggle sort order
   const handleSort = (field) => {
     if (sortBy === field) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
       setSortBy(field);
-      setSortOrder('asc');
+      setSortOrder("asc");
     }
   };
 
   // Render loading state
   if (loading) {
     return (
-      <div style={{minHeight:"200px",height:"100%",width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}><Loader/></div>
+      <div
+        style={{
+          minHeight: "200px",
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Loader />
+      </div>
     );
   }
 
@@ -290,14 +315,22 @@ const AdminStudentDashboard = () => {
     <div className="admin-dashboard-container">
       {/* Notification Toast */}
       {notification && (
-        <div className={`admin-dashboard-notification admin-dashboard-notification-${notification.type}`}>
+        <div
+          className={`admin-dashboard-notification admin-dashboard-notification-${notification.type}`}
+        >
           <div className="admin-dashboard-notification-content">
             <span className="admin-dashboard-notification-icon">
-              {notification.type === 'success' ? '✓' : notification.type === 'error' ? '✗' : 'ℹ'}
+              {notification.type === "success"
+                ? "✓"
+                : notification.type === "error"
+                  ? "✗"
+                  : "ℹ"}
             </span>
-            <span className="admin-dashboard-notification-message">{notification.message}</span>
+            <span className="admin-dashboard-notification-message">
+              {notification.message}
+            </span>
           </div>
-          <button 
+          <button
             className="admin-dashboard-notification-close"
             onClick={() => setNotification(null)}
           >
@@ -310,11 +343,15 @@ const AdminStudentDashboard = () => {
       <header className="admin-dashboard-header">
         <div className="admin-dashboard-header-content">
           <div className="admin-dashboard-header-text">
-            <h1 className="admin-dashboard-title">Student Analytics Dashboard</h1>
-            <p className="admin-dashboard-subtitle">Comprehensive overview of student performance and progress</p>
+            <h1 className="admin-dashboard-title">
+              Student Analytics Dashboard
+            </h1>
+            <p className="admin-dashboard-subtitle">
+              Comprehensive overview of student performance and progress
+            </p>
           </div>
           <div className="admin-dashboard-header-actions">
-            <button 
+            <button
               className="admin-dashboard-refresh-btn"
               onClick={fetchStudents}
               disabled={loading}
@@ -323,7 +360,9 @@ const AdminStudentDashboard = () => {
               Refresh Data
             </button>
             <button className="admin-dashboard-export-btn">
-              <span className="admin-dashboard-export-icon" onClick={exportPDF}>📥</span>
+              <span className="admin-dashboard-export-icon" onClick={exportPDF}>
+                📥
+              </span>
               Export
             </button>
           </div>
@@ -339,7 +378,6 @@ const AdminStudentDashboard = () => {
           <div className="admin-dashboard-stat-content">
             <h3 className="admin-dashboard-stat-value">{stats.total}</h3>
             <p className="admin-dashboard-stat-label">Total Students</p>
-            
           </div>
         </div>
 
@@ -349,8 +387,10 @@ const AdminStudentDashboard = () => {
           </div>
           <div className="admin-dashboard-stat-content">
             <h3 className="admin-dashboard-stat-value">{stats.active}</h3>
-       
-            <span className="admin-dashboard-stat-change">{Math.round((stats.active/stats.total)*100)}% active rate</span>
+
+            <span className="admin-dashboard-stat-change">
+              {Math.round((stats.active / stats.total) * 100)}% active rate
+            </span>
           </div>
         </div>
 
@@ -359,9 +399,13 @@ const AdminStudentDashboard = () => {
             <div className="admin-dashboard-stat-icon">🏫</div>
           </div>
           <div className="admin-dashboard-stat-content">
-            <h3 className="admin-dashboard-stat-value">{stats.totalPrograms}</h3>
+            <h3 className="admin-dashboard-stat-value">
+              {stats.totalPrograms}
+            </h3>
             <p className="admin-dashboard-stat-label">Programs</p>
-            <span className="admin-dashboard-stat-change">Across all departments</span>
+            <span className="admin-dashboard-stat-change">
+              Across all departments
+            </span>
           </div>
         </div>
 
@@ -390,7 +434,7 @@ const AdminStudentDashboard = () => {
               className="admin-dashboard-search-input"
             />
             {searchTerm && (
-              <button 
+              <button
                 className="admin-dashboard-clear-search"
                 onClick={() => setSearchTerm("")}
               >
@@ -399,18 +443,22 @@ const AdminStudentDashboard = () => {
             )}
           </div>
         </div>
-        
+
         <div className="admin-dashboard-filters-container">
           <div className="admin-dashboard-filter-group">
-            <label className="admin-dashboard-filter-label">Filter by Program</label>
-            <select 
-              value={filterBy} 
+            <label className="admin-dashboard-filter-label">
+              Filter by Program
+            </label>
+            <select
+              value={filterBy}
               onChange={(e) => setFilterBy(e.target.value)}
               className="admin-dashboard-filter-select"
             >
               <option value="all">All Programs</option>
-              {uniquePrograms.map(program => (
-                <option key={program} value={program}>{program}</option>
+              {uniquePrograms.map((program) => (
+                <option key={program} value={program}>
+                  {program}
+                </option>
               ))}
             </select>
           </div>
@@ -418,16 +466,16 @@ const AdminStudentDashboard = () => {
           <div className="admin-dashboard-filter-group">
             <label className="admin-dashboard-filter-label">Sort by</label>
             <div className="admin-dashboard-sort-buttons">
-              {['name', 'usn', 'program', 'batch'].map(field => (
+              {["name", "usn", "program", "batch"].map((field) => (
                 <button
                   key={field}
-                  className={`admin-dashboard-sort-btn ${sortBy === field ? 'active' : ''}`}
+                  className={`admin-dashboard-sort-btn ${sortBy === field ? "active" : ""}`}
                   onClick={() => handleSort(field)}
                 >
                   {field.charAt(0).toUpperCase() + field.slice(1)}
                   {sortBy === field && (
                     <span className="admin-dashboard-sort-arrow">
-                      {sortOrder === 'asc' ? '↑' : '↓'}
+                      {sortOrder === "asc" ? "↑" : "↓"}
                     </span>
                   )}
                 </button>
@@ -454,10 +502,12 @@ const AdminStudentDashboard = () => {
             <div className="admin-dashboard-empty-icon">👨‍🎓</div>
             <h3 className="admin-dashboard-empty-title">No students found</h3>
             <p className="admin-dashboard-empty-message">
-              {searchTerm ? "Try adjusting your search or filter criteria" : "No students available in the system"}
+              {searchTerm
+                ? "Try adjusting your search or filter criteria"
+                : "No students available in the system"}
             </p>
             {searchTerm && (
-              <button 
+              <button
                 className="admin-dashboard-clear-filters-btn"
                 onClick={() => {
                   setSearchTerm("");
@@ -471,30 +521,32 @@ const AdminStudentDashboard = () => {
         ) : (
           <div className="admin-dashboard-student-grid">
             {filteredAndSortedStudents.map((student) => (
-              <div 
+              <div
                 key={student._id}
                 className={`admin-dashboard-student-card ${
-                  selectedStudent?._id === student._id ? 'admin-dashboard-student-card-selected' : ''
+                  selectedStudent?._id === student._id
+                    ? "admin-dashboard-student-card-selected"
+                    : ""
                 }`}
                 onClick={() => loadStudentDetails(student)}
               >
                 <div className="admin-dashboard-student-card-header">
                   <div className="admin-dashboard-student-avatar">
-                    {student.profilePic ? (
-                      <img 
-                        src={student.profilePic} 
-                        alt={student.name}
-                        className="admin-dashboard-student-avatar-img"
-                      />
-                    ) : (
-                      <div className="admin-dashboard-student-avatar-fallback">
-                        {student.name?.charAt(0)?.toUpperCase() || "?"}
-                      </div>
-                    )}
+                    <img
+                      src={student?.profilePic?.url || "/default_user.jpeg"}
+                      alt="Profile"
+                      className="admin-dashboard-student-avatar-img"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null; // prevent infinite loop
+                        e.currentTarget.src = "/default_user.jpeg";
+                      }}
+                    />
+
                     <div className="admin-dashboard-student-status-indicator"></div>
                   </div>
+
                   <div className="admin-dashboard-student-batch-badge">
-                    {student.batch || 'N/A'}
+                    {student.batch || "N/A"}
                   </div>
                 </div>
 
@@ -502,9 +554,13 @@ const AdminStudentDashboard = () => {
                   <h3 className="admin-dashboard-student-name">
                     {student.name || "Unnamed Student"}
                   </h3>
-                  <p className="admin-dashboard-student-usn">{student.usn || "No USN"}</p>
-                  <p className="admin-dashboard-student-email">{student.email || "No email"}</p>
-                  
+                  <p className="admin-dashboard-student-usn">
+                    {student.usn || "No USN"}
+                  </p>
+                  <p className="admin-dashboard-student-email">
+                    {student.email || "No email"}
+                  </p>
+
                   <div className="admin-dashboard-student-tags">
                     <span className="admin-dashboard-student-tag admin-dashboard-student-tag-program">
                       {student.programName || "No Program"}
@@ -520,7 +576,9 @@ const AdminStudentDashboard = () => {
                 <div className="admin-dashboard-student-card-footer">
                   <button className="admin-dashboard-student-view-btn">
                     View Details
-                    <span className="admin-dashboard-student-view-arrow">→</span>
+                    <span className="admin-dashboard-student-view-arrow">
+                      →
+                    </span>
                   </button>
                 </div>
               </div>
@@ -532,15 +590,18 @@ const AdminStudentDashboard = () => {
       {/* Student Details Panel */}
       {selectedStudent && (
         <div className="admin-dashboard-details-panel">
-          <div className="admin-dashboard-details-panel-overlay" onClick={() => setSelectedStudent(null)}></div>
+          <div
+            className="admin-dashboard-details-panel-overlay"
+            onClick={() => setSelectedStudent(null)}
+          ></div>
           <div className="admin-dashboard-details-panel-content">
             <div className="admin-dashboard-details-panel-header">
               <div className="admin-dashboard-details-header-content">
                 <div className="admin-dashboard-details-header-profile">
                   <div className="admin-dashboard-details-avatar">
                     {selectedStudent.profilePic ? (
-                      <img 
-                        src={selectedStudent.profilePic} 
+                      <img
+                        src={selectedStudent.profilePic}
                         alt={selectedStudent.name}
                         className="admin-dashboard-details-avatar-img"
                       />
@@ -551,15 +612,23 @@ const AdminStudentDashboard = () => {
                     )}
                   </div>
                   <div className="admin-dashboard-details-header-info">
-                    <h2 className="admin-dashboard-details-student-name">{selectedStudent.name}</h2>
+                    <h2 className="admin-dashboard-details-student-name">
+                      {selectedStudent.name}
+                    </h2>
                     <div className="admin-dashboard-details-header-meta">
-                      <span className="admin-dashboard-details-usn">{selectedStudent.usn}</span>
-                      <span className="admin-dashboard-details-program">{selectedStudent.programName}</span>
-                      <span className="admin-dashboard-details-batch">{selectedStudent.batch}</span>
+                      <span className="admin-dashboard-details-usn">
+                        {selectedStudent.usn}
+                      </span>
+                      <span className="admin-dashboard-details-program">
+                        {selectedStudent.programName}
+                      </span>
+                      <span className="admin-dashboard-details-batch">
+                        {selectedStudent.batch}
+                      </span>
                     </div>
                   </div>
                 </div>
-                <button 
+                <button
                   className="admin-dashboard-details-close-btn"
                   onClick={() => setSelectedStudent(null)}
                 >
@@ -570,7 +639,18 @@ const AdminStudentDashboard = () => {
 
             <div className="admin-dashboard-details-panel-body">
               {detailsLoading || selectedStudent.loading ? (
-                <div style={{minHeight:"200px",height:"100%",width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}><Loader/></div>
+                <div
+                  style={{
+                    minHeight: "200px",
+                    height: "100%",
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Loader />
+                </div>
               ) : (
                 <>
                   {/* Quick Stats */}
@@ -581,7 +661,9 @@ const AdminStudentDashboard = () => {
                         <span className="admin-dashboard-quick-stat-value">
                           {selectedStudent.homework?.length || 0}
                         </span>
-                        <span className="admin-dashboard-quick-stat-label">Assignments</span>
+                        <span className="admin-dashboard-quick-stat-label">
+                          Assignments
+                        </span>
                       </div>
                     </div>
                     <div className="admin-dashboard-quick-stat">
@@ -590,7 +672,9 @@ const AdminStudentDashboard = () => {
                         <span className="admin-dashboard-quick-stat-value">
                           {calculateAverageScore(selectedStudent.examHistory)}%
                         </span>
-                        <span className="admin-dashboard-quick-stat-label">Avg. Score</span>
+                        <span className="admin-dashboard-quick-stat-label">
+                          Avg. Score
+                        </span>
                       </div>
                     </div>
                     <div className="admin-dashboard-quick-stat">
@@ -599,27 +683,42 @@ const AdminStudentDashboard = () => {
                         <span className="admin-dashboard-quick-stat-value">
                           {selectedStudent.interviewScores?.length || 0}
                         </span>
-                        <span className="admin-dashboard-quick-stat-label">Interviews</span>
+                        <span className="admin-dashboard-quick-stat-label">
+                          Interviews
+                        </span>
                       </div>
                     </div>
                     <div className="admin-dashboard-quick-stat">
                       <div className="admin-dashboard-quick-stat-icon">📅</div>
                       <div className="admin-dashboard-quick-stat-info">
                         <span className="admin-dashboard-quick-stat-value">
-                          {calculateAttendancePercentage(selectedStudent.attendance)}%
+                          {calculateAttendancePercentage(
+                            selectedStudent.attendance,
+                          )}
+                          %
                         </span>
-                        <span className="admin-dashboard-quick-stat-label">Attendance</span>
+                        <span className="admin-dashboard-quick-stat-label">
+                          Attendance
+                        </span>
                       </div>
                     </div>
                   </div>
 
                   {/* Tabs */}
                   <div className="admin-dashboard-details-tabs">
-                    {['overview', 'homework', 'exams', 'interviews', 'attendance'].map(tab => (
+                    {[
+                      "overview",
+                      "homework",
+                      "exams",
+                      "interviews",
+                      "attendance",
+                    ].map((tab) => (
                       <button
                         key={tab}
                         className={`admin-dashboard-details-tab ${
-                          activeTab === tab ? 'admin-dashboard-details-tab-active' : ''
+                          activeTab === tab
+                            ? "admin-dashboard-details-tab-active"
+                            : ""
                         }`}
                         onClick={() => setActiveTab(tab)}
                       >
@@ -630,169 +729,242 @@ const AdminStudentDashboard = () => {
 
                   {/* Tab Content */}
                   <div className="admin-dashboard-details-tab-content">
-                    {activeTab === 'overview' && (
+                    {activeTab === "overview" && (
                       <div className="admin-dashboard-overview-grid">
                         <div className="admin-dashboard-overview-card">
-                          <h3 className="admin-dashboard-overview-card-title">Recent Homework</h3>
+                          <h3 className="admin-dashboard-overview-card-title">
+                            Recent Homework
+                          </h3>
                           {selectedStudent.homework?.length > 0 ? (
                             <div className="admin-dashboard-overview-list">
-                              {selectedStudent.homework.slice(0, 4).map((hw, i) => (
-                                <div key={i} className="admin-dashboard-overview-item">
-                                  <div className="admin-dashboard-overview-item-main">
-                                    <span className="admin-dashboard-overview-item-title">
-                                      {hw?.homeworkId?.chapterName || `Assignment ${i + 1}`}
-                                    </span>
-                                    <span className={`admin-dashboard-overview-item-status admin-dashboard-status-${hw?.status?.toLowerCase()}`}>
-                                      {hw?.status || "Pending"}
-                                    </span>
+                              {selectedStudent.homework
+                                .slice(0, 4)
+                                .map((hw, i) => (
+                                  <div
+                                    key={i}
+                                    className="admin-dashboard-overview-item"
+                                  >
+                                    <div className="admin-dashboard-overview-item-main">
+                                      <span className="admin-dashboard-overview-item-title">
+                                        {hw?.homeworkId?.chapterName ||
+                                          `Assignment ${i + 1}`}
+                                      </span>
+                                      <span
+                                        className={`admin-dashboard-overview-item-status admin-dashboard-status-${hw?.status?.toLowerCase()}`}
+                                      >
+                                        {hw?.status || "Pending"}
+                                      </span>
+                                    </div>
+                                    <div className="admin-dashboard-overview-item-meta">
+                                      <span className="admin-dashboard-overview-item-date">
+                                        Submitted: {formatDate(hw?.submittedAt)}
+                                      </span>
+                                    </div>
                                   </div>
-                                  <div className="admin-dashboard-overview-item-meta">
-                                    <span className="admin-dashboard-overview-item-date">
-                                      Submitted: {formatDate(hw?.submittedAt)}
-                                    </span>
-                                  </div>
-                                </div>
-                              ))}
+                                ))}
                             </div>
                           ) : (
-                            <p className="admin-dashboard-no-data">No homework data available</p>
+                            <p className="admin-dashboard-no-data">
+                              No homework data available
+                            </p>
                           )}
                         </div>
 
                         <div className="admin-dashboard-overview-card">
-                          <h3 className="admin-dashboard-overview-card-title">Exam Performance</h3>
+                          <h3 className="admin-dashboard-overview-card-title">
+                            Exam Performance
+                          </h3>
                           {selectedStudent.examHistory?.length > 0 ? (
                             <div className="admin-dashboard-overview-list">
-                              {selectedStudent.examHistory.slice(0, 4).map((exam, i) => (
-                                <div key={i} className="admin-dashboard-overview-item">
-                                  <div className="admin-dashboard-overview-item-main">
-                                    <span className="admin-dashboard-overview-item-title">
-                                      {exam?.exam?.examTitle || `Exam ${i + 1}`}
-                                    </span>
-                                    <span className="admin-dashboard-overview-item-score">
-                                      {exam?.percentage || 0}%
-                                    </span>
+                              {selectedStudent.examHistory
+                                .slice(0, 4)
+                                .map((exam, i) => (
+                                  <div
+                                    key={i}
+                                    className="admin-dashboard-overview-item"
+                                  >
+                                    <div className="admin-dashboard-overview-item-main">
+                                      <span className="admin-dashboard-overview-item-title">
+                                        {exam?.exam?.examTitle ||
+                                          `Exam ${i + 1}`}
+                                      </span>
+                                      <span className="admin-dashboard-overview-item-score">
+                                        {exam?.percentage || 0}%
+                                      </span>
+                                    </div>
+                                    <div className="admin-dashboard-overview-progress">
+                                      <div
+                                        className="admin-dashboard-overview-progress-bar"
+                                        style={{
+                                          width: `${exam?.percentage || 0}%`,
+                                        }}
+                                      ></div>
+                                    </div>
                                   </div>
-                                  <div className="admin-dashboard-overview-progress">
-                                    <div 
-                                      className="admin-dashboard-overview-progress-bar"
-                                      style={{ width: `${exam?.percentage || 0}%` }}
-                                    ></div>
-                                  </div>
-                                </div>
-                              ))}
+                                ))}
                             </div>
                           ) : (
-                            <p className="admin-dashboard-no-data">No exam history available</p>
+                            <p className="admin-dashboard-no-data">
+                              No exam history available
+                            </p>
                           )}
                         </div>
 
                         <div className="admin-dashboard-overview-card">
-                          <h3 className="admin-dashboard-overview-card-title">Interview Scores</h3>
+                          <h3 className="admin-dashboard-overview-card-title">
+                            Interview Scores
+                          </h3>
                           {selectedStudent.interviewScores?.length > 0 ? (
                             <div className="admin-dashboard-overview-list">
-                              {selectedStudent.interviewScores.slice(0, 4).map((score, i) => (
-                                <div key={i} className="admin-dashboard-overview-item">
-                                  <div className="admin-dashboard-overview-item-main">
-                                    <span className="admin-dashboard-overview-item-title">
-                                      {score?.topicId?.name || `Topic ${i + 1}`}
-                                    </span>
-                                    <span className="admin-dashboard-overview-item-score">
-                                      {score?.score || 0}/{score?.total || 100}
-                                    </span>
+                              {selectedStudent.interviewScores
+                                .slice(0, 4)
+                                .map((score, i) => (
+                                  <div
+                                    key={i}
+                                    className="admin-dashboard-overview-item"
+                                  >
+                                    <div className="admin-dashboard-overview-item-main">
+                                      <span className="admin-dashboard-overview-item-title">
+                                        {score?.topicId?.name ||
+                                          `Topic ${i + 1}`}
+                                      </span>
+                                      <span className="admin-dashboard-overview-item-score">
+                                        {score?.score || 0}/
+                                        {score?.total || 100}
+                                      </span>
+                                    </div>
+                                    <div className="admin-dashboard-overview-item-feedback">
+                                      {score?.feedback ||
+                                        "No feedback provided"}
+                                    </div>
                                   </div>
-                                  <div className="admin-dashboard-overview-item-feedback">
-                                    {score?.feedback || "No feedback provided"}
-                                  </div>
-                                </div>
-                              ))}
+                                ))}
                             </div>
                           ) : (
-                            <p className="admin-dashboard-no-data">No interview scores available</p>
+                            <p className="admin-dashboard-no-data">
+                              No interview scores available
+                            </p>
                           )}
                         </div>
 
                         <div className="admin-dashboard-overview-card">
-                          <h3 className="admin-dashboard-overview-card-title">Attendance Summary</h3>
+                          <h3 className="admin-dashboard-overview-card-title">
+                            Attendance Summary
+                          </h3>
                           {selectedStudent.attendance?.length > 0 ? (
                             <>
                               <div className="admin-dashboard-attendance-stats">
                                 <div className="admin-dashboard-attendance-stat">
-                                  <span className="admin-dashboard-attendance-stat-label">Present</span>
+                                  <span className="admin-dashboard-attendance-stat-label">
+                                    Present
+                                  </span>
                                   <span className="admin-dashboard-attendance-stat-value admin-dashboard-attendance-present">
-                                    {selectedStudent.attendance.filter(a => a?.status === 'present').length}
+                                    {
+                                      selectedStudent.attendance.filter(
+                                        (a) => a?.status === "present",
+                                      ).length
+                                    }
                                   </span>
                                 </div>
                                 <div className="admin-dashboard-attendance-stat">
-                                  <span className="admin-dashboard-attendance-stat-label">Absent</span>
+                                  <span className="admin-dashboard-attendance-stat-label">
+                                    Absent
+                                  </span>
                                   <span className="admin-dashboard-attendance-stat-value admin-dashboard-attendance-absent">
-                                    {selectedStudent.attendance.filter(a => a?.status === 'absent').length}
+                                    {
+                                      selectedStudent.attendance.filter(
+                                        (a) => a?.status === "absent",
+                                      ).length
+                                    }
                                   </span>
                                 </div>
                                 <div className="admin-dashboard-attendance-stat">
-                                  <span className="admin-dashboard-attendance-stat-label">Total</span>
+                                  <span className="admin-dashboard-attendance-stat-label">
+                                    Total
+                                  </span>
                                   <span className="admin-dashboard-attendance-stat-value">
                                     {selectedStudent.attendance.length}
                                   </span>
                                 </div>
                               </div>
                               <div className="admin-dashboard-attendance-chart">
-                                <div 
+                                <div
                                   className="admin-dashboard-attendance-chart-fill"
-                                  style={{ 
-                                    width: `${calculateAttendancePercentage(selectedStudent.attendance)}%` 
+                                  style={{
+                                    width: `${calculateAttendancePercentage(selectedStudent.attendance)}%`,
                                   }}
                                 ></div>
                               </div>
                               <div className="admin-dashboard-attendance-percentage">
-                                {calculateAttendancePercentage(selectedStudent.attendance)}% Attendance Rate
+                                {calculateAttendancePercentage(
+                                  selectedStudent.attendance,
+                                )}
+                                % Attendance Rate
                               </div>
                             </>
                           ) : (
-                            <p className="admin-dashboard-no-data">No attendance records available</p>
+                            <p className="admin-dashboard-no-data">
+                              No attendance records available
+                            </p>
                           )}
                         </div>
                       </div>
                     )}
 
-                    {activeTab === 'homework' && (
+                    {activeTab === "homework" && (
                       <div className="admin-dashboard-full-list-section">
-                        <h3 className="admin-dashboard-full-list-title">All Homework Assignments</h3>
+                        <h3 className="admin-dashboard-full-list-title">
+                          All Homework Assignments
+                        </h3>
                         {selectedStudent.homework?.length > 0 ? (
                           <div className="admin-dashboard-homework-grid">
                             {selectedStudent.homework.map((hw, i) => (
-                              <div key={i} className="admin-dashboard-homework-card">
+                              <div
+                                key={i}
+                                className="admin-dashboard-homework-card"
+                              >
                                 <div className="admin-dashboard-homework-card-header">
                                   <h4 className="admin-dashboard-homework-card-title">
-                                    {hw?.homeworkId?.chapterName || `Assignment ${i + 1}`}
+                                    {hw?.homeworkId?.chapterName ||
+                                      `Assignment ${i + 1}`}
                                   </h4>
-                                  <span className={`admin-dashboard-homework-status admin-dashboard-status-${hw?.status?.toLowerCase()}`}>
+                                  <span
+                                    className={`admin-dashboard-homework-status admin-dashboard-status-${hw?.status?.toLowerCase()}`}
+                                  >
                                     {hw?.status || "Pending"}
                                   </span>
                                 </div>
                                 <p className="admin-dashboard-homework-description">
-                                  {hw?.homeworkId?.description || "No description available"}
+                                  {hw?.homeworkId?.description ||
+                                    "No description available"}
                                 </p>
                                 <div className="admin-dashboard-homework-card-footer">
                                   <span className="admin-dashboard-homework-due-date">
-                                    <strong>Due:</strong> {formatDate(hw?.dueDate) || "No due date"}
+                                    <strong>Due:</strong>{" "}
+                                    {formatDate(hw?.dueDate) || "No due date"}
                                   </span>
                                   <span className="admin-dashboard-homework-submitted">
-                                    <strong>Submitted:</strong> {formatDate(hw?.submittedAt) || "Not submitted"}
+                                    <strong>Submitted:</strong>{" "}
+                                    {formatDate(hw?.submittedAt) ||
+                                      "Not submitted"}
                                   </span>
                                 </div>
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <p className="admin-dashboard-no-data">No homework assignments found</p>
+                          <p className="admin-dashboard-no-data">
+                            No homework assignments found
+                          </p>
                         )}
                       </div>
                     )}
 
-                    {activeTab === 'exams' && (
+                    {activeTab === "exams" && (
                       <div className="admin-dashboard-full-list-section">
-                        <h3 className="admin-dashboard-full-list-title">Exam History</h3>
+                        <h3 className="admin-dashboard-full-list-title">
+                          Exam History
+                        </h3>
                         {selectedStudent.examHistory?.length > 0 ? (
                           <div className="admin-dashboard-exams-table-container">
                             <table className="admin-dashboard-exams-table">
@@ -807,7 +979,10 @@ const AdminStudentDashboard = () => {
                               </thead>
                               <tbody>
                                 {selectedStudent.examHistory.map((exam, i) => (
-                                  <tr key={i} className="admin-dashboard-exams-table-row">
+                                  <tr
+                                    key={i}
+                                    className="admin-dashboard-exams-table-row"
+                                  >
                                     <td className="admin-dashboard-exam-name">
                                       {exam?.exam?.examTitle || `Exam ${i + 1}`}
                                     </td>
@@ -815,7 +990,8 @@ const AdminStudentDashboard = () => {
                                       {formatDate(exam?.createdAt)}
                                     </td>
                                     <td className="admin-dashboard-exam-score">
-                                      {exam?.score || 0}/{exam?.totalScore || 100}
+                                      {exam?.score || 0}/
+                                      {exam?.totalScore || 100}
                                     </td>
                                     <td className="admin-dashboard-exam-percentage">
                                       <div className="admin-dashboard-percentage-container">
@@ -823,18 +999,26 @@ const AdminStudentDashboard = () => {
                                           {exam?.percentage || 0}%
                                         </span>
                                         <div className="admin-dashboard-percentage-bar">
-                                          <div 
+                                          <div
                                             className="admin-dashboard-percentage-fill"
-                                            style={{ width: `${exam?.percentage || 0}%` }}
+                                            style={{
+                                              width: `${exam?.percentage || 0}%`,
+                                            }}
                                           ></div>
                                         </div>
                                       </div>
                                     </td>
                                     <td className="admin-dashboard-exam-status">
-                                      <span className={`admin-dashboard-exam-status-badge ${
-                                        (exam?.percentage || 0) >= 60 ? 'admin-dashboard-status-passed' : 'admin-dashboard-status-failed'
-                                      }`}>
-                                        {(exam?.percentage || 0) >= 60 ? 'Passed' : 'Failed'}
+                                      <span
+                                        className={`admin-dashboard-exam-status-badge ${
+                                          (exam?.percentage || 0) >= 60
+                                            ? "admin-dashboard-status-passed"
+                                            : "admin-dashboard-status-failed"
+                                        }`}
+                                      >
+                                        {(exam?.percentage || 0) >= 60
+                                          ? "Passed"
+                                          : "Failed"}
                                       </span>
                                     </td>
                                   </tr>
@@ -843,55 +1027,80 @@ const AdminStudentDashboard = () => {
                             </table>
                           </div>
                         ) : (
-                          <p className="admin-dashboard-no-data">No exam attempts found</p>
+                          <p className="admin-dashboard-no-data">
+                            No exam attempts found
+                          </p>
                         )}
                       </div>
                     )}
 
-                    {activeTab === 'interviews' && (
+                    {activeTab === "interviews" && (
                       <div className="admin-dashboard-full-list-section">
-                        <h3 className="admin-dashboard-full-list-title">Interview Performance</h3>
+                        <h3 className="admin-dashboard-full-list-title">
+                          Interview Performance
+                        </h3>
                         {selectedStudent.interviewScores?.length > 0 ? (
                           <div className="admin-dashboard-interviews-grid">
                             {selectedStudent.interviewScores.map((score, i) => (
-                              <div key={i} className="admin-dashboard-interview-card">
+                              <div
+                                key={i}
+                                className="admin-dashboard-interview-card"
+                              >
                                 <div className="admin-dashboard-interview-card-header">
                                   <h4 className="admin-dashboard-interview-card-title">
-                                    {score?.topicId?.name || `Interview ${i + 1}`}
+                                    {score?.topicId?.name ||
+                                      `Interview ${i + 1}`}
                                   </h4>
                                   <div className="admin-dashboard-interview-score-display">
                                     <span className="admin-dashboard-interview-score-value">
                                       {score?.score || 0}/{score?.total || 100}
                                     </span>
                                     <div className="admin-dashboard-interview-score-percentage">
-                                      {Math.round(((score?.score || 0) / (score?.total || 100)) * 100)}%
+                                      {Math.round(
+                                        ((score?.score || 0) /
+                                          (score?.total || 100)) *
+                                          100,
+                                      )}
+                                      %
                                     </div>
                                   </div>
                                 </div>
                                 <div className="admin-dashboard-interview-card-body">
                                   <p className="admin-dashboard-interview-date">
-                                    <strong>Date:</strong> {formatDate(score?.createdAt)}
+                                    <strong>Date:</strong>{" "}
+                                    {formatDate(score?.createdAt)}
                                   </p>
                                   <div className="admin-dashboard-interview-feedback">
                                     <strong>Feedback:</strong>
-                                    <p>{score?.feedback || "No specific feedback provided."}</p>
+                                    <p>
+                                      {score?.feedback ||
+                                        "No specific feedback provided."}
+                                    </p>
                                   </div>
                                   <div className="admin-dashboard-interview-ratings">
                                     <div className="admin-dashboard-interview-rating">
-                                      <span className="admin-dashboard-interview-rating-label">Communication</span>
+                                      <span className="admin-dashboard-interview-rating-label">
+                                        Communication
+                                      </span>
                                       <div className="admin-dashboard-interview-rating-bar">
-                                        <div 
+                                        <div
                                           className="admin-dashboard-interview-rating-fill"
-                                          style={{ width: `${score?.communication || 0}%` }}
+                                          style={{
+                                            width: `${score?.communication || 0}%`,
+                                          }}
                                         ></div>
                                       </div>
                                     </div>
                                     <div className="admin-dashboard-interview-rating">
-                                      <span className="admin-dashboard-interview-rating-label">Technical</span>
+                                      <span className="admin-dashboard-interview-rating-label">
+                                        Technical
+                                      </span>
                                       <div className="admin-dashboard-interview-rating-bar">
-                                        <div 
+                                        <div
                                           className="admin-dashboard-interview-rating-fill"
-                                          style={{ width: `${score?.technical || 0}%` }}
+                                          style={{
+                                            width: `${score?.technical || 0}%`,
+                                          }}
                                         ></div>
                                       </div>
                                     </div>
@@ -901,43 +1110,66 @@ const AdminStudentDashboard = () => {
                             ))}
                           </div>
                         ) : (
-                          <p className="admin-dashboard-no-data">No interview scores found</p>
+                          <p className="admin-dashboard-no-data">
+                            No interview scores found
+                          </p>
                         )}
                       </div>
                     )}
 
-                    {activeTab === 'attendance' && (
+                    {activeTab === "attendance" && (
                       <div className="admin-dashboard-full-list-section">
-                        <h3 className="admin-dashboard-full-list-title">Attendance Records</h3>
+                        <h3 className="admin-dashboard-full-list-title">
+                          Attendance Records
+                        </h3>
                         {selectedStudent.attendance?.length > 0 ? (
                           <>
                             <div className="admin-dashboard-attendance-overview">
                               <div className="admin-dashboard-attendance-overview-card admin-dashboard-attendance-overview-total">
-                                <span className="admin-dashboard-attendance-overview-label">Total Sessions</span>
+                                <span className="admin-dashboard-attendance-overview-label">
+                                  Total Sessions
+                                </span>
                                 <span className="admin-dashboard-attendance-overview-value">
                                   {selectedStudent.attendance.length}
                                 </span>
                               </div>
                               <div className="admin-dashboard-attendance-overview-card admin-dashboard-attendance-overview-present">
-                                <span className="admin-dashboard-attendance-overview-label">Present</span>
+                                <span className="admin-dashboard-attendance-overview-label">
+                                  Present
+                                </span>
                                 <span className="admin-dashboard-attendance-overview-value">
-                                  {selectedStudent.attendance.filter(a => a?.status === 'present').length}
+                                  {
+                                    selectedStudent.attendance.filter(
+                                      (a) => a?.status === "present",
+                                    ).length
+                                  }
                                 </span>
                               </div>
                               <div className="admin-dashboard-attendance-overview-card admin-dashboard-attendance-overview-absent">
-                                <span className="admin-dashboard-attendance-overview-label">Absent</span>
+                                <span className="admin-dashboard-attendance-overview-label">
+                                  Absent
+                                </span>
                                 <span className="admin-dashboard-attendance-overview-value">
-                                  {selectedStudent.attendance.filter(a => a?.status === 'absent').length}
+                                  {
+                                    selectedStudent.attendance.filter(
+                                      (a) => a?.status === "absent",
+                                    ).length
+                                  }
                                 </span>
                               </div>
                               <div className="admin-dashboard-attendance-overview-card admin-dashboard-attendance-overview-rate">
-                                <span className="admin-dashboard-attendance-overview-label">Attendance Rate</span>
+                                <span className="admin-dashboard-attendance-overview-label">
+                                  Attendance Rate
+                                </span>
                                 <span className="admin-dashboard-attendance-overview-value">
-                                  {calculateAttendancePercentage(selectedStudent.attendance)}%
+                                  {calculateAttendancePercentage(
+                                    selectedStudent.attendance,
+                                  )}
+                                  %
                                 </span>
                               </div>
                             </div>
-                            
+
                             <div className="admin-dashboard-attendance-table-container">
                               <table className="admin-dashboard-attendance-table">
                                 <thead>
@@ -949,32 +1181,39 @@ const AdminStudentDashboard = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                   
-                                  {selectedStudent.attendance.map((record, i) => (
-                                    <tr key={i} className="admin-dashboard-attendance-table-row">
-                                      <td className="admin-dashboard-attendance-date">
-                                        {formatDate(record?.date)}
-                                      </td>
-                                      <td className="admin-dashboard-attendance-session">
-                                        
-                                        {record?.session || "N/A"}
-                                      </td>
-                                      <td className="admin-dashboard-attendance-status">
-                                        <span className={`admin-dashboard-attendance-status-badge admin-dashboard-attendance-status-${record?.status}`}>
-                                          {record?.status || "Unknown"}
-                                        </span>
-                                      </td>
-                                      <td className="admin-dashboard-attendance-remarks">
-                                        {record?.remarks || "No remarks"}
-                                      </td>
-                                    </tr>
-                                  ))}
+                                  {selectedStudent.attendance.map(
+                                    (record, i) => (
+                                      <tr
+                                        key={i}
+                                        className="admin-dashboard-attendance-table-row"
+                                      >
+                                        <td className="admin-dashboard-attendance-date">
+                                          {formatDate(record?.date)}
+                                        </td>
+                                        <td className="admin-dashboard-attendance-session">
+                                          {record?.session || "N/A"}
+                                        </td>
+                                        <td className="admin-dashboard-attendance-status">
+                                          <span
+                                            className={`admin-dashboard-attendance-status-badge admin-dashboard-attendance-status-${record?.status}`}
+                                          >
+                                            {record?.status || "Unknown"}
+                                          </span>
+                                        </td>
+                                        <td className="admin-dashboard-attendance-remarks">
+                                          {record?.remarks || "No remarks"}
+                                        </td>
+                                      </tr>
+                                    ),
+                                  )}
                                 </tbody>
                               </table>
                             </div>
                           </>
                         ) : (
-                          <p className="admin-dashboard-no-data">No attendance records found</p>
+                          <p className="admin-dashboard-no-data">
+                            No attendance records found
+                          </p>
                         )}
                       </div>
                     )}

@@ -179,7 +179,15 @@ const StudentDelete = () => {
       <div className="controls-section">
         <div className="stats-card">
           <div className="stats-icon">
-            <i className="fas fa-users"></i>
+            <img
+        src={"/default_user.jpeg"}
+        alt="Profile"
+        className="student-avatar"
+        onError={(e) => {
+          e.currentTarget.onerror = null; // prevent infinite loop
+          e.currentTarget.src = "/default_user.jpeg";
+        }}
+      />
           </div>
           <div className="stats-info">
             <h3>{students.length}</h3>
@@ -240,7 +248,15 @@ const StudentDelete = () => {
                       <td>
                         <div className="student-name-cell">
                           <div className="avatar">
-                            {getSafeValue(student.name).charAt(0).toUpperCase()}
+                            <img
+        src={student?.profilePic?.url || "/default_user.jpeg"}
+        alt="Profile"
+        className="student-avatar profilepic"
+        onError={(e) => {
+          e.currentTarget.onerror = null; // prevent infinite loop
+          e.currentTarget.src = "/default_user.jpeg";
+        }}
+      />
                           </div>
                           <div className="name-info">
                             <span className="name">{getSafeValue(student.name)}</span>

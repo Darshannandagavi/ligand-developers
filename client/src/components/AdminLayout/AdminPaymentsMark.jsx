@@ -349,7 +349,7 @@
 //           </div>
 
 //           <div className="admin-payments-filter-actions">
-//             <button 
+//             <button
 //               className="admin-payments-load-btn"
 //               onClick={fetchRows}
 //               disabled={loading}
@@ -363,7 +363,7 @@
 //                 '📥 Load Students'
 //               )}
 //             </button>
-//             <button 
+//             <button
 //               className="admin-payments-clear-btn"
 //               onClick={() => {
 //                 setFilters({
@@ -521,7 +521,7 @@
 //                     <td className="admin-payments-cell-paid">
 //                       <div className="admin-payments-fee-progress">
 //                         <div className="admin-payments-fee-progress-bar">
-//                           <div 
+//                           <div
 //                             className="admin-payments-fee-progress-fill"
 //                             style={{ width: `${paymentProgress}%` }}
 //                           ></div>
@@ -544,15 +544,15 @@
 
 //                     <td className="admin-payments-cell-actions">
 //                       <div className="admin-payments-action-buttons">
-//                         <button 
+//                         <button
 //                           className="admin-payments-action-history"
 //                           onClick={() => openHistory(r.groupId, r.student._id, r.student.name)}
 //                         >
 //                           📜 History
 //                         </button>
-                        
+
 //                         {!isPaid && (
-//                           <button 
+//                           <button
 //                             className="admin-payments-action-pay"
 //                             onClick={() => {
 //                               // Toggle payment form visibility
@@ -587,7 +587,7 @@
 //                           <div className="admin-payments-form-header">
 //                             <h4>Record Payment for {r.student.name}</h4>
 //                           </div>
-                          
+
 //                           <div className="admin-payments-form-grid">
 //                             <div className="admin-payments-form-group">
 //                               <label>Amount (₹)</label>
@@ -712,7 +712,7 @@
 //               <h2 className="admin-payments-modal-title">
 //                 📋 Payment History - {historyStudent}
 //               </h2>
-//               <button 
+//               <button
 //                 className="admin-payments-modal-close"
 //                 onClick={() => setShowHistory(false)}
 //               >
@@ -792,7 +792,7 @@
 //             </div>
 
 //             <div className="admin-payments-modal-footer">
-//               <button 
+//               <button
 //                 className="admin-payments-modal-close-btn"
 //                 onClick={() => setShowHistory(false)}
 //               >
@@ -1819,9 +1819,6 @@
 //   );
 // }
 
-
-
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../StyleComponents/Loader";
@@ -1897,13 +1894,16 @@ export default function AdminPaymentsMark() {
     if (!filters.collegeName || !filters.batch) return setProgramOptions([]);
 
     axios
-      .get("https://ligand-dev-7.onrender.com/api/attendance/options/programs", {
-        params: {
-          collegeName: filters.collegeName,
-          batch: filters.batch,
+      .get(
+        "https://ligand-dev-7.onrender.com/api/attendance/options/programs",
+        {
+          params: {
+            collegeName: filters.collegeName,
+            batch: filters.batch,
+          },
+          headers: { Authorization: `Bearer ${token}` },
         },
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      )
       .then((res) => setProgramOptions(res.data || []))
       .catch(() => setProgramOptions([]));
   }, [filters.collegeName, filters.batch]);
@@ -1913,14 +1913,17 @@ export default function AdminPaymentsMark() {
       return setTechnologyOptions([]);
 
     axios
-      .get("https://ligand-dev-7.onrender.com/api/attendance/options/technologies", {
-        params: {
-          collegeName: filters.collegeName,
-          batch: filters.batch,
-          programName: filters.programName,
+      .get(
+        "https://ligand-dev-7.onrender.com/api/attendance/options/technologies",
+        {
+          params: {
+            collegeName: filters.collegeName,
+            batch: filters.batch,
+            programName: filters.programName,
+          },
+          headers: { Authorization: `Bearer ${token}` },
         },
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      )
       .then((res) => setTechnologyOptions(res.data || []))
       .catch(() => setTechnologyOptions([]));
   }, [filters.collegeName, filters.batch, filters.programName]);
@@ -1973,7 +1976,7 @@ export default function AdminPaymentsMark() {
         {
           params: filters,
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       const mapped = mapApiResponseToRows(res.data);
@@ -1994,7 +1997,7 @@ export default function AdminPaymentsMark() {
       studentName: row.student.name,
       pendingAmount: row.pending,
     });
-    
+
     setPaymentForm({
       amount: row.pending > 0 ? row.pending : "",
       paymentMode: "",
@@ -2003,7 +2006,7 @@ export default function AdminPaymentsMark() {
       receiptFile: null,
       receiptPreview: null,
     });
-    
+
     setShowPaymentModal(true);
   };
 
@@ -2041,7 +2044,8 @@ export default function AdminPaymentsMark() {
 
   // ---------------------------- SUBMIT PAYMENT ----------------------------
   const submitPayment = async () => {
-    const { amount, paymentMode, remark, transactionId, receiptFile } = paymentForm;
+    const { amount, paymentMode, remark, transactionId, receiptFile } =
+      paymentForm;
     const { groupId, studentId, pendingAmount } = currentPaymentData;
 
     if (!amount || amount <= 0) {
@@ -2078,13 +2082,13 @@ export default function AdminPaymentsMark() {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       // Close modal and refresh data
       setShowPaymentModal(false);
       fetchRows();
-      
+
       // Reset form
       setPaymentForm({
         amount: "",
@@ -2094,7 +2098,6 @@ export default function AdminPaymentsMark() {
         receiptFile: null,
         receiptPreview: null,
       });
-      
     } catch (err) {
       alert(err.response?.data?.error || "Payment failed");
     } finally {
@@ -2113,17 +2116,17 @@ export default function AdminPaymentsMark() {
       out = out.filter((r) =>
         (r.student?.email || "")
           .toLowerCase()
-          .includes(searchEmail.toLowerCase())
+          .includes(searchEmail.toLowerCase()),
       );
 
     if (searchUsn)
       out = out.filter((r) =>
-        (r.student?.usn || "").toLowerCase().includes(searchUsn.toLowerCase())
+        (r.student?.usn || "").toLowerCase().includes(searchUsn.toLowerCase()),
       );
 
     if (searchGroup)
       out = out.filter((r) =>
-        r.groupName.toLowerCase().includes(searchGroup.toLowerCase())
+        r.groupName.toLowerCase().includes(searchGroup.toLowerCase()),
       );
 
     setFilteredRows(out);
@@ -2134,11 +2137,11 @@ export default function AdminPaymentsMark() {
     try {
       const res = await axios.get(
         `https://ligand-dev-7.onrender.com/api/fee-groups/${groupId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       const studentEntry = res.data.students.find(
-        (s) => String(s.student._id) === String(studentId)
+        (s) => String(s.student._id) === String(studentId),
       );
 
       if (!studentEntry) {
@@ -2157,9 +2160,9 @@ export default function AdminPaymentsMark() {
 
   // Format currency
   const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount || 0);
@@ -2174,7 +2177,9 @@ export default function AdminPaymentsMark() {
           <div className="admin-payments-header-icon">💰</div>
           <div>
             <h1 className="admin-payments-title">Fee Management System</h1>
-            <p className="admin-payments-subtitle">Manage student payments and track fee status</p>
+            <p className="admin-payments-subtitle">
+              Manage student payments and track fee status
+            </p>
           </div>
         </div>
       </header>
@@ -2189,13 +2194,39 @@ export default function AdminPaymentsMark() {
           </h2>
           <div className="admin-payments-filters-grid">
             {[
-              { label: "College", value: filters.collegeName, options: collegeOptions, onChange: (e) => setFilters({ ...filters, collegeName: e.target.value }) },
-              { label: "Batch", value: filters.batch, options: batchOptions, onChange: (e) => setFilters({ ...filters, batch: e.target.value }) },
-              { label: "Program", value: filters.programName, options: programOptions, onChange: (e) => setFilters({ ...filters, programName: e.target.value }) },
-              { label: "Technology", value: filters.technology, options: technologyOptions, onChange: (e) => setFilters({ ...filters, technology: e.target.value }) },
+              {
+                label: "College",
+                value: filters.collegeName,
+                options: collegeOptions,
+                onChange: (e) =>
+                  setFilters({ ...filters, collegeName: e.target.value }),
+              },
+              {
+                label: "Batch",
+                value: filters.batch,
+                options: batchOptions,
+                onChange: (e) =>
+                  setFilters({ ...filters, batch: e.target.value }),
+              },
+              {
+                label: "Program",
+                value: filters.programName,
+                options: programOptions,
+                onChange: (e) =>
+                  setFilters({ ...filters, programName: e.target.value }),
+              },
+              {
+                label: "Technology",
+                value: filters.technology,
+                options: technologyOptions,
+                onChange: (e) =>
+                  setFilters({ ...filters, technology: e.target.value }),
+              },
             ].map((filter, idx) => (
               <div className="admin-payments-filter-group" key={idx}>
-                <label className="admin-payments-filter-label">{filter.label}</label>
+                <label className="admin-payments-filter-label">
+                  {filter.label}
+                </label>
                 <div className="admin-payments-select-wrapper">
                   <select
                     className="admin-payments-filter-select"
@@ -2215,15 +2246,17 @@ export default function AdminPaymentsMark() {
             ))}
 
             <div className="admin-payments-filter-actions">
-              <button 
+              <button
                 className="admin-payments-load-btn"
                 onClick={fetchRows}
                 disabled={loading}
               >
-                <span className="admin-payments-btn-icon">{loading ? "⏳" : "📥"}</span>
+                <span className="admin-payments-btn-icon">
+                  {loading ? "⏳" : "📥"}
+                </span>
                 {loading ? "Loading..." : "Load Students"}
               </button>
-              <button 
+              <button
                 className="admin-payments-clear-btn"
                 onClick={() => {
                   setFilters({
@@ -2251,12 +2284,29 @@ export default function AdminPaymentsMark() {
           </h3>
           <div className="admin-payments-search-grid">
             {[
-              { icon: "📧", placeholder: "Search by email...", value: searchEmail, onChange: setSearchEmail },
-              { icon: "🎓", placeholder: "Search by USN...", value: searchUsn, onChange: setSearchUsn },
-              { icon: "🏷️", placeholder: "Search by group name...", value: searchGroup, onChange: setSearchGroup },
+              {
+                icon: "📧",
+                placeholder: "Search by email...",
+                value: searchEmail,
+                onChange: setSearchEmail,
+              },
+              {
+                icon: "🎓",
+                placeholder: "Search by USN...",
+                value: searchUsn,
+                onChange: setSearchUsn,
+              },
+              {
+                icon: "🏷️",
+                placeholder: "Search by group name...",
+                value: searchGroup,
+                onChange: setSearchGroup,
+              },
             ].map((search, idx) => (
               <div className="admin-payments-search-group" key={idx}>
-                <div className="admin-payments-search-icon-wrapper">{search.icon}</div>
+                <div className="admin-payments-search-icon-wrapper">
+                  {search.icon}
+                </div>
                 <input
                   className="admin-payments-search-input"
                   placeholder={search.placeholder}
@@ -2286,14 +2336,45 @@ export default function AdminPaymentsMark() {
           <div className="admin-payments-summary">
             {[
               { label: "Total Students", value: rows.length, color: "#667eea" },
-              { label: "Filtered", value: filteredRows.length, color: "#764ba2" },
-              { label: "Total Fees", value: formatCurrency(rows.reduce((sum, r) => sum + (r.totalFee || 0), 0)), color: "#48bb78" },
-              { label: "Collected", value: formatCurrency(rows.reduce((sum, r) => sum + (r.paidFee || 0), 0)), color: "#38a169" },
-              { label: "Pending", value: formatCurrency(rows.reduce((sum, r) => sum + (r.pending || 0), 0)), color: "#f56565" },
+              {
+                label: "Filtered",
+                value: filteredRows.length,
+                color: "#764ba2",
+              },
+              {
+                label: "Total Fees",
+                value: formatCurrency(
+                  rows.reduce((sum, r) => sum + (r.totalFee || 0), 0),
+                ),
+                color: "#48bb78",
+              },
+              {
+                label: "Collected",
+                value: formatCurrency(
+                  rows.reduce((sum, r) => sum + (r.paidFee || 0), 0),
+                ),
+                color: "#38a169",
+              },
+              {
+                label: "Pending",
+                value: formatCurrency(
+                  rows.reduce((sum, r) => sum + (r.pending || 0), 0),
+                ),
+                color: "#f56565",
+              },
             ].map((item, idx) => (
-              <div className="admin-payments-summary-item" key={idx} style={{ borderLeftColor: item.color }}>
+              <div
+                className="admin-payments-summary-item"
+                key={idx}
+                style={{ borderLeftColor: item.color }}
+              >
                 <div className="admin-payments-summary-label">{item.label}</div>
-                <div className="admin-payments-summary-value" style={{ color: item.color }}>{item.value}</div>
+                <div
+                  className="admin-payments-summary-value"
+                  style={{ color: item.color }}
+                >
+                  {item.value}
+                </div>
               </div>
             ))}
           </div>
@@ -2302,7 +2383,18 @@ export default function AdminPaymentsMark() {
         {/* Table */}
         <div className="admin-payments-table-container">
           {loading ? (
-            <div style={{minHeight:"200px",height:"100%",width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}><Loader/></div>
+            <div
+              style={{
+                minHeight: "200px",
+                height: "100%",
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Loader />
+            </div>
           ) : filteredRows.length === 0 ? (
             <div className="admin-payments-empty">
               <div className="admin-payments-empty-icon">📋</div>
@@ -2326,75 +2418,123 @@ export default function AdminPaymentsMark() {
               <tbody>
                 {filteredRows.map((r) => {
                   const isPaid = r.status === "Paid";
-                  const paymentProgress = r.totalFee > 0 ? (r.paidFee / r.totalFee) * 100 : 0;
+                  const paymentProgress =
+                    r.totalFee > 0 ? (r.paidFee / r.totalFee) * 100 : 0;
 
                   return (
-                    <tr key={`${r.groupId}_${r.student?._id}`} className={isPaid ? "admin-payments-row-paid" : "admin-payments-row-pending"}>
+                    <tr
+                      key={`${r.groupId}_${r.student?._id}`}
+                      className={
+                        isPaid
+                          ? "admin-payments-row-paid"
+                          : "admin-payments-row-pending"
+                      }
+                    >
                       <td className="admin-payments-cell-student">
                         <div className="admin-payments-student-avatar">
-                          {r.student.name?.charAt(0).toUpperCase() || "?"}
+                          <img
+                            src={
+                              r.student?.profilePic?.url || "/default_user.jpeg"
+                            }
+                            alt="Profile"
+                            className="student-avatar"
+                            onError={(e) => {
+                              e.currentTarget.onerror = null; // prevent infinite loop
+                              e.currentTarget.src = "/default_user.jpeg";
+                            }}
+                          />
                         </div>
                         <div className="admin-payments-student-info">
-                          <div className="admin-payments-student-name">{r.student.name}</div>
+                          <div className="admin-payments-student-name">
+                            {r.student.name}
+                          </div>
                           <div className="admin-payments-student-details">
-                            <span className="admin-payments-student-usn">{r.student.usn}</span>
-                            <span className="admin-payments-student-email">{r.student.email}</span>
+                            <span className="admin-payments-student-usn">
+                              {r.student.usn}
+                            </span>
+                            <span className="admin-payments-student-email">
+                              {r.student.email}
+                            </span>
                           </div>
                         </div>
                       </td>
 
                       <td className="admin-payments-cell-group">
-                        <div className="admin-payments-group-badge">{r.groupName}</div>
+                        <div className="admin-payments-group-badge">
+                          {r.groupName}
+                        </div>
                       </td>
 
                       <td className="admin-payments-cell-fee">
-                        <div className="admin-payments-fee-amount">{formatCurrency(r.totalFee)}</div>
+                        <div className="admin-payments-fee-amount">
+                          {formatCurrency(r.totalFee)}
+                        </div>
                       </td>
 
                       <td className="admin-payments-cell-paid">
                         <div className="admin-payments-fee-progress">
                           <div className="admin-payments-progress-header">
-                            <span className="admin-payments-progress-label">Progress</span>
-                            <span className="admin-payments-progress-percentage">{Math.round(paymentProgress)}%</span>
+                            <span className="admin-payments-progress-label">
+                              Progress
+                            </span>
+                            <span className="admin-payments-progress-percentage">
+                              {Math.round(paymentProgress)}%
+                            </span>
                           </div>
                           <div className="admin-payments-fee-progress-bar">
-                            <div 
+                            <div
                               className="admin-payments-fee-progress-fill"
                               style={{ width: `${paymentProgress}%` }}
                             ></div>
                           </div>
-                          <div className="admin-payments-fee-paid">{formatCurrency(r.paidFee)}</div>
+                          <div className="admin-payments-fee-paid">
+                            {formatCurrency(r.paidFee)}
+                          </div>
                         </div>
                       </td>
 
                       <td className="admin-payments-cell-pending">
-                        <div className={`admin-payments-pending-amount ${r.pending > 0 ? 'admin-payments-pending-high' : ''}`}>
+                        <div
+                          className={`admin-payments-pending-amount ${r.pending > 0 ? "admin-payments-pending-high" : ""}`}
+                        >
                           {formatCurrency(r.pending)}
                         </div>
                       </td>
 
                       <td className="admin-payments-cell-status">
-                        <span className={`admin-payments-status-badge ${isPaid ? 'admin-payments-status-paid' : 'admin-payments-status-unpaid'}`}>
-                          {isPaid ? '✅ Paid' : '❌ Pending'}
+                        <span
+                          className={`admin-payments-status-badge ${isPaid ? "admin-payments-status-paid" : "admin-payments-status-unpaid"}`}
+                        >
+                          {isPaid ? "✅ Paid" : "❌ Pending"}
                         </span>
                       </td>
 
                       <td className="admin-payments-cell-actions">
                         <div className="admin-payments-action-buttons">
-                          <button 
+                          <button
                             className="admin-payments-action-history"
-                            onClick={() => openHistoryModal(r.groupId, r.student._id, r.student.name)}
+                            onClick={() =>
+                              openHistoryModal(
+                                r.groupId,
+                                r.student._id,
+                                r.student.name,
+                              )
+                            }
                           >
-                            <span className="admin-payments-action-icon">📜</span>
+                            <span className="admin-payments-action-icon">
+                              📜
+                            </span>
                             History
                           </button>
-                          
+
                           {!isPaid && r.pending > 0 && (
-                            <button 
+                            <button
                               className="admin-payments-action-pay"
                               onClick={() => openPaymentModal(r)}
                             >
-                              <span className="admin-payments-action-icon">💳</span>
+                              <span className="admin-payments-action-icon">
+                                💳
+                              </span>
                               Add Payment
                             </button>
                           )}
@@ -2412,7 +2552,10 @@ export default function AdminPaymentsMark() {
       {/* Payment Modal */}
       {showPaymentModal && (
         <div className="admin-payments-modal">
-          <div className="admin-payments-modal-overlay" onClick={() => !actionLoading && setShowPaymentModal(false)}></div>
+          <div
+            className="admin-payments-modal-overlay"
+            onClick={() => !actionLoading && setShowPaymentModal(false)}
+          ></div>
           <div className="admin-payments-modal-content">
             <div className="admin-payments-modal-header">
               <div className="admin-payments-modal-header-content">
@@ -2420,9 +2563,11 @@ export default function AdminPaymentsMark() {
                   <span className="admin-payments-modal-icon">💳</span>
                   Record Payment
                 </h2>
-                <p className="admin-payments-modal-subtitle">For {currentPaymentData.studentName}</p>
+                <p className="admin-payments-modal-subtitle">
+                  For {currentPaymentData.studentName}
+                </p>
               </div>
-              <button 
+              <button
                 className="admin-payments-modal-close"
                 onClick={() => !actionLoading && setShowPaymentModal(false)}
                 disabled={actionLoading}
@@ -2435,7 +2580,9 @@ export default function AdminPaymentsMark() {
               <div className="admin-payments-payment-form">
                 <div className="admin-payments-payment-summary">
                   <div className="admin-payments-payment-summary-item">
-                    <span className="admin-payments-payment-summary-label">Pending Amount</span>
+                    <span className="admin-payments-payment-summary-label">
+                      Pending Amount
+                    </span>
                     <span className="admin-payments-payment-summary-value admin-payments-payment-pending">
                       {formatCurrency(currentPaymentData.pendingAmount)}
                     </span>
@@ -2453,13 +2600,16 @@ export default function AdminPaymentsMark() {
                       className="admin-payments-form-input"
                       placeholder="Enter payment amount"
                       value={paymentForm.amount}
-                      onChange={(e) => handlePaymentFormChange("amount", e.target.value)}
+                      onChange={(e) =>
+                        handlePaymentFormChange("amount", e.target.value)
+                      }
                       min="1"
                       max={currentPaymentData.pendingAmount}
                       disabled={actionLoading}
                     />
                     <div className="admin-payments-form-hint">
-                      Maximum: {formatCurrency(currentPaymentData.pendingAmount)}
+                      Maximum:{" "}
+                      {formatCurrency(currentPaymentData.pendingAmount)}
                     </div>
                   </div>
 
@@ -2472,7 +2622,9 @@ export default function AdminPaymentsMark() {
                       <select
                         className="admin-payments-form-select"
                         value={paymentForm.paymentMode}
-                        onChange={(e) => handlePaymentFormChange("paymentMode", e.target.value)}
+                        onChange={(e) =>
+                          handlePaymentFormChange("paymentMode", e.target.value)
+                        }
                         disabled={actionLoading}
                       >
                         <option value="">Select Payment Mode</option>
@@ -2489,14 +2641,21 @@ export default function AdminPaymentsMark() {
                     <>
                       <div className="admin-payments-form-group">
                         <label className="admin-payments-form-label">
-                          <span className="admin-payments-form-label-icon">🔢</span>
+                          <span className="admin-payments-form-label-icon">
+                            🔢
+                          </span>
                           Transaction ID
                         </label>
                         <input
                           className="admin-payments-form-input"
                           placeholder="Enter transaction ID"
                           value={paymentForm.transactionId}
-                          onChange={(e) => handlePaymentFormChange("transactionId", e.target.value)}
+                          onChange={(e) =>
+                            handlePaymentFormChange(
+                              "transactionId",
+                              e.target.value,
+                            )
+                          }
                           disabled={actionLoading}
                         />
                         <div className="admin-payments-form-hint">
@@ -2506,7 +2665,9 @@ export default function AdminPaymentsMark() {
 
                       <div className="admin-payments-form-group">
                         <label className="admin-payments-form-label">
-                          <span className="admin-payments-form-label-icon">📎</span>
+                          <span className="admin-payments-form-label-icon">
+                            📎
+                          </span>
                           Receipt Upload
                         </label>
                         <div className="admin-payments-file-upload-area">
@@ -2518,27 +2679,36 @@ export default function AdminPaymentsMark() {
                             accept="image/*,.pdf,.doc,.docx"
                             disabled={actionLoading}
                           />
-                          
+
                           {paymentForm.receiptPreview ? (
                             <div className="admin-payments-file-preview">
                               <div className="admin-payments-file-preview-content">
-                                {paymentForm.receiptPreview.startsWith('data:image') ? (
-                                  <img 
-                                    src={paymentForm.receiptPreview} 
-                                    alt="Receipt preview" 
+                                {paymentForm.receiptPreview.startsWith(
+                                  "data:image",
+                                ) ? (
+                                  <img
+                                    src={paymentForm.receiptPreview}
+                                    alt="Receipt preview"
                                     className="admin-payments-file-preview-image"
                                   />
                                 ) : (
-                                  <div className="admin-payments-file-preview-icon">📄</div>
+                                  <div className="admin-payments-file-preview-icon">
+                                    📄
+                                  </div>
                                 )}
                                 <div className="admin-payments-file-preview-info">
-                                  <div className="admin-payments-file-preview-name">{paymentForm.receiptFile.name}</div>
+                                  <div className="admin-payments-file-preview-name">
+                                    {paymentForm.receiptFile.name}
+                                  </div>
                                   <div className="admin-payments-file-preview-size">
-                                    {(paymentForm.receiptFile.size / 1024).toFixed(2)} KB
+                                    {(
+                                      paymentForm.receiptFile.size / 1024
+                                    ).toFixed(2)}{" "}
+                                    KB
                                   </div>
                                 </div>
                               </div>
-                              <button 
+                              <button
                                 type="button"
                                 className="admin-payments-file-remove"
                                 onClick={removeReceipt}
@@ -2548,12 +2718,23 @@ export default function AdminPaymentsMark() {
                               </button>
                             </div>
                           ) : (
-                            <label htmlFor="receipt-upload" className="admin-payments-file-upload-label">
-                              <div className="admin-payments-file-upload-icon">📎</div>
+                            <label
+                              htmlFor="receipt-upload"
+                              className="admin-payments-file-upload-label"
+                            >
+                              <div className="admin-payments-file-upload-icon">
+                                📎
+                              </div>
                               <div className="admin-payments-file-upload-text">
-                                <div className="admin-payments-file-upload-title">Upload Receipt</div>
-                                <div className="admin-payments-file-upload-subtitle">Click to browse or drag & drop</div>
-                                <div className="admin-payments-file-upload-hint">Supports: JPG, PNG, PDF, DOC (Max 5MB)</div>
+                                <div className="admin-payments-file-upload-title">
+                                  Upload Receipt
+                                </div>
+                                <div className="admin-payments-file-upload-subtitle">
+                                  Click to browse or drag & drop
+                                </div>
+                                <div className="admin-payments-file-upload-hint">
+                                  Supports: JPG, PNG, PDF, DOC (Max 5MB)
+                                </div>
                               </div>
                             </label>
                           )}
@@ -2571,7 +2752,9 @@ export default function AdminPaymentsMark() {
                       className="admin-payments-form-textarea"
                       placeholder="Add any remarks or notes about this payment..."
                       value={paymentForm.remark}
-                      onChange={(e) => handlePaymentFormChange("remark", e.target.value)}
+                      onChange={(e) =>
+                        handlePaymentFormChange("remark", e.target.value)
+                      }
                       rows="3"
                       disabled={actionLoading}
                     />
@@ -2581,7 +2764,7 @@ export default function AdminPaymentsMark() {
             </div>
 
             <div className="admin-payments-modal-footer">
-              <button 
+              <button
                 className="admin-payments-modal-cancel"
                 onClick={() => setShowPaymentModal(false)}
                 disabled={actionLoading}
@@ -2599,7 +2782,7 @@ export default function AdminPaymentsMark() {
                     Processing...
                   </>
                 ) : (
-                  '✅ Submit Payment'
+                  "✅ Submit Payment"
                 )}
               </button>
             </div>
@@ -2610,7 +2793,10 @@ export default function AdminPaymentsMark() {
       {/* History Modal */}
       {showHistoryModal && (
         <div className="admin-payments-modal">
-          <div className="admin-payments-modal-overlay" onClick={() => setShowHistoryModal(false)}></div>
+          <div
+            className="admin-payments-modal-overlay"
+            onClick={() => setShowHistoryModal(false)}
+          ></div>
           <div className="admin-payments-modal-content">
             <div className="admin-payments-modal-header">
               <div className="admin-payments-modal-header-content">
@@ -2619,7 +2805,7 @@ export default function AdminPaymentsMark() {
                   Payment History - {historyStudent}
                 </h2>
               </div>
-              <button 
+              <button
                 className="admin-payments-modal-close"
                 onClick={() => setShowHistoryModal(false)}
               >
@@ -2651,13 +2837,15 @@ export default function AdminPaymentsMark() {
                       {historyData.map((h, i) => (
                         <tr key={i}>
                           <td className="admin-payments-history-date">
-                            {h.paidOn ? new Date(h.paidOn).toLocaleString('en-IN', {
-                              day: '2-digit',
-                              month: 'short',
-                              year: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            }) : 'N/A'}
+                            {h.paidOn
+                              ? new Date(h.paidOn).toLocaleString("en-IN", {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })
+                              : "N/A"}
                           </td>
                           <td className="admin-payments-history-amount">
                             <span className="admin-payments-amount-badge">
@@ -2665,7 +2853,9 @@ export default function AdminPaymentsMark() {
                             </span>
                           </td>
                           <td className="admin-payments-history-mode">
-                            <span className={`admin-payments-mode-badge admin-payments-mode-${h.paymentMode}`}>
+                            <span
+                              className={`admin-payments-mode-badge admin-payments-mode-${h.paymentMode}`}
+                            >
                               {h.paymentMode}
                             </span>
                           </td>
@@ -2685,11 +2875,15 @@ export default function AdminPaymentsMark() {
                                 rel="noreferrer"
                                 className="admin-payments-receipt-link"
                               >
-                                <span className="admin-payments-receipt-icon">📄</span>
+                                <span className="admin-payments-receipt-icon">
+                                  📄
+                                </span>
                                 View
                               </a>
                             ) : (
-                              <span className="admin-payments-no-receipt">No File</span>
+                              <span className="admin-payments-no-receipt">
+                                No File
+                              </span>
                             )}
                           </td>
                         </tr>
@@ -2701,7 +2895,7 @@ export default function AdminPaymentsMark() {
             </div>
 
             <div className="admin-payments-modal-footer">
-              <button 
+              <button
                 className="admin-payments-modal-close-btn"
                 onClick={() => setShowHistoryModal(false)}
               >
@@ -2725,9 +2919,9 @@ export default function AdminPaymentsMark() {
         /* Enhanced CSS Styles */
         .admin-payments-container {
           min-height: 100vh;
-         
+
           padding: 20px;
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .admin-payments-header {
@@ -3243,15 +3437,19 @@ export default function AdminPaymentsMark() {
         }
 
         @keyframes admin-payments-fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
 
         .admin-payments-modal-content {
           position: relative;
           background: white;
           border-radius: 25px;
-          width:70%;
+          width: 70%;
           max-width: 95vw;
           max-height: 90vh;
           overflow-y: auto;
@@ -3631,8 +3829,12 @@ export default function AdminPaymentsMark() {
         }
 
         @keyframes admin-payments-spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
 
         .admin-payments-spinner-small {
@@ -3718,7 +3920,7 @@ export default function AdminPaymentsMark() {
         }
 
         .admin-payments-history-date {
-          font-family: 'Monaco', 'Courier New', monospace;
+          font-family: "Monaco", "Courier New", monospace;
           font-size: 13px;
           color: #718096;
           white-space: nowrap;
@@ -3769,7 +3971,7 @@ export default function AdminPaymentsMark() {
         }
 
         .admin-payments-transaction-id {
-          font-family: 'Monaco', 'Courier New', monospace;
+          font-family: "Monaco", "Courier New", monospace;
           font-size: 13px;
           color: #2d3748;
           background: #f7fafc;

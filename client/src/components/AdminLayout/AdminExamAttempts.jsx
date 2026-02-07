@@ -510,6 +510,7 @@ export default function AdminExamAttempts() {
             <table className="attempts-table">
               <thead>
                 <tr>
+                  <th>Profile</th>
                   <th>USN</th>
                   <th>Student Name</th>
                   <th>Email</th>
@@ -525,6 +526,15 @@ export default function AdminExamAttempts() {
                   
                   return (
                     <tr key={attempt._id} data-aos="fade-right">
+                      <td><img
+        src={attempt?.student?.profilePic?.url || "/default_user.jpeg"}
+        alt="Profile"
+        className="student-avatar"
+        onError={(e) => {
+          e.currentTarget.onerror = null; // prevent infinite loop
+          e.currentTarget.src = "/default_user.jpeg";
+        }}
+      /></td>
                       <td>{attempt.student?.usn || 'Unknown'}</td>
                       <td>
                         <FaUserGraduate /> {attempt.student?.name || "Unknown"}

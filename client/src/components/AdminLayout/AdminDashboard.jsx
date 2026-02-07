@@ -12,7 +12,7 @@ const AdminDashboard = () => {
   const [collegeToPassout, setCollegeToPassout] = useState("");
   const [yearToPassout, setYearToPassout] = useState("");
   const [loading, setLoading] = useState(true);
-  
+
   // Filter states
   const [nameFilter, setNameFilter] = useState("");
   const [emailFilter, setEmailFilter] = useState("");
@@ -24,9 +24,12 @@ const AdminDashboard = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await axios.get("https://ligand-dev-7.onrender.com/api/users", {
-        headers: { Authorization: token ? `Bearer ${token}` : "" },
-      });
+      const res = await axios.get(
+        "https://ligand-dev-7.onrender.com/api/users",
+        {
+          headers: { Authorization: token ? `Bearer ${token}` : "" },
+        },
+      );
       setStudents(res.data || []);
     } catch (err) {
       console.error("Failed to fetch students", err);
@@ -44,8 +47,8 @@ const AdminDashboard = () => {
         const types = ["batch", "collegeName"];
         const responses = await Promise.all(
           types.map((type) =>
-            axios.get(`https://ligand-dev-7.onrender.com/api/options/${type}`)
-          )
+            axios.get(`https://ligand-dev-7.onrender.com/api/options/${type}`),
+          ),
         );
         setBatchOptions(responses[0].data || []);
         setCollegeOptions(responses[1].data || []);
@@ -60,35 +63,49 @@ const AdminDashboard = () => {
   const pastStudents = students.filter((s) => s.isPassout);
 
   // Get unique values for filter dropdowns
-  const collegeNames = useMemo(() => 
-    [...new Set(students.map(s => s.collegeName).filter(Boolean))].sort(), 
-    [students]
+  const collegeNames = useMemo(
+    () =>
+      [...new Set(students.map((s) => s.collegeName).filter(Boolean))].sort(),
+    [students],
   );
-  
-  const technologies = useMemo(() => 
-    [...new Set(students.map(s => s.technology).filter(Boolean))].sort(), 
-    [students]
+
+  const technologies = useMemo(
+    () =>
+      [...new Set(students.map((s) => s.technology).filter(Boolean))].sort(),
+    [students],
   );
-  
-  const batches = useMemo(() => 
-    [...new Set(students.map(s => s.batch).filter(Boolean))].sort(), 
-    [students]
+
+  const batches = useMemo(
+    () => [...new Set(students.map((s) => s.batch).filter(Boolean))].sort(),
+    [students],
   );
 
   // Filter students based on selected filters
   const filteredStudents = useMemo(() => {
-    const targetStudents = selectedGroup === "current" ? currentStudents : pastStudents;
-    
-    return targetStudents.filter(student => {
+    const targetStudents =
+      selectedGroup === "current" ? currentStudents : pastStudents;
+
+    return targetStudents.filter((student) => {
       return (
-        (!nameFilter || student.name?.toLowerCase().includes(nameFilter.toLowerCase())) &&
-        (!emailFilter || student.email?.toLowerCase().includes(emailFilter.toLowerCase())) &&
+        (!nameFilter ||
+          student.name?.toLowerCase().includes(nameFilter.toLowerCase())) &&
+        (!emailFilter ||
+          student.email?.toLowerCase().includes(emailFilter.toLowerCase())) &&
         (!collegeFilter || student.collegeName === collegeFilter) &&
         (!technologyFilter || student.technology === technologyFilter) &&
         (!batchFilter || student.batch === batchFilter)
       );
     });
-  }, [selectedGroup, currentStudents, pastStudents, nameFilter, emailFilter, collegeFilter, technologyFilter, batchFilter]);
+  }, [
+    selectedGroup,
+    currentStudents,
+    pastStudents,
+    nameFilter,
+    emailFilter,
+    collegeFilter,
+    technologyFilter,
+    batchFilter,
+  ]);
 
   const handleMakeBatchPassout = async (e) => {
     e.preventDefault();
@@ -105,7 +122,7 @@ const AdminDashboard = () => {
       const res = await axios.post(
         "https://ligand-dev-7.onrender.com/api/users/make-passout",
         payload,
-        { headers: { Authorization: token ? `Bearer ${token}` : "" } }
+        { headers: { Authorization: token ? `Bearer ${token}` : "" } },
       );
 
       const n = res.data?.modifiedCount ?? 0;
@@ -123,14 +140,15 @@ const AdminDashboard = () => {
   const renderStudentCard = (student) => (
     <div key={student._id} className="student-card">
       <img
-        src={
-          student.profilePic
-            ? `https://ligand-dev-7.onrender.com/uploads/${student.profilePic}`
-            : "/default_user.jpeg"
-        }
+        src={student?.profilePic?.url || "/default_user.jpeg"}
         alt="Profile"
         className="student-avatar"
+        onError={(e) => {
+          e.currentTarget.onerror = null; // prevent infinite loop
+          e.currentTarget.src = "/default_user.jpeg";
+        }}
       />
+
       <div className="student-info">
         <div className="student-name">
           {student.name} ({student.usn})
@@ -152,7 +170,7 @@ const AdminDashboard = () => {
         <h2 className="adminheader">Admin Dashboard - Students</h2>
 
         <div className="group-selector">
-          <div 
+          <div
             className={`group-card ${selectedGroup === "current" ? "active" : ""}`}
             onClick={() => setSelectedGroup("current")}
           >
@@ -161,7 +179,7 @@ const AdminDashboard = () => {
               <div className="group-count">{currentStudents.length}</div>
             </div>
           </div>
-          <div 
+          <div
             className={`group-card ${selectedGroup === "past" ? "active" : ""}`}
             onClick={() => setSelectedGroup("past")}
           >
@@ -251,7 +269,7 @@ const AdminDashboard = () => {
               className="filter-input"
             />
           </div>
-          
+
           <div className="form-group">
             <label>Email</label>
             <input
@@ -262,7 +280,7 @@ const AdminDashboard = () => {
               className="filter-input"
             />
           </div>
-          
+
           <div className="form-group">
             <label>College</label>
             <select
@@ -271,12 +289,14 @@ const AdminDashboard = () => {
               className="filter-input"
             >
               <option value="">All Colleges</option>
-              {collegeNames.map(college => (
-                <option key={college} value={college}>{college}</option>
+              {collegeNames.map((college) => (
+                <option key={college} value={college}>
+                  {college}
+                </option>
               ))}
             </select>
           </div>
-          
+
           <div className="form-group">
             <label>Technology</label>
             <select
@@ -285,12 +305,14 @@ const AdminDashboard = () => {
               className="filter-input"
             >
               <option value="">All Technologies</option>
-              {technologies.map(tech => (
-                <option key={tech} value={tech}>{tech}</option>
+              {technologies.map((tech) => (
+                <option key={tech} value={tech}>
+                  {tech}
+                </option>
               ))}
             </select>
           </div>
-          
+
           <div className="form-group">
             <label>Batch</label>
             <select
@@ -299,15 +321,17 @@ const AdminDashboard = () => {
               className="filter-input"
             >
               <option value="">All Batches</option>
-              {batches.map(batch => (
-                <option key={batch} value={batch}>{batch}</option>
+              {batches.map((batch) => (
+                <option key={batch} value={batch}>
+                  {batch}
+                </option>
               ))}
             </select>
           </div>
-          
+
           <div className="form-group">
             <label>&nbsp;</label>
-            <button 
+            <button
               className="form-button"
               onClick={() => {
                 setNameFilter("");
@@ -325,11 +349,24 @@ const AdminDashboard = () => {
 
       <div className="student-section">
         <h3>
-          {selectedGroup === "current" ? "Current Students" : "Passout Students"}
+          {selectedGroup === "current"
+            ? "Current Students"
+            : "Passout Students"}
           {filteredStudents.length > 0 && ` (${filteredStudents.length})`}
         </h3>
         {loading ? (
-          <div style={{minHeight:"200px",height:"100%",width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}><Loader/></div>
+          <div
+            style={{
+              minHeight: "200px",
+              height: "100%",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Loader />
+          </div>
         ) : (
           <div className="student-grid">
             {filteredStudents.map(renderStudentCard)}
