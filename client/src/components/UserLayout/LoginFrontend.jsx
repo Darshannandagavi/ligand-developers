@@ -446,7 +446,7 @@ export default Login;`,
     setMessage({ text: res.data.message, type: "success" });
     // Save user details in localStorage (optional)
     localStorage.setItem("user", JSON.stringify(res.data.user));
-    localStorage.setItem("user", JSON.stringify(res.data.token));
+    localStorage.setItem("token", JSON.stringify(res.data.token));
     // Navigate to /user after success
     navigate("/user");
     setFormData({ email: "", password: "" });

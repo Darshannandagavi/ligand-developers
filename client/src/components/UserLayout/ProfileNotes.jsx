@@ -420,7 +420,7 @@ import {
   Spinner
 } from 'react-bootstrap';
 
-const API_BASE = "https://ligand-dev-7.onrender.com/api/users";
+const API_BASE = "http://localhost:8000/api/users";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
@@ -441,7 +441,7 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const storedUser = JSON.parse(localStorage.getItem('token'));
       if (!storedUser) {
         setError('Please login first');
         setLoading(false);
@@ -449,7 +449,7 @@ const Profile = () => {
       }
 
       const config = {
-        headers: { Authorization: \`Bearer \${storedUser.token}\` }
+        headers: { Authorization: \`Bearer \${storedUser}\` }
       };
 
       const res = await axios.get(\`\${API_BASE}/profile\`, config);
@@ -496,9 +496,9 @@ const Profile = () => {
     setSuccess('');
     
     try {
-      const userData = JSON.parse(localStorage.getItem('user'));
+      const userData = JSON.parse(localStorage.getItem('token'));
       const config = {
-        headers: { Authorization: \`Bearer \${userData.token}\` }
+        headers: { Authorization: \`Bearer \${userData}\` }
       };
 
       const res = await axios.put(\`\${API_BASE}/profile\`, formData, config);
