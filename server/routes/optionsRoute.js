@@ -1,12 +1,14 @@
 // routes/options.js
 import express from "express";
 import Options from "../models/Options.js";
+import { auth } from "../middleware/auth.js";
+import adminOnly from "../middleware/adminOnly.js";
 
 
 const optionsRouter = express.Router();
 
 // Create option
-optionsRouter.post("/", async (req, res) => {
+optionsRouter.post("/",auth, adminOnly, async (req, res) => {
   try {
     const { type, value } = req.body;
     const option = new Options({ type, value });
@@ -18,7 +20,7 @@ optionsRouter.post("/", async (req, res) => {
 });
 
 // Get options by type
-optionsRouter.get("/:type", async (req, res) => {
+optionsRouter.get("/:type",async (req, res) => {
   try {
     const optionType = req.params.type;   // ✅ safer name
    
@@ -35,7 +37,7 @@ optionsRouter.get("/:type", async (req, res) => {
 
 
 // Update option
-optionsRouter.put("/:id", async (req, res) => {
+optionsRouter.put("/:id",auth, adminOnly, async (req, res) => {
   try {
     const option = await Options.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(option);
@@ -45,7 +47,7 @@ optionsRouter.put("/:id", async (req, res) => {
 });
 
 // Delete option
-optionsRouter.delete("/:id", async (req, res) => {
+optionsRouter.delete("/:id",auth, adminOnly, async (req, res) => {
   try {
     await Options.findByIdAndDelete(req.params.id);
     res.json({ message: "Deleted successfully" });

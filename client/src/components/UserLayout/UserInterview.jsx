@@ -1,9 +1,10 @@
 import React, { useState,  useEffect } from "react";
 import axios from "axios";
 import "./InterviewPage.css";
+import { useAlert } from "../StyleComponents/AlertContext";
 
 
-const API_BASE = "https://ligand-dev-7.onrender.com/api"; 
+const API_BASE = "http://localhost:8000/api"; 
 const GROQ_API_KEY = process.env.REACT_APP_GROQ_API_KEY || "";
 if (!GROQ_API_KEY) {
   console.warn("REACT_APP_GROQ_API_KEY is not set. Groq API calls will fail.");
@@ -59,20 +60,40 @@ const InterviewPage = () => {
   const [voices, setVoices] = useState([]);
   const [typedAnswer, setTypedAnswer] = useState("");
   const [loading,setLoading]=useState(false);
-  const user = localStorage.getItem("username") || "Candidate";
-  
+  const [user,setUser]=useState(null);
+  const { showAlert } = useAlert();
 
-  // Fetch topics from backend
-  useEffect(() => {
-    setLoading(true);
-    axios
-      .get(`${API_BASE}/topics`)
-      .then((res) => {
-        if (res.data.success) setTopics(res.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {console.error("Fetch topics error:", err);setLoading(false);});
-  }, []);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      // 1️⃣ Get logged-in user
+      const userRes = await axios.get(`${API_BASE}/users/getme`, {
+        withCredentials: true,
+      });
+
+      
+      setUser(userRes.data.name);
+      // 2️⃣ Get topics
+      const topicsRes = await axios.get(`${API_BASE}/topics`, {
+        withCredentials: true,
+      });
+
+      if (topicsRes.data.success) {
+        setTopics(topicsRes.data.data);
+      }
+
+    } catch (err) {
+      console.error("Fetch error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, []);
+
 
   // Load voices
   useEffect(() => {
@@ -98,9 +119,15 @@ const InterviewPage = () => {
   // Start interview
   const startInterview = async () => {
     if (!selectedTopic) {
-      alert("Please select a topic first.");
-      return;
-    }
+  showAlert({
+    type: "warning",
+    title: "Topic Required",
+    message: "Please select an interview topic before starting.",
+    confirmText: "OK",
+  });
+  return;
+}
+
     try {
       const res = await axios.get(`${API_BASE}/topics/${selectedTopic}`);
       if (res.data.success) {

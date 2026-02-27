@@ -4,7 +4,8 @@ import ExamAttempt from "../models/examAttempt.js";
 
 export async function submitExam(req, res) {
   try {
-    const { examId, studentId, answers } = req.body; 
+    const { examId,  answers } = req.body; 
+    const studentId = req.user.id; // from auth middleware
     // answers = [{ questionId, chosenAnswer }] where chosenAnswer is a STRING
 
     const exam = await Exam.findById(examId);
@@ -49,7 +50,7 @@ export async function submitExam(req, res) {
 // Get student exam history
 export async function getStudentHistory(req, res) {
   try {
-    let attempts = await ExamAttempt.find({ student: req.params.studentId })
+    let attempts = await ExamAttempt.find({ student:req.user.id})
       .populate("exam", "examNumber visibility questions examTitle showResult")
       .sort({ createdAt: -1 });
 

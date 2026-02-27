@@ -17,15 +17,15 @@ export default function ManageExamAndNoteVisibility() {
       setLoading(true);
       try {
         // Fetch exams
-        const examsRes = await axios.get("https://ligand-dev-7.onrender.com/api/exams/examsforadmin");
+        const examsRes = await axios.get("http://localhost:8000/api/exams/examsforadmin");
         setExams(examsRes.data);
 
         // Fetch notes
-        const notesRes = await axios.get("https://ligand-dev-7.onrender.com/api/notes/admin");
+        const notesRes = await axios.get("http://localhost:8000/api/notes/admin");
         setNotes(notesRes.data);
 
         // Fetch colleges added by admin
-        const collegesRes = await axios.get("https://ligand-dev-7.onrender.com/api/options/collegeName");
+        const collegesRes = await axios.get("http://localhost:8000/api/options/collegeName");
         // collegesRes.data is an array of { _id, type, value }
         setColleges(collegesRes.data.map(c => c.value));
       } catch (error) {
@@ -41,8 +41,8 @@ export default function ManageExamAndNoteVisibility() {
   // Toggle college for exam
   const toggleExamCollege = async (examId, collegeName) => {
     try {
-      await axios.put(`https://ligand-dev-7.onrender.com/api/exams/exams/${examId}/college`, { collegeName });
-      const updated = await axios.get("https://ligand-dev-7.onrender.com/api/exams/examsforadmin");
+      await axios.put(`http://localhost:8000/api/exams/exams/${examId}/college`, { collegeName });
+      const updated = await axios.get("http://localhost:8000/api/exams/examsforadmin");
       setExams(updated.data);
     } catch (error) {
       console.error("Error updating exam:", error);
@@ -52,8 +52,8 @@ export default function ManageExamAndNoteVisibility() {
   // Toggle college for note
   const toggleNoteCollege = async (noteId, collegeName) => {
     try {
-      await axios.put(`https://ligand-dev-7.onrender.com/api/notes/${noteId}/college`, { collegeName });
-      const updated = await axios.get("https://ligand-dev-7.onrender.com/api/notes/admin");
+      await axios.put(`http://localhost:8000/api/notes/${noteId}/college`, { collegeName });
+      const updated = await axios.get("http://localhost:8000/api/notes/admin");
       setNotes(updated.data);
     } catch (error) {
       console.error("Error updating note:", error);

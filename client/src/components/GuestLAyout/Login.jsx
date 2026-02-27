@@ -19,7 +19,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -32,26 +32,23 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const res = await axios.post("https://ligand-dev-7.onrender.com/api/users/login", {
+      // ✅ Uses axios global config with withCredentials: true
+      const res = await axios.post("/api/users/login", {
         email,
         password,
       });
 
-      // Save JWT token and user ID
-
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("userId", res.data.user._id);
-      localStorage.setItem("username", res.data.user.name);
-      localStorage.setItem("usn", res.data.user.usn);
-      localStorage.setItem("role",res.data.user.role);
-      localStorage.setItem("collegeName",res.data.user.collegeName);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-
-      console.log(res.data);
+      // ✅ Cookie is set automatically by the server
+      // No need to store token in localStorage anymore
+      console.log("Login successful, cookie is set");
 
       setMessage({ text: "Login successful! Redirecting...", type: "success" });
-      if(res.data.user.role==="admin")navigate("/admin/admindashboard")
-      else navigate("/user/analytics")
+      console.log(res.data)
+      if (res.data.user.role === "admin") {
+        navigate("/admin/admindashboard");
+      } if (res.data.user.role === "student") {
+        navigate("/user/analytics");
+      }
     } catch (err) {
       setMessage({
         text: err.response?.data?.error || "Login failed",
@@ -64,102 +61,98 @@ const Login = () => {
 
   return (
     <div className="login-container" data-aos="fade-up">
-      
-        <div className="login-card Tilt-inner">
-          <div className="login-header">
-            <h2>Welcome Back!</h2>
-            <p>Sign in to continue your journey</p>
+      <div className="login-card Tilt-inner">
+        <div className="login-header">
+          <h2>Welcome Back!</h2>
+          <p>Sign in to continue your journey</p>
+        </div>
+
+        {message && (
+          <div className={`message ${message.type}`} data-aos="fade-in">
+            {message.text}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="login-form">
+          <div
+            className="form-group"
+            data-aos="fade-right"
+            data-aos-delay="100"
+          >
+            <label htmlFor="email">
+              <FaEnvelope className="icon" /> Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
 
-          {message && (
-            <div className={`message ${message.type}`} data-aos="fade-in">
-              {message.text}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="login-form">
-            <div
-              className="form-group"
-              data-aos="fade-right"
-              data-aos-delay="100"
-            >
-              <label htmlFor="email">
-                <FaEnvelope className="icon" /> Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div
-              className="form-group"
-              data-aos="fade-right"
-              data-aos-delay="150"
-            >
-              <label htmlFor="password">
-                <FaLock className="icon" /> Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              className={`submit-btn ${isLoading ? "loading" : ""}`}
-              disabled={isLoading}
-              data-aos="zoom-in"
-              data-aos-delay="200"
-            >
-              {isLoading ? (
-                <>
-                  <FaHourglassHalf className="icon" /> Signing in...
-                </>
-              ) : (
-                <>
-                  <FaSignInAlt className="icon" /> Login
-                </>
-              )}
-            </button>
-          </form>
-
           <div
-  className="forgot-password"
-  data-aos="fade-in"
-  data-aos-delay="250"
->
-  <Link to="/ForgotPassword">
-    <FaUnlock className="icon" /> Forgot Password?
-  </Link>
-</div>
+            className="form-group"
+            data-aos="fade-right"
+            data-aos-delay="150"
+          >
+            <label htmlFor="password">
+              <FaLock className="icon" /> Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-<div
-  className="register-redirect"
-  data-aos="fade-in"
-  data-aos-delay="300"
->
-  Don't have an account?{" "}
-  <Link to="/register">
-    <FaUserPlus className="icon" /> Sign up here
-  </Link>
+          <button
+            type="submit"
+            className={`submit-btn ${isLoading ? "loading" : ""}`}
+            disabled={isLoading}
+            data-aos="zoom-in"
+            data-aos-delay="200"
+          >
+            {isLoading ? (
+              <>
+                <FaHourglassHalf className="icon" /> Signing in...
+              </>
+            ) : (
+              <>
+                <FaSignInAlt className="icon" /> Login
+              </>
+            )}
+          </button>
+        </form>
 
-  <Link to="/teacher-login" style={{ marginTop: "20px" }}>
-    <FaUserAlt className="icon" /> Are you a teacher?
-  </Link>
-</div>
-          
+        <div
+          className="forgot-password"
+          data-aos="fade-in"
+          data-aos-delay="250"
+        >
+          <Link to="/ForgotPassword">
+            <FaUnlock className="icon" /> Forgot Password?
+          </Link>
         </div>
-     
+
+        <div
+          className="register-redirect"
+          data-aos="fade-in"
+          data-aos-delay="300"
+        >
+          Don't have an account?{" "}
+          <Link to="/register">
+            <FaUserPlus className="icon" /> Sign up here
+          </Link>
+          <Link to="/teacher-login" style={{ marginTop: "20px" }}>
+            <FaUserAlt className="icon" /> Are you a teacher?
+          </Link>
+        </div>
+      </div>
 
       <style jsx>{`
         .Tilt {
@@ -344,5 +337,3 @@ const Login = () => {
 };
 
 export default Login;
-
-

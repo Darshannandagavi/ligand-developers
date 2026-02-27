@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useAlert } from "../StyleComponents/AlertContext";
 import Loader from "../StyleComponents/Loader";
 
 export default function AdminApproveStudents() {
@@ -10,24 +11,25 @@ export default function AdminApproveStudents() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [actionLoading, setActionLoading] = useState(null);
-
-  const token = localStorage.getItem("token");
+  const { showAlert } = useAlert();
   const today = new Date().toISOString().split("T")[0];
 
   // Fetch all students
   const fetchStudents = async () => {
     try {
-      const res = await axios.get("https://ligand-dev-7.onrender.com/api/users", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axios.get("http://localhost:8000/api/users", {},{withcredentials: true});
 
       const studentList = res.data.filter((u) => u.role === "student");
       setStudents(studentList);
       setFilteredStudents(studentList);
-
     } catch (err) {
       console.log(err);
-      alert("Failed to fetch students");
+      showAlert({
+        type: "error",
+        title: "Fetch Failed",
+        message: "Failed to fetch students. Please try again later.",
+        confirmText: "OK",
+      });
     } finally {
       setLoading(false);
     }
@@ -52,10 +54,11 @@ export default function AdminApproveStudents() {
     // Search filter
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      filtered = filtered.filter((s) =>
-        s.name?.toLowerCase().includes(term) ||
-        s.usn?.toLowerCase().includes(term) ||
-        s.email?.toLowerCase().includes(term)
+      filtered = filtered.filter(
+        (s) =>
+          s.name?.toLowerCase().includes(term) ||
+          s.usn?.toLowerCase().includes(term) ||
+          s.email?.toLowerCase().includes(term),
       );
     }
 
@@ -74,18 +77,24 @@ export default function AdminApproveStudents() {
     setActionLoading(id);
     try {
       await axios.put(
-        `https://ligand-dev-7.onrender.com/api/users/approve/${id}`,
+        `http://localhost:8000/api/users/approve/${id}`,
         { isApproved: value },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {withCredentials:true },
       );
 
-      setStudents(prev =>
-        prev.map(s => (s._id === id ? { ...s, isApproved: value } : s))
+      setStudents((prev) =>
+        prev.map((s) => (s._id === id ? { ...s, isApproved: value } : s)),
       );
-
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.error || "Failed to update approval");
+      showAlert({
+        type: "error",
+        title: "Approval Update Error",
+        message:
+          err.response?.data?.error ??
+          "We couldn’t update the approval status. Please try again.",
+        confirmText: "OK",
+      });
     } finally {
       setActionLoading(null);
     }
@@ -97,27 +106,45 @@ export default function AdminApproveStudents() {
 
     try {
       const res = await axios.put(
-        "https://ligand-dev-7.onrender.com/api/users/approve-by-date",
+        "http://localhost:8000/api/users/approve-by-date",
         { date: selectedDate },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {withCredentials:true },
       );
 
       alert(res.data.message);
       fetchStudents(); // Refresh data
-
     } catch (err) {
       console.error(err);
-      alert("Failed to approve students");
+      showAlert({
+        type: "error",
+        title: "Approval Update Error",
+        message:
+          err.response?.data?.error ??
+          "We couldn’t update the approval status for the Students.",
+        confirmText: "OK",
+      });
     }
   };
 
   // Stats
-  const approvedCount = students.filter(s => s.isApproved).length;
-  const pendingCount = students.filter(s => !s.isApproved).length;
+  const approvedCount = students.filter((s) => s.isApproved).length;
+  const pendingCount = students.filter((s) => !s.isApproved).length;
 
-  if (loading) return (
-    <div style={{minHeight:"200px",height:"100%",width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}><Loader/></div>
-  );
+  if (loading)
+    return (
+      <div
+        style={{
+          minHeight: "200px",
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Loader />
+      </div>
+    );
 
   return (
     <div className="admin-container">
@@ -180,10 +207,7 @@ export default function AdminApproveStudents() {
         </div>
 
         {selectedDate && (
-          <button
-            onClick={approveByDate}
-            className="approve-all-btn"
-          >
+          <button onClick={approveByDate} className="approve-all-btn">
             <span className="btn-icon">✓</span>
             Approve All for {selectedDate}
           </button>
@@ -194,7 +218,7 @@ export default function AdminApproveStudents() {
       <div className="results-info">
         Showing {filteredStudents.length} of {students.length} students
         {(selectedDate || searchTerm || statusFilter !== "all") && (
-          <button 
+          <button
             className="clear-filters"
             onClick={() => {
               setSelectedDate("");
@@ -234,7 +258,12 @@ export default function AdminApproveStudents() {
               </tr>
             ) : (
               filteredStudents.map((student) => (
-                <tr key={student._id} className={student.isApproved ? "approved-row" : "pending-row"}>
+                <tr
+                  key={student._id}
+                  className={
+                    student.isApproved ? "approved-row" : "pending-row"
+                  }
+                >
                   <td>
                     <div className="student-info">
                       <span className="student-name">{student.name}</span>
@@ -248,16 +277,18 @@ export default function AdminApproveStudents() {
                   </td>
                   <td>
                     <span className="date-display">
-                      {new Date(student.createdAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
+                      {new Date(student.createdAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
                       })}
                     </span>
                   </td>
                   <td>
-                    <span className={`status-badge ${student.isApproved ? 'status-approved' : 'status-pending'}`}>
-                      {student.isApproved ? 'Approved' : 'Pending'}
+                    <span
+                      className={`status-badge ${student.isApproved ? "status-approved" : "status-pending"}`}
+                    >
+                      {student.isApproved ? "Approved" : "Pending"}
                     </span>
                   </td>
                   <td>
@@ -287,7 +318,7 @@ export default function AdminApproveStudents() {
 
       <style jsx>{`
         .admin-container {
-          max-width:90vw;
+          max-width: 90vw;
           background: #ffffffff;
           min-height: 100vh;
         }
@@ -326,9 +357,15 @@ export default function AdminApproveStudents() {
           border-left: 4px solid #e2e8f0;
         }
 
-        .stat-card.total { border-left-color: #3b82f6; }
-        .stat-card.approved { border-left-color: #10b981; }
-        .stat-card.pending { border-left-color: #f59e0b; }
+        .stat-card.total {
+          border-left-color: #3b82f6;
+        }
+        .stat-card.approved {
+          border-left-color: #10b981;
+        }
+        .stat-card.pending {
+          border-left-color: #f59e0b;
+        }
 
         .stat-card h3 {
           color: #64748b;
@@ -644,8 +681,12 @@ export default function AdminApproveStudents() {
         }
 
         @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
 
         /* Responsive Design */

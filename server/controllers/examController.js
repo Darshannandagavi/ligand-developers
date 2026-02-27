@@ -143,9 +143,9 @@ export async function toggleCollegeAccess(req, res) {
 
 export async function getExamsForUser(req, res) {
   try {
-    const { studentId, collegeName } = req.params;
-
-    const student = await user.findById(studentId);
+    const { id, collegeName } = req.user;
+    console.log("getexams for user",req.user);
+    const student = await user.findById(id);
     if (!student) return res.status(404).json({ message: "Student not found" });
 
     // Count completed homework

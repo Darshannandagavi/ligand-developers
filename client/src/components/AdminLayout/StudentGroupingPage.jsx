@@ -13,7 +13,7 @@ export default function AdminGroupingPage() {
   const [activeGroup, setActiveGroup] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const token = localStorage.getItem("token");
+  
 
   useEffect(() => {
     loadData();
@@ -24,11 +24,11 @@ export default function AdminGroupingPage() {
       setLoading(true);
       
       const [groupRes, userRes] = await Promise.all([
-        axios.get("https://ligand-dev-7.onrender.com/api/fee-groups", {
-          headers: { Authorization: `Bearer ${token}` },
+        axios.get("http://localhost:8000/api/fee-groups", {
+          
         }),
-        axios.get("https://ligand-dev-7.onrender.com/api/users", {
-          headers: { Authorization: `Bearer ${token}` },
+        axios.get("http://localhost:8000/api/users", {
+          
         })
       ]);
 

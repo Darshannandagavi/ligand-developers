@@ -23,12 +23,11 @@ const AdminDashboard = () => {
   const fetchStudents = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
+      
       const res = await axios.get(
-        "https://ligand-dev-7.onrender.com/api/users",
-        {
-          headers: { Authorization: token ? `Bearer ${token}` : "" },
-        },
+        "http://localhost:8000/api/users",
+        {   
+        },{withcredentials:true},
       );
       setStudents(res.data || []);
     } catch (err) {
@@ -47,7 +46,7 @@ const AdminDashboard = () => {
         const types = ["batch", "collegeName"];
         const responses = await Promise.all(
           types.map((type) =>
-            axios.get(`https://ligand-dev-7.onrender.com/api/options/${type}`),
+            axios.get(`http://localhost:8000/api/options/${type}`),
           ),
         );
         setBatchOptions(responses[0].data || []);
@@ -112,7 +111,7 @@ const AdminDashboard = () => {
     if (!collegeToPassout) return alert("Select college");
     if (!yearToPassout) return alert("Select academic year");
     try {
-      const token = localStorage.getItem("token");
+      
       const payload = {
         collegeName: collegeToPassout,
         year: Number(yearToPassout),
@@ -120,9 +119,9 @@ const AdminDashboard = () => {
       if (batchToPassout) payload.batch = batchToPassout;
 
       const res = await axios.post(
-        "https://ligand-dev-7.onrender.com/api/users/make-passout",
+        "http://localhost:8000/api/users/make-passout",
         payload,
-        { headers: { Authorization: token ? `Bearer ${token}` : "" } },
+        {withcredentials:true}
       );
 
       const n = res.data?.modifiedCount ?? 0;

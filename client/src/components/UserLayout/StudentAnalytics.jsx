@@ -3,20 +3,24 @@ import axios from "axios";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import Loader from "../StyleComponents/Loader";
 
-const API = "https://ligand-dev-7.onrender.com/api";
+const API = "http://localhost:8000/api";
 
 // ----------------------------------------------------------
 // SAFE GET
 // ----------------------------------------------------------
 async function safeGet(url, config = {}) {
   try {
-    const res = await axios.get(url, config);
+    const res = await axios.get(url, {
+      withCredentials: true,
+      ...config,
+    });
     return res?.data || null;
   } catch (err) {
     console.warn("SAFE GET FAILED:", url);
     return null;
   }
 }
+
 
 export default function StudentAnalytics() {
   const [data, setData] = useState({
@@ -26,7 +30,7 @@ export default function StudentAnalytics() {
     fees: [],
     homework: [],
   });
-
+  const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
   const [modalData, setModalData] = useState([]);
@@ -34,29 +38,31 @@ export default function StudentAnalytics() {
   // ----------------------------------------------------------
   // LocalStorage
   // ----------------------------------------------------------
-  const token = localStorage.getItem("token");
-  const studentId = localStorage.getItem("userId");
-  const student = JSON.parse(localStorage.getItem("user"));
-  const usn = localStorage.getItem("usn");
-
-  const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
   // ----------------------------------------------------------
-  const loadAnalytics = async () => {
-    if (!studentId) return;
+  const loadAnalytics = async (studentData) => {
+    if (!studentData?._id) return;
 
     setLoading(true);
 
     const [attendanceRes, examRes, interviewRes, feeRes, homeworkRes] =
       await Promise.all([
-        safeGet(`${API}/attendance?student=${studentId}`),
-        safeGet(`${API}/attempts/student/${studentId}`),
-        safeGet(`${API}/topics/interviewscore/${usn}`),
+        safeGet(`${API}/attendance?student=${studentData._id}`, {
+          withCredentials: true,
+        }),
+        safeGet(`${API}/attempts/student/${studentData._id}`, {
+          withCredentials: true,
+        }),
+        safeGet(`${API}/topics/interviewscore/${studentData.usn}`, {
+          withCredentials: true,
+        }),
         safeGet(
-          `${API}/fee-groups/students?collegeName=${student?.collegeName}&batch=${student?.batch}&programName=${student?.programName}&technology=${student?.technology}`,
-          authHeader
+          `${API}/fee-groups/students?collegeName=${studentData.collegeName}&batch=${studentData.batch}&programName=${studentData.programName}&technology=${studentData.technology}`,
+          { withCredentials: true }
         ),
-        safeGet(`${API}/homeworkstatus/${studentId}`),
+        safeGet(`${API}/homeworkstatus/${studentData._id}`, {
+          withCredentials: true,
+        }),
       ]);
 
     setData({
@@ -70,10 +76,32 @@ export default function StudentAnalytics() {
     setLoading(false);
   };
 
+  const loadStudent = async () => {
+    try {
+      const res = await axios.get(`${API}/users/getme`, {
+        withCredentials: true,
+      });
+      console.log(res.data)
+      setStudent(res.data);
+    } catch (err) {
+      console.error("Failed to load student");
+    }
+  };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    loadAnalytics();
-  }, []);
+useEffect(() => {
+  const init = async () => {
+    await loadStudent();
+  };
+  init();
+}, []);
+
+useEffect(() => {
+  if (student) {
+    loadAnalytics(student);
+  }
+}, [student]);
+
 
   // ----------------------------------------------------------
   // CALCULATIONS
@@ -92,7 +120,8 @@ export default function StudentAnalytics() {
 
   if (data.fees.length > 0) {
     const entry = data.fees[0]?.students?.find(
-      (s) => String(s.student?._id) === String(studentId)
+      (s) => String(s.student?._id) === String(student?._id)
+
     );
 
     if (entry) {
@@ -466,7 +495,7 @@ export default function StudentAnalytics() {
               </button>
             </div>
             <div className="student-analytics-modal-body">
-              {renderModalContent(activeModal, modalData, studentId)}
+              {renderModalContent(activeModal, modalData, student?._id)}
             </div>
           </div>
         </div>
@@ -1379,8 +1408,9 @@ function renderModalContent(modalType, data, studentId) {
       if (data.length === 0) return <p className="student-analytics-modal-no-data">No fee data available</p>;
       
       const feeEntry = data[0]?.students?.find(
-        (s) => String(s.student?._id) === String(studentId)
-      );
+  (s) => String(s.student?._id) === String(studentId)
+);
+
 
       if (!feeEntry) return <p className="student-analytics-modal-no-data">No fee data found for you</p>;
 

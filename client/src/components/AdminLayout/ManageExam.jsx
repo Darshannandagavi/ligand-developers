@@ -41,7 +41,7 @@ export default function ManageExam() {
     try {
       setloading(true);
       const res = await axios.get(
-        "https://ligand-dev-7.onrender.com/api/exams/examsforadmin"
+        "http://localhost:8000/api/exams/examsforadmin"
       );
       setExams(res.data);
       setFilteredExams(res.data);
@@ -130,11 +130,11 @@ export default function ManageExam() {
 
       if (editingExamId) {
         await axios.put(
-          `https://ligand-dev-7.onrender.com/api/exams/${editingExamId}`,
+          `http://localhost:8000/api/exams/${editingExamId}`,
           sanitizedData
         );
       } else {
-        await axios.post("https://ligand-dev-7.onrender.com/api/exams", sanitizedData);
+        await axios.post("http://localhost:8000/api/exams", sanitizedData);
       }
 
       setFormData({
@@ -176,7 +176,7 @@ export default function ManageExam() {
   const deleteExam = async (id) => {
     if (window.confirm("Are you sure you want to delete this exam?")) {
       try {
-        await axios.delete(`https://ligand-dev-7.onrender.com/api/exams/${id}`);
+        await axios.delete(`http://localhost:8000/api/exams/${id}`);
         fetchExams();
       } catch (err) {
         console.error(err);
@@ -206,7 +206,7 @@ export default function ManageExam() {
   const updateExamVisibility = async (id, visibility) => {
     try {
       const exam = exams.find((exam) => exam._id === id);
-      await axios.put(`https://ligand-dev-7.onrender.com/api/exams/${id}`, {
+      await axios.put(`http://localhost:8000/api/exams/${id}`, {
         ...exam,
         visibility,
       });
@@ -447,7 +447,7 @@ export default function ManageExam() {
                         onChange={async (e) => {
                           try {
                             await axios.put(
-                              `https://ligand-dev-7.onrender.com/api/exams/${exam._id}/show-result`,
+                              `http://localhost:8000/api/exams/${exam._id}/show-result`,
                               { showResult: e.target.checked }
                             );
                             fetchExams();

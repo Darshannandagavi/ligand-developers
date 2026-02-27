@@ -2,21 +2,23 @@
 import express from "express";
 import { getActiveNotes, getNotesForUser } from "../controllers/notesController.js";
 import { addNote, updateNote, toggleNoteStatus, deleteNote, getAllnotes, toggleNoteCollegeAccess } from "../controllers/adminNotesController.js";
+import { auth } from "../middleware/auth.js";
+import adminOnly from "../middleware/adminOnly.js";
 
 const notesrouter = express.Router();
 
 
 // frontend routes
-notesrouter.get("/active", getActiveNotes);
+notesrouter.get("/active",auth, getActiveNotes);
 notesrouter.get("/foruser/:collegeName", getNotesForUser);
 
 // admin routes
-notesrouter.post("/", addNote);
+notesrouter.post("/",auth, adminOnly, addNote);
 
-notesrouter.put("/:id", updateNote);
-notesrouter.put("/:id/college", toggleNoteCollegeAccess);
-notesrouter.patch("/:id/toggle", toggleNoteStatus);
-notesrouter.delete("/:id", deleteNote);
-notesrouter.get("/admin", getAllnotes);
+notesrouter.put("/:id",auth, adminOnly,  updateNote);
+notesrouter.put("/:id/college",auth, adminOnly,  toggleNoteCollegeAccess);
+notesrouter.patch("/:id/toggle",auth, adminOnly,  toggleNoteStatus);
+notesrouter.delete("/:id",auth, adminOnly,  deleteNote);
+notesrouter.get("/admin",auth, adminOnly,  getAllnotes);
 
 export default notesrouter;

@@ -56,4 +56,4 @@ const feeGroupSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export default mongoose.model("FeeGroup", feeGroupSchema);
+export default mongoose.models.FeeGroup || mongoose.model("FeeGroup", feeGroupSchema);

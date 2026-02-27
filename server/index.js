@@ -15,9 +15,11 @@ import feeGroupRoutes from "./routes/feeGroupRoutes.js";
 import TeacherRouter from "./routes/TeacherRouter.js";
 import homeworkRoutes from "./routes/homeworkRoutes.js";
 import homeworkstatusRouter from "./routes/homeworkStatusRoutes.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(cors({
   origin: ["https://liganddevelopers.vercel.app", "http://localhost:3000"],
   methods: ["GET", "POST", "PUT", "DELETE"],

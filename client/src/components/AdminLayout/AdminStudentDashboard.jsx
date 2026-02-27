@@ -7,17 +7,17 @@ import Loader from "../StyleComponents/Loader";
 window.jspdf = { jsPDF };
 window.html2canvas = html2canvas;
 
-const API = "https://ligand-dev-7.onrender.com/api";
+const API = "http://localhost:8000/api";
 
 // Custom API hook with error handling
 const useApi = () => {
-  const token = localStorage.getItem("token");
+  
 
   const authHeader = useMemo(
     () => ({
-      headers: { Authorization: `Bearer ${token}` },
+      withCredentials: true,
     }),
-    [token],
+    [],
   );
 
   const safeRequest = async (method, url, data = null) => {
@@ -147,10 +147,8 @@ const AdminStudentDashboard = () => {
       const results = await Promise.allSettled(
         endpoints.map(({ url }) =>
           axios.get(url, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }),
+            
+          },{withcredentials:true},),
         ),
       );
 

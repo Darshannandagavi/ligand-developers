@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login, getAllUsers, getUserById, updateUser, deleteUser, changePassword, forgotPassword, makeBatchPassout, toggleApproval, approveByDate, getStudentProfile, updateStudentProfile } from "../controllers/userController.js";
+import { register, login, getAllUsers, getUserById, updateUser, deleteUser, changePassword, forgotPassword, makeBatchPassout, toggleApproval, approveByDate, getStudentProfile, updateStudentProfile, logout, getMe } from "../controllers/userController.js";
 import { auth } from "../middleware/auth.js";
 import upload from "../middleware/upload.js";
 
@@ -19,22 +19,24 @@ const adminOnly = (req, res, next) => {
 
 
 // Public routes
+userrouter.get("/getme", auth, getMe);
 userrouter.get("/profile", auth, getStudentProfile);
 userrouter.put("/profile", auth,upload.single("profilePic"), updateStudentProfile);
 userrouter.post("/register", upload.single("profilePic"), register);
 userrouter.post("/login", login);
 userrouter.post("/forgotpassword", forgotPassword);
 // Protected routes
-userrouter.get("/", getAllUsers);
+userrouter.get("/", auth, adminOnly, getAllUsers);
 userrouter.put("/change-password", auth, changePassword);
 
 // ADMIN: Approve / Unapprove a student
-userrouter.put("/approve/:id", auth, toggleApproval);
-userrouter.put("/approve-by-date", auth, approveByDate);
+userrouter.put("/approve/:id", auth, adminOnly, toggleApproval);
+userrouter.put("/approve-by-date", auth, adminOnly, approveByDate);
 userrouter.get("/:id", auth, getUserById);
 userrouter.put("/:id", auth, upload.single("profilePic"), updateUser);
 userrouter.delete("/:id", auth, deleteUser);
 // Admin route to mark batch as passout
-userrouter.post("/make-passout", auth, makeBatchPassout);
+userrouter.post("/make-passout", auth, adminOnly, makeBatchPassout);
+userrouter.post("/logout", auth, logout);
 
 export default userrouter;

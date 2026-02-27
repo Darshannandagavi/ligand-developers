@@ -93,7 +93,7 @@ export default function AdminExamAttempts() {
       try {
         setLoading(true);
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/exams/examsforadmin"
+          "http://localhost:8000/api/exams/examsforadmin"
         );
         setExams(res.data);
         setLoading(false);
@@ -111,7 +111,7 @@ export default function AdminExamAttempts() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `https://ligand-dev-7.onrender.com/api/attempts/exam/${exam._id}`
+        `http://localhost:8000/api/attempts/exam/${exam._id}`
       );
       console.log(res.data)
       setAttempts(res.data);

@@ -1,3 +1,4 @@
+import feeGroup from "../models/feeGroup.js";
 import FeePayment from "../models/feePayment.js";
 import User from "../models/user.js";
 
@@ -44,36 +45,138 @@ export const createFeePayments = async (req, res) => {
   }
 };
 
-// List fee payments with optional filters (collegeName, batch, programName, technology, studentId)
+
 export const listFeePayments = async (req, res) => {
   try {
-    const { collegeName, batch, programName, technology, studentId } = req.query;
-    // Return latest payment per student for the given filters
-    const match = {};
-    if (collegeName) match.collegeName = collegeName;
-    if (batch) match.batch = batch;
-    if (programName) match.programName = programName;
-    if (technology) match.technology = technology;
-    if (studentId) match.student = typeof studentId === 'string' ? require('mongoose').Types.ObjectId(studentId) : studentId;
+    console.log("===== listFeePayments From FeeGroup =====");
+    console.log("Query Params:", req.query);
 
-    const agg = [
+    const { collegeName, batch, programName, technology, studentId } =
+      req.query;
+
+    const match = {};
+
+    if (collegeName?.trim()) match.collegeName = collegeName.trim();
+    if (batch?.trim()) match.batch = batch.trim();
+    if (programName?.trim()) match.programName = programName.trim();
+    if (technology?.trim()) match.technology = technology.trim();
+
+    console.log("Group Match Filter:", match);
+
+    const pipeline = [
       { $match: match },
-      { $sort: { createdAt: -1 } },
-      // use $$ROOT and ensure we don't try to replaceRoot with a null doc
-      { $group: { _id: "$student", doc: { $first: "$$ROOT" } } },
-      { $match: { doc: { $ne: null } } },
-      { $replaceRoot: { newRoot: "$doc" } },
-      { $lookup: { from: 'users', localField: 'student', foreignField: '_id', as: 'student' } },
-      { $unwind: { path: '$student', preserveNullAndEmptyArrays: true } }
+
+      { $unwind: "$students" },
+
+      ...(studentId && mongoose.Types.ObjectId.isValid(studentId)
+        ? [
+            {
+              $match: {
+                "students.student": new mongoose.Types.ObjectId(studentId),
+              },
+            },
+          ]
+        : []),
+
+      // 🔹 Lookup Student Details
+      {
+        $lookup: {
+          from: "users",
+          localField: "students.student",
+          foreignField: "_id",
+          as: "studentDetails",
+        },
+      },
+      { $unwind: { path: "$studentDetails", preserveNullAndEmptyArrays: true } },
+
+      // 🔹 Lookup Collector (for paymentHistory.by)
+      {
+        $lookup: {
+          from: "users",
+          localField: "students.paymentHistory.by",
+          foreignField: "_id",
+          as: "collectorDetails",
+        },
+      },
+
+      {
+        $project: {
+          _id: 0,
+
+          // ✅ Remove sensitive fields from student
+          student: {
+            _id: "$studentDetails._id",
+            name: "$studentDetails.name",
+            email: "$studentDetails.email",
+            phone: "$studentDetails.phone",
+            role: "$studentDetails.role",
+          },
+
+          totalFee: "$students.totalFee",
+          paidFee: "$students.paidFee",
+          currentFee: "$students.currentFee",
+          status: "$students.status",
+
+          // ✅ Replace "by" with collector email
+          paymentHistory: {
+            $map: {
+              input: "$students.paymentHistory",
+              as: "payment",
+              in: {
+                amount: "$$payment.amount",
+                paidOn: "$$payment.paidOn",
+                paymentMode: "$$payment.paymentMode",
+                receipt: "$$payment.receipt",
+                remark: "$$payment.remark",
+                transactionId: "$$payment.transactionId",
+
+                collectedBy: {
+                  $let: {
+                    vars: {
+                      collector: {
+                        $arrayElemAt: [
+                          {
+                            $filter: {
+                              input: "$collectorDetails",
+                              as: "col",
+                              cond: {
+                                $eq: ["$$col._id", "$$payment.by"],
+                              },
+                            },
+                          },
+                          0,
+                        ],
+                      },
+                    },
+                    in: "$$collector.email",
+                  },
+                },
+              },
+            },
+          },
+
+          collegeName: 1,
+          batch: 1,
+          programName: 1,
+          technology: 1,
+          createdAt: 1,
+        },
+      },
     ];
 
-    const records = await FeePayment.aggregate(agg);
-    
+    console.log("Aggregation Pipeline:", JSON.stringify(pipeline, null, 2));
+
+    const records = await feeGroup.aggregate(pipeline);
+
+    console.log("Result Count:", records.length);
+
     res.json(records);
   } catch (err) {
+    console.error("Error fetching fee payments:", err);
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // Update fee status (id param) - body: { status: 'Paid' }
 export const updateFeeStatus = async (req, res) => {

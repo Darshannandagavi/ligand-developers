@@ -1,7 +1,4 @@
-
-
-
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Loader from "../StyleComponents/Loader";
@@ -12,13 +9,16 @@ const Notes = ({ user }) => {
   const [error, setError] = useState(null);
   const [hoveredCard, setHoveredCard] = useState(null);
   const [retryHover, setRetryHover] = useState(false);
-  const collegeName = localStorage.getItem("collegeName");// get from logged-in user
+  const [collegeName, setCollegeName] = useState(null);
 
   useEffect(() => {
     const fetchNotes = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`https://ligand-dev-7.onrender.com/api/notes/foruser/${collegeName}`);
+        const user = await axios.get(`http://localhost:8000/api/users/getme`);
+        setCollegeName(user.data.collegeName)
+        
+        const res = await axios.get(`http://localhost:8000/api/notes/foruser/${collegeName}`);
         setNotes(res.data);
         setError(null);
         

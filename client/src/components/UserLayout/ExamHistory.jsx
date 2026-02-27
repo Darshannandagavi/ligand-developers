@@ -28,7 +28,7 @@ Chart.register(
   Legend,
   ArcElement,
   PointElement,
-  LineElement
+  LineElement,
 );
 
 export default function ExamHistory() {
@@ -37,7 +37,6 @@ export default function ExamHistory() {
   const [expandedAttempt, setExpandedAttempt] = useState(null);
   // const [selectedAttemptForTradingChart, setSelectedAttemptForTradingChart] = useState(null);
 
-  const studentId = localStorage.getItem("userId");
   const student = localStorage.getItem("username");
   const usn = localStorage.getItem("usn");
 
@@ -49,9 +48,10 @@ export default function ExamHistory() {
 
     async function fetchHistory() {
       try {
-        const res = await axios.get(
-          `https://ligand-dev-7.onrender.com/api/attempts/student/${studentId}`
-        );
+        const res = await axios.get("http://localhost:8000/api/attempts/my", {
+          withCredentials: true,
+        });
+
         // Filter out attempts with createdAt date 12-9-2025 (September 12, 2025)
         const excludeDate = new Date(2025, 8, 12); // Months are 0-indexed: 8 = September
         excludeDate.setHours(0, 0, 0, 0);
@@ -69,7 +69,7 @@ export default function ExamHistory() {
       }
     }
     fetchHistory();
-  }, [studentId]);
+  }, [usn]);
 
   const toggleAttempt = (attemptId) => {
     if (expandedAttempt === attemptId) {
@@ -104,7 +104,7 @@ export default function ExamHistory() {
         question: `Q${index + 1}`,
         value: correctCount,
         isCorrect: answer.isCorrect,
-        index: index + 1
+        index: index + 1,
       });
     });
     return data;
@@ -122,19 +122,15 @@ export default function ExamHistory() {
     doc.text(
       `Exam: ${attempt.exam?.examTitle || `Exam #${attempt.exam?.examNumber}`}`,
       14,
-      46
+      46,
     );
-    doc.text(
-      `Date: ${new Date(attempt.createdAt).toLocaleString()}`,
-      14,
-      54
-    );
+    doc.text(`Date: ${new Date(attempt.createdAt).toLocaleString()}`, 14, 54);
     doc.text(
       `Score: ${attempt.score}/${attempt.totalQuestions} (${attempt.percentage.toFixed(
-        2
+        2,
       )}%)`,
       14,
-      62
+      62,
     );
 
     autoTable(doc, {
@@ -160,7 +156,7 @@ export default function ExamHistory() {
     doc.save(
       `Exam_${attempt.exam?.examTitle || attempt.exam?.examNumber}_${
         student || "student"
-      }.pdf`
+      }.pdf`,
     );
   };
 
@@ -197,7 +193,18 @@ export default function ExamHistory() {
     return (
       <div className="exam-history-container">
         <div className="exam-history-card">
-          <div style={{minHeight:"200px",height:"100%",width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}><Loader/></div>
+          <div
+            style={{
+              minHeight: "200px",
+              height: "100%",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Loader />
+          </div>
           <div className="loading">Loading exam history... ⏳</div>
         </div>
       </div>
@@ -238,8 +245,7 @@ export default function ExamHistory() {
               color: "#2c3e50",
             }}
           >
-            Student Name:{" "}
-            <span style={{ color: "#667eea" }}>{student}</span>
+            Student Name: <span style={{ color: "#667eea" }}>{student}</span>
             {" | "}
             USN: <span style={{ color: "#667eea" }}>{usn}</span>
           </div>
@@ -248,23 +254,29 @@ export default function ExamHistory() {
         <div className="attempts-list">
           {attempts.map((attempt, idx) => {
             const tradingData = generateTradingChartData(attempt);
-            const tradingChartData = tradingData ? {
-              labels: tradingData.map(d => d.question),
-              datasets: [
-                {
-                  label: 'Performance Trend',
-                  data: tradingData.map(d => d.value),
-                  borderColor: '#667eea',
-                  backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                  pointBackgroundColor: tradingData.map(d => d.isCorrect ? '#4CAF50' : '#F44336'),
-                  pointBorderColor: tradingData.map(d => d.isCorrect ? '#4CAF50' : '#F44336'),
-                  pointRadius: 6,
-                  pointHoverRadius: 8,
-                  fill: true,
-                  tension: 0.4,
+            const tradingChartData = tradingData
+              ? {
+                  labels: tradingData.map((d) => d.question),
+                  datasets: [
+                    {
+                      label: "Performance Trend",
+                      data: tradingData.map((d) => d.value),
+                      borderColor: "#667eea",
+                      backgroundColor: "rgba(102, 126, 234, 0.1)",
+                      pointBackgroundColor: tradingData.map((d) =>
+                        d.isCorrect ? "#4CAF50" : "#F44336",
+                      ),
+                      pointBorderColor: tradingData.map((d) =>
+                        d.isCorrect ? "#4CAF50" : "#F44336",
+                      ),
+                      pointRadius: 6,
+                      pointHoverRadius: 8,
+                      fill: true,
+                      tension: 0.4,
+                    },
+                  ],
                 }
-              ]
-            } : null;
+              : null;
 
             return (
               <div
@@ -289,9 +301,29 @@ export default function ExamHistory() {
 
                   <div className="attempt-score">
                     {attempt.resultsHidden ? (
-                      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                        <div style={{background: '#f1c40f', color: '#1f2937', padding: '8px 12px', borderRadius: 8, fontWeight: 700}}>Results Hidden</div>
-                        <div style={{fontSize: 12, color: '#666', marginTop: 6}}>Awaiting admin release</div>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div
+                          style={{
+                            background: "#f1c40f",
+                            color: "#1f2937",
+                            padding: "8px 12px",
+                            borderRadius: 8,
+                            fontWeight: 700,
+                          }}
+                        >
+                          Results Hidden
+                        </div>
+                        <div
+                          style={{ fontSize: 12, color: "#666", marginTop: 6 }}
+                        >
+                          Awaiting admin release
+                        </div>
                       </div>
                     ) : (
                       <>
@@ -326,9 +358,17 @@ export default function ExamHistory() {
                       e.stopPropagation();
                       if (!attempt.resultsHidden) handleDownload(attempt);
                     }}
-                    title={attempt.resultsHidden ? "Results hidden" : "Download this exam as PDF"}
+                    title={
+                      attempt.resultsHidden
+                        ? "Results hidden"
+                        : "Download this exam as PDF"
+                    }
                     disabled={attempt.resultsHidden}
-                    style={attempt.resultsHidden ? {opacity: 0.6, cursor: 'not-allowed'} : {}}
+                    style={
+                      attempt.resultsHidden
+                        ? { opacity: 0.6, cursor: "not-allowed" }
+                        : {}
+                    }
                   >
                     ⬇️ Download
                   </button>
@@ -340,7 +380,10 @@ export default function ExamHistory() {
                     {!attempt.resultsHidden && tradingChartData && (
                       <div className="trading-chart-container">
                         <h4>Performance Trend (Trading View)</h4>
-                        <div className="chart-wrapper" style={{background: '#fff'}}>
+                        <div
+                          className="chart-wrapper"
+                          style={{ background: "#fff" }}
+                        >
                           <Line
                             data={tradingChartData}
                             options={{
@@ -349,46 +392,47 @@ export default function ExamHistory() {
                               devicePixelRatio: window.devicePixelRatio || 1,
                               plugins: {
                                 legend: {
-                                  position: 'top',
+                                  position: "top",
                                 },
                                 tooltip: {
                                   callbacks: {
-                                    label: function(context) {
+                                    label: function (context) {
                                       const index = context.dataIndex;
                                       const value = context.parsed.y;
-                                      const isCorrect = tradingData[index].isCorrect;
-                                      return `Q${index + 1}: ${value} (${isCorrect ? 'Correct' : 'Incorrect'})`;
-                                    }
-                                  }
-                                }
+                                      const isCorrect =
+                                        tradingData[index].isCorrect;
+                                      return `Q${index + 1}: ${value} (${isCorrect ? "Correct" : "Incorrect"})`;
+                                    },
+                                  },
+                                },
                               },
                               scales: {
                                 x: {
                                   title: {
                                     display: true,
-                                    text: 'Question Number',
-                                    color: '#2c3e50',
+                                    text: "Question Number",
+                                    color: "#2c3e50",
                                     font: {
                                       size: 14,
-                                      weight: 'bold'
-                                    }
+                                      weight: "bold",
+                                    },
                                   },
                                   grid: {
-                                    color: 'rgba(0, 0, 0, 0.1)'
+                                    color: "rgba(0, 0, 0, 0.1)",
                                   },
                                   ticks: {
                                     stepSize: 1,
-                                  }
+                                  },
                                 },
                                 y: {
                                   title: {
                                     display: true,
-                                    text: 'Cumulative Correct Answers',
-                                    color: '#2c3e50',
+                                    text: "Cumulative Correct Answers",
+                                    color: "#2c3e50",
                                     font: {
                                       size: 14,
-                                      weight: 'bold'
-                                    }
+                                      weight: "bold",
+                                    },
                                   },
                                   min: 0,
                                   max: attempt.totalQuestions,
@@ -396,10 +440,10 @@ export default function ExamHistory() {
                                     stepSize: 1,
                                   },
                                   grid: {
-                                    color: 'rgba(0, 0, 0, 0.1)'
-                                  }
-                                }
-                              }
+                                    color: "rgba(0, 0, 0, 0.1)",
+                                  },
+                                },
+                              },
                             }}
                           />
                         </div>
@@ -424,12 +468,23 @@ export default function ExamHistory() {
                           <h4>Score Distribution</h4>
                           <Bar
                             data={{
-                              labels: [attempt.exam?.examTitle || `Exam #${attempt.exam?.examNumber}`],
+                              labels: [
+                                attempt.exam?.examTitle ||
+                                  `Exam #${attempt.exam?.examNumber}`,
+                              ],
                               datasets: [
                                 {
                                   label: "Correct Answers",
                                   data: [attempt.score],
-                                  backgroundColor: [attempt.score >= attempt.totalQuestions * 0.8 ? "#4CAF50" : attempt.score >= attempt.totalQuestions * 0.6 ? "#FF9800" : "#F44336"],
+                                  backgroundColor: [
+                                    attempt.score >=
+                                    attempt.totalQuestions * 0.8
+                                      ? "#4CAF50"
+                                      : attempt.score >=
+                                          attempt.totalQuestions * 0.6
+                                        ? "#FF9800"
+                                        : "#F44336",
+                                  ],
                                 },
                               ],
                             }}
@@ -490,7 +545,10 @@ export default function ExamHistory() {
                               labels: ["Correct", "Incorrect"],
                               datasets: [
                                 {
-                                  data: [attempt.score, attempt.totalQuestions - attempt.score],
+                                  data: [
+                                    attempt.score,
+                                    attempt.totalQuestions - attempt.score,
+                                  ],
                                   backgroundColor: ["#4CAF50", "#F44336"],
                                 },
                               ],
@@ -511,7 +569,8 @@ export default function ExamHistory() {
                                 tooltip: {
                                   callbacks: {
                                     label: (tooltipItem) => {
-                                      const { label, formattedValue } = tooltipItem;
+                                      const { label, formattedValue } =
+                                        tooltipItem;
                                       return `${label}: ${formattedValue}`;
                                     },
                                   },
@@ -525,22 +584,22 @@ export default function ExamHistory() {
 
                     {!attempt.resultsHidden && (
                       <div className="answers-summary">
-                      <div className="summary-item correct">
-                        <span className="summary-count">{attempt.score}</span>
-                        <span className="summary-label">Correct</span>
-                      </div>
-                      <div className="summary-item incorrect">
-                        <span className="summary-count">
-                          {attempt.totalQuestions - attempt.score}
-                        </span>
-                        <span className="summary-label">Incorrect</span>
-                      </div>
-                      <div className="summary-item total">
-                        <span className="summary-count">
-                          {attempt.totalQuestions}
-                        </span>
-                        <span className="summary-label">Total</span>
-                      </div>
+                        <div className="summary-item correct">
+                          <span className="summary-count">{attempt.score}</span>
+                          <span className="summary-label">Correct</span>
+                        </div>
+                        <div className="summary-item incorrect">
+                          <span className="summary-count">
+                            {attempt.totalQuestions - attempt.score}
+                          </span>
+                          <span className="summary-label">Incorrect</span>
+                        </div>
+                        <div className="summary-item total">
+                          <span className="summary-count">
+                            {attempt.totalQuestions}
+                          </span>
+                          <span className="summary-label">Total</span>
+                        </div>
                       </div>
                     )}
 
@@ -566,7 +625,9 @@ export default function ExamHistory() {
 
                               <div className="answer-comparison">
                                 <div className="answer-row">
-                                  <span className="answer-label">Your Answer:</span>
+                                  <span className="answer-label">
+                                    Your Answer:
+                                  </span>
                                   <span
                                     className={`answer-value ${
                                       a.isCorrect ? "correct" : "incorrect"
@@ -591,9 +652,21 @@ export default function ExamHistory() {
                         </div>
                       </>
                     ) : (
-                      <div style={{padding: 20, background: '#fff7e6', borderRadius: 8, marginTop: 12}}>
-                        <strong>Results are currently hidden by the administrator.</strong>
-                        <div style={{marginTop: 8, color: '#666'}}>You will be able to view detailed results once the admin enables them.</div>
+                      <div
+                        style={{
+                          padding: 20,
+                          background: "#fff7e6",
+                          borderRadius: 8,
+                          marginTop: 12,
+                        }}
+                      >
+                        <strong>
+                          Results are currently hidden by the administrator.
+                        </strong>
+                        <div style={{ marginTop: 8, color: "#666" }}>
+                          You will be able to view detailed results once the
+                          admin enables them.
+                        </div>
                       </div>
                     )}
                   </div>
@@ -602,9 +675,6 @@ export default function ExamHistory() {
             );
           })}
         </div>
-
-
-        
 
         <style jsx>{`
           .exam-history-container {
@@ -961,11 +1031,11 @@ export default function ExamHistory() {
           }
 
           .legend-color.correct {
-            background-color: #4CAF50;
+            background-color: #4caf50;
           }
 
           .legend-color.incorrect {
-            background-color: #F44336;
+            background-color: #f44336;
           }
 
           @media (max-width: 768px) {

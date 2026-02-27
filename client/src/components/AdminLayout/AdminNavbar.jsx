@@ -16,6 +16,8 @@ import { RiSettings4Fill } from "react-icons/ri";
 import { MdDelete, MdOutlinePublishedWithChanges } from "react-icons/md";
 import { TbHistoryToggle } from "react-icons/tb";
 import { FaMoneyCheck, FaChartBar, FaFileInvoiceDollar } from "react-icons/fa";
+import axios from "axios";
+import { useAlert } from "../StyleComponents/AlertContext";
 
 const AdminNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +27,7 @@ const AdminNavbar = () => {
   const navbarRef = useRef(null);
   const dropdownTimeoutRef = useRef(null);
   const location = useLocation();
-
+  const { showAlert } = useAlert();
   // Detect screen size with debounce
   useEffect(() => {
     let resizeTimer;
@@ -240,16 +242,34 @@ const AdminNavbar = () => {
     return dropdownLinks.some(link => location.pathname === link.to);
   }, [location.pathname]);
 
-  const handleLogout = useCallback((e) => {
+const handleLogout = useCallback(
+  (e) => {
     e.preventDefault();
-    const confirmLogout = window.confirm("Do you want to logout?");
-    if (confirmLogout) {
-      setIsOpen(false);
-      localStorage.removeItem("token");
-      localStorage.removeItem("role");
-      window.location.href = "/";
-    }
-  }, []);
+
+    showAlert({
+      type: "warning",
+      title: "Confirm Logout",
+      message: "Are you sure you want to logout?",
+      confirmText: "Logout",
+      cancelText: "Cancel",
+      onConfirm: async () => {
+        try {
+          await axios.post(
+            "http://localhost:8000/api/users/logout",
+            {},
+            { withCredentials: true }
+          );
+        } catch (err) {
+          console.error("Logout API failed", err);
+        } finally {
+          localStorage.clear();
+          window.location.href = "/";
+        }
+      },
+    });
+  },
+  [showAlert]
+);
 
   // Memoized NavLink component
   const NavLinkItem = useCallback(({ to, icon: Icon, name, onClick, isDropdownItem = false }) => (

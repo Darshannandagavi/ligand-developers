@@ -177,7 +177,7 @@ export const toggleActiveStatus = async (req, res) => {
 
     teacher.activeStatus = !teacher.activeStatus;
     await teacher.save();
-
+    console.log(teacher)
     // ----- SEND NOTIFICATION EMAIL -----
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",

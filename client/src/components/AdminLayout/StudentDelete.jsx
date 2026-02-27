@@ -9,18 +9,15 @@ const StudentDelete = () => {
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [deleteConfirm, setDeleteConfirm] = useState({ show: false, id: null, name: "" });
 
-  const token = localStorage.getItem("token");
+
 
   // ================================
   // GET ALL STUDENTS
   // ================================
   const fetchStudents = async () => {
     try {
-      const res = await axios.get("https://ligand-dev-7.onrender.com/api/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get("http://localhost:8000/api/users", {
+      },{withcredentials:true},);
       setStudents(res.data);
       setFilteredStudents(res.data);
     } catch (err) {
@@ -36,11 +33,9 @@ const StudentDelete = () => {
   // ================================
   const deleteStudent = async (id) => {
     try {
-      await axios.delete(`https://ligand-dev-7.onrender.com/api/users/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(`http://localhost:8000/api/users/${id}`, {
+        
+      },{withcredentials:true},);
 
       // Remove deleted user from UI
       setStudents((prev) => prev.filter((user) => user._id !== id));

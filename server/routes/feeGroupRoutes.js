@@ -4,6 +4,7 @@ import { createFeeGroup, listFeeGroups, getFeeGroup, markInstallmentPaid, markIn
 
 // import multer from "multer";
 import upload from '../middleware/upload.js';
+import adminOnly from '../middleware/adminOnly.js';
 
 
 
@@ -12,7 +13,7 @@ const router = express.Router();
 router.post('/', auth, createFeeGroup);
 router.get('/', auth, listFeeGroups);
 router.get('/students', auth, listStudentFees);
-router.get('/dashboard', dashboard);
+router.get('/dashboard',auth, adminOnly, dashboard);
 router.put('/:id/students/:studentId/installments/:index/pay', auth,upload.single("receipt"), markInstallmentPaid);
 router.put('/:id/students/:studentId/installments/:index/unpay', auth, markInstallmentUnpaid);
 router.post('/:id/students/:studentId/payment', auth, upload.single("receipt"), recordPayment);

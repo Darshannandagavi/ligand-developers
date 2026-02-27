@@ -15,7 +15,7 @@ const ManageTeachers = () => {
   const loadTeachers = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("https://ligand-dev-7.onrender.com/api/teacher");
+      const res = await axios.get("http://localhost:8000/api/teacher",{},{withcredentials:true});
       setTeachers(res.data);
       setFilteredTeachers(res.data);
     } catch (err) {
@@ -57,7 +57,7 @@ const ManageTeachers = () => {
   // Toggle Active/Inactive
   const toggleStatus = async (id, currentStatus, teacherName) => {
     try {
-      await axios.patch(`https://ligand-dev-7.onrender.com/api/teacher/toggle-status/${id}`);
+      await axios.post(`http://localhost:8000/api/teacher/toggle-status/${id}`);
       
       const newStatus = !currentStatus;
       toast.success(
@@ -73,7 +73,7 @@ const ManageTeachers = () => {
 
   const getTeacherProfilePic = (teacher) => {
     return teacher.profilePic 
-      ? `https://ligand-dev-7.onrender.com/uploads/${teacher.profilePic}`
+      ? `http://localhost:8000/uploads/${teacher.profilePic}`
       : "https://img.freepik.com/premium-vector/female-teacher-cute-woman-stands-with-pointer-book-school-learning-concept-teacher-s-day_335402-428.jpg";
   };
 

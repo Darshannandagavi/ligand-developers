@@ -90,7 +90,22 @@ const GuestNavbar = () => {
           max-width: 1200px;
           margin: 0 auto;
         }
+        .nav-icon {
+  transition: transform 0.3s ease, stroke 0.3s ease;
+}
 
+.nav-link:hover .nav-icon {
+  transform: translateY(-3px) scale(1.15);
+  stroke: #ffffff;
+}
+
+.nav-link:hover .nav-icon {
+  transform: rotate(-8deg) scale(1.1);
+}
+
+.nav-icon {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
         .navbar-brand {
           font-size: 1.5rem;
           font-weight: 700;

@@ -15,7 +15,7 @@
 //   useEffect(() => {
 //     const fetch = async () => {
 //       try {
-//         const res = await axios.get('https://ligand-dev-7.onrender.com/api/options/collegeName');
+//         const res = await axios.get('http://localhost:8000/api/options/collegeName');
 //         setCollegeOptions(res.data || []);
 //       } catch (err) { setCollegeOptions([]); }
 //     };
@@ -26,7 +26,7 @@
 //     if (!filters.collegeName) { setBatchOptions([]); setFilters(f => ({ ...f, batch: '' })); return; }
 //     (async () => {
 //       try {
-//         const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/batches', { params: { collegeName: filters.collegeName }, headers: { Authorization: token ? `Bearer ${token}` : '' } });
+//         const res = await axios.get('http://localhost:8000/api/attendance/options/batches', { params: { collegeName: filters.collegeName }, headers: { Authorization: token ? `Bearer ${token}` : '' } });
 //         setBatchOptions(res.data || []);
 //       } catch (err) { setBatchOptions([]); }
 //     })();
@@ -36,7 +36,7 @@
 //     if (!filters.collegeName || !filters.batch) { setProgramOptions([]); setFilters(f => ({ ...f, programName: '' })); return; }
 //     (async () => {
 //       try {
-//         const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/programs', { params: { collegeName: filters.collegeName, batch: filters.batch }, headers: { Authorization: token ? `Bearer ${token}` : '' } });
+//         const res = await axios.get('http://localhost:8000/api/attendance/options/programs', { params: { collegeName: filters.collegeName, batch: filters.batch }, headers: { Authorization: token ? `Bearer ${token}` : '' } });
 //         setProgramOptions(res.data || []);
 //       } catch (err) { setProgramOptions([]); }
 //     })();
@@ -46,7 +46,7 @@
 //     if (!filters.collegeName || !filters.batch || !filters.programName) { setTechnologyOptions([]); setFilters(f => ({ ...f, technology: '' })); return; }
 //     (async () => {
 //       try {
-//         const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/technologies', { params: { collegeName: filters.collegeName, batch: filters.batch, programName: filters.programName }, headers: { Authorization: token ? `Bearer ${token}` : '' } });
+//         const res = await axios.get('http://localhost:8000/api/attendance/options/technologies', { params: { collegeName: filters.collegeName, batch: filters.batch, programName: filters.programName }, headers: { Authorization: token ? `Bearer ${token}` : '' } });
 //         setTechnologyOptions(res.data || []);
 //       } catch (err) { setTechnologyOptions([]); }
 //     })();
@@ -55,7 +55,7 @@
 //   const load = async () => {
 //     try {
 //       setLoading(true);
-//       const res = await axios.get('https://ligand-dev-7.onrender.com/api/fee-groups/installments/summary', { params: filters, headers: { Authorization: token ? `Bearer ${token}` : '' } });
+//       const res = await axios.get('http://localhost:8000/api/fee-groups/installments/summary', { params: filters, headers: { Authorization: token ? `Bearer ${token}` : '' } });
 //       setSummary(res.data);
 //     } catch (err) {
 //       console.error(err);
@@ -124,12 +124,12 @@ export default function AdminPaymentsDashboard() {
   const [filters, setFilters] = useState({ collegeName: '', batch: '', programName: '', technology: '' });
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem('token');
+  
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await axios.get('https://ligand-dev-7.onrender.com/api/options/collegeName');
+        const res = await axios.get('http://localhost:8000/api/options/collegeName');
         setCollegeOptions(res.data || []);
       } catch (err) { setCollegeOptions([]); }
     };
@@ -140,36 +140,36 @@ export default function AdminPaymentsDashboard() {
     if (!filters.collegeName) { setBatchOptions([]); setFilters(f => ({ ...f, batch: '' })); return; }
     (async () => {
       try {
-        const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/batches', { params: { collegeName: filters.collegeName }, headers: { Authorization: token ? `Bearer ${token}` : '' } });
+        const res = await axios.get('http://localhost:8000/api/attendance/options/batches', { params: { collegeName: filters.collegeName },});
         setBatchOptions(res.data || []);
       } catch (err) { setBatchOptions([]); }
     })();
-  }, [filters.collegeName, token]);
+  }, [filters.collegeName]);
 
   useEffect(() => {
     if (!filters.collegeName || !filters.batch) { setProgramOptions([]); setFilters(f => ({ ...f, programName: '' })); return; }
     (async () => {
       try {
-        const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/programs', { params: { collegeName: filters.collegeName, batch: filters.batch }, headers: { Authorization: token ? `Bearer ${token}` : '' } });
+        const res = await axios.get('http://localhost:8000/api/attendance/options/programs', { params: { collegeName: filters.collegeName, batch: filters.batch }, });
         setProgramOptions(res.data || []);
       } catch (err) { setProgramOptions([]); }
     })();
-  }, [filters.collegeName, filters.batch, token]);
+  }, [filters.collegeName, filters.batch]);
 
   useEffect(() => {
     if (!filters.collegeName || !filters.batch || !filters.programName) { setTechnologyOptions([]); setFilters(f => ({ ...f, technology: '' })); return; }
     (async () => {
       try {
-        const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/technologies', { params: { collegeName: filters.collegeName, batch: filters.batch, programName: filters.programName }, headers: { Authorization: token ? `Bearer ${token}` : '' } });
+        const res = await axios.get('http://localhost:8000/api/attendance/options/technologies', { params: { collegeName: filters.collegeName, batch: filters.batch, programName: filters.programName }, });
         setTechnologyOptions(res.data || []);
       } catch (err) { setTechnologyOptions([]); }
     })();
-  }, [filters.collegeName, filters.batch, filters.programName, token]);
+  }, [filters.collegeName, filters.batch, filters.programName]);
 
   const load = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('https://ligand-dev-7.onrender.com/api/fee-groups/installments/summary', { params: filters, headers: { Authorization: token ? `Bearer ${token}` : '' } });
+      const res = await axios.get('http://localhost:8000/api/fee-groups/installments/summary', { params: filters, });
       setSummary(res.data);
     } catch (err) {
       console.error(err);

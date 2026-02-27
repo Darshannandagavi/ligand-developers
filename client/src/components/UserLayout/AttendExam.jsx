@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../StyleComponents/Loader";
+import { useAlert } from "../StyleComponents/AlertContext";
 
 export default function AttendExam() {
   const [exams, setExams] = useState([]);
@@ -19,22 +20,22 @@ export default function AttendExam() {
     submission: false,
     examStart: false,
   });
+  const { showAlert } = useAlert();
 
-  const studentId = localStorage.getItem("userId");
-  const studentName = localStorage.getItem("username") || "Student";
-  const collegeName = localStorage.getItem("collegeName");
   // camera state + ref
-const [cameraStream, setCameraStream] = useState(null);
-const videoRef = React.useRef(null);
+  const [cameraStream, setCameraStream] = useState(null);
+  const videoRef = React.useRef(null);
 
   useEffect(() => {
     async function fetchExams() {
       try {
-        console.log(studentId);
         setLoading((prev) => ({ ...prev, exams: true }));
+
         const res = await axios.get(
-          `https://ligand-dev-7.onrender.com/api/exams/foruser/${collegeName}/${studentId}`
+          "http://localhost:8000/api/exams/foruser/forcollege",
+          { withCredentials: true },
         );
+
         setExams(res.data.exams || []);
       } catch (err) {
         console.error("Error fetching exams:", err);
@@ -42,25 +43,26 @@ const videoRef = React.useRef(null);
         setLoading((prev) => ({ ...prev, exams: false }));
       }
     }
-    if (collegeName) fetchExams();
-  }, [collegeName]);
+
+    fetchExams();
+  }, []);
   useEffect(() => {
-  if (cameraStream && videoRef.current) {
-    try {
-      videoRef.current.srcObject = cameraStream;
-      // ensure playback starts
-      const playPromise = videoRef.current.play();
-      if (playPromise && typeof playPromise.then === "function") {
-        playPromise.catch((e) => {
-          // autoplay might be blocked — that's okay since video is muted
-          console.warn("Video play prevented:", e);
-        });
+    if (cameraStream && videoRef.current) {
+      try {
+        videoRef.current.srcObject = cameraStream;
+        // ensure playback starts
+        const playPromise = videoRef.current.play();
+        if (playPromise && typeof playPromise.then === "function") {
+          playPromise.catch((e) => {
+            // autoplay might be blocked — that's okay since video is muted
+            console.warn("Video play prevented:", e);
+          });
+        }
+      } catch (e) {
+        console.error("Error attaching camera stream to video element:", e);
       }
-    } catch (e) {
-      console.error("Error attaching camera stream to video element:", e);
     }
-  }
-}, [cameraStream]);
+  }, [cameraStream]);
 
   useEffect(() => {
     if (!selectedExam || submitted) return;
@@ -110,43 +112,49 @@ const videoRef = React.useRef(null);
 
   const handleAutoSubmit = () => {
     setTimeoutMessage(
-      "Time's up! Your answers have been submitted automatically."
+      "Time's up! Your answers have been submitted automatically.",
     );
     handleSubmit();
   };
 
   const startExam = async (exam) => {
-  try {
-    // ask for camera permission first
-    setLoading((prev) => ({ ...prev, examStart: true }));
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    try {
+      // ask for camera permission first
+      setLoading((prev) => ({ ...prev, examStart: true }));
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
-    // store stream (this will not cause flicker)
-    setCameraStream(stream);
+      // store stream (this will not cause flicker)
+      setCameraStream(stream);
 
-    // optional: quick success alert
-    alert("Camera access granted. Starting exam...");
+      // optional: quick success alert
+      showAlert({
+        type: "success",
+        title: "Camera Access Granted",
+        message: "Camera access granted. Starting exam...",
+        confirmText: "OK",
+      });
 
-    // now initialize exam state
-    setSelectedExam(exam);
-    setAnswers({});
-    setSubmitted(false);
-    setResult(null);
-    setTimeLeft(exam.duration || 1800);
-    setCurrentQuestion(0);
-    setReviewQuestions([]);
-    setTimeoutMessage("");
-    setAlertShown(false);
+      // now initialize exam state
+      setSelectedExam(exam);
+      setAnswers({});
+      setSubmitted(false);
+      setResult(null);
+      setTimeLeft(exam.duration || 1800);
+      setCurrentQuestion(0);
+      setReviewQuestions([]);
+      setTimeoutMessage("");
+      setAlertShown(false);
 
-    // enter fullscreen handled by existing effect when selectedExam set
-  } catch (err) {
-    console.error("Camera permission error:", err);
-    alert("Camera access is required to start the exam. Please allow camera and try again.");
-  } finally {
-    setLoading((prev) => ({ ...prev, examStart: false }));
-  }
-};
-
+      // enter fullscreen handled by existing effect when selectedExam set
+    } catch (err) {
+      console.error("Camera permission error:", err);
+      alert(
+        "Camera access is required to start the exam. Please allow camera and try again.",
+      );
+    } finally {
+      setLoading((prev) => ({ ...prev, examStart: false }));
+    }
+  };
 
   const handleAnswerChange = (qId, optionIndex) => {
     setAnswers({ ...answers, [qId]: optionIndex });
@@ -164,21 +172,21 @@ const videoRef = React.useRef(null);
   const goToQuestion = (index) => {
     setCurrentQuestion(index);
   };
-const stopCamera = () => {
-  if (cameraStream) {
-    cameraStream.getTracks().forEach((t) => t.stop());
-    setCameraStream(null);
-  }
-};
+  const stopCamera = () => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach((t) => t.stop());
+      setCameraStream(null);
+    }
+  };
 
-// call stopCamera inside backToList
+  // call stopCamera inside backToList
 
   const handleSubmit = async () => {
     try {
       setLoading((prev) => ({ ...prev, submission: true }));
       const payload = {
         examId: selectedExam._id,
-        studentId: studentId,
+        
         answers: selectedExam.questions.map((q) => ({
           questionId: q._id,
           chosenAnswer:
@@ -189,8 +197,8 @@ const stopCamera = () => {
       };
 
       const res = await axios.post(
-        "https://ligand-dev-7.onrender.com/api/attempts/submit",
-        payload
+        "http://localhost:8000/api/attempts/submit",
+        payload,
       );
 
       setResult(res.data.attempt);
@@ -205,13 +213,13 @@ const stopCamera = () => {
     }
   };
 
- const backToList = () => {
-  setSelectedExam(null);
-  setSubmitted(false);
-  setResult(null);
-  exitFullScreen();
-  stopCamera();
-};
+  const backToList = () => {
+    setSelectedExam(null);
+    setSubmitted(false);
+    setResult(null);
+    exitFullScreen();
+    stopCamera();
+  };
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -225,12 +233,11 @@ const stopCamera = () => {
     return `${Math.floor(seconds / 60)} minutes`;
   };
   useEffect(() => {
-  return () => {
-    // component unmount: stop camera
-    stopCamera();
-  };
-}, []);
-
+    return () => {
+      // component unmount: stop camera
+      stopCamera();
+    };
+  }, []);
 
   if (loading.exams) {
     return (
@@ -245,7 +252,18 @@ const stopCamera = () => {
             justifyContent: "center",
           }}
         >
-          <div style={{minHeight:"200px",height:"100%",width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}><Loader/></div>
+          <div
+            style={{
+              minHeight: "200px",
+              height: "100%",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Loader />
+          </div>
           <p className="mt-3">Loading exams...</p>
         </div>
       </div>
@@ -257,7 +275,7 @@ const stopCamera = () => {
       <div className="exam-home-container">
         <div className="exam-home-header">
           <h1>Available Exams</h1>
-          <p>Welcome, {studentName}</p>
+          {/* <p>Welcome, {studentName}</p> */}
         </div>
 
         <div className="exam-grid">
@@ -530,22 +548,31 @@ const stopCamera = () => {
     <div id="exam-container" className="fullscreen-exam">
       <div className="exam-topbar">
         {cameraStream && (
-  <div className="camera-box" aria-hidden="true" style={{height:"100px",width:"180px",borderRadius:"20px"}}>
-    <video
-      ref={videoRef}
-      autoPlay
-      playsInline
-      muted
-      style={{ width: "100%", height: "100%", objectFit: "cover",borderRadius:"10px" }}
-    />
-  </div>
-)}
+          <div
+            className="camera-box"
+            aria-hidden="true"
+            style={{ height: "100px", width: "180px", borderRadius: "20px" }}
+          >
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "10px",
+              }}
+            />
+          </div>
+        )}
 
         <div className="exam-title">
           <h4>
             {selectedExam.examTitle || `Exam #${selectedExam.examNumber}`}
           </h4>
-          <span className="student-name">{studentName}</span>
+          {/* <span className="student-name">{studentName}</span> */}
         </div>
 
         <div className="exam-controls">

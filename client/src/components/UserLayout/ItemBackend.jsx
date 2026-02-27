@@ -302,7 +302,7 @@ app.use("/item", itemRouter);`,
           purpose:
             "Serves uploaded files statically from the 'uploads' directory",
           details:
-            "Allows clients to access uploaded images via URLs like https://ligand-software-solutions-workshop-2.onrender.com/uploads/filename.jpg",
+            "Allows clients to access uploaded images via URLs like http://localhost:8000/uploads/filename.jpg",
         },
         {
           line: "app.use('/item', itemRouter)",

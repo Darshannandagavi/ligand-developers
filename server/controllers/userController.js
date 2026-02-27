@@ -91,27 +91,59 @@ export const register = async (req, res) => {
 
 
 
-
-// Login user
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ error: "User not found" });
 
-    const validPass = await bcrypt.compare(password, user.password);
-    if (!validPass) return res.status(400).json({ error: "Invalid password" });
-
-    if (user.role === "student" && !user.isApproved) {
-      return res.status(403).json({ error: "Your account is not approved yet" });
+    if (typeof email !== "string" || typeof password !== "string") {
+      return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const validPass = await bcrypt.compare(password, user.password);
+    if (!validPass) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    if (user.role === "student" && !user.isApproved) {
+      return res.status(403).json({ error: "Account not approved yet" });
+    }
+
+    // Create token
+    const token = jwt.sign(
+      { id: user._id, role: user.role,collegeName: user.collegeName,
+    batch: user.batch,
+    programme: user.programName },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    // Set HTTP-only cookie (browser will send this automatically with requests)
+    res.cookie("token", token, {
+      httpOnly: true,        // ✅ Not accessible to JavaScript
+      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      sameSite: "Lax",       // CSRF protection
     });
-    res.json({ message: "Login successful", token, user });
+
+    // Return user data (NO TOKEN in response)
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        // _id: user._id,
+        // name: user.name,
+        // email: user.email,
+        role: user.role,
+        // usn: user.usn,
+        // collegeName: user.collegeName,
+      },
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Login error:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -436,4 +468,25 @@ console.log("REQ.FILE =", req.file);
     console.error("UPDATE PROFILE ERROR:", err);
     res.status(500).json({ error: err.message });
   }
+};
+
+// Get current user (from cookie)
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch user" });
+  }
+};
+
+export const logout = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Lax",
+    path: "/", // IMPORTANT
+  });
+
+  return res.status(200).json({ message: "Logged out successfully" });
 };

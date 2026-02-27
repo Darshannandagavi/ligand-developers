@@ -52,7 +52,7 @@ const ViewItem = () => {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get("https://ligand-software-solutions-workshop-2.onrender.com/item");
+      const response = await axios.get("http://localhost:8000/item");
       setItems(response.data.items);
     } catch (error) {
       console.error("Error fetching items:", error);
@@ -97,12 +97,12 @@ const ViewItem = () => {
                 className="item-image-container"
                 onClick={() =>
                   handleImageClick(
-                    \`https://ligand-software-solutions-workshop-2.onrender.com/uploads/\${item.itemImage}\`
+                    \`http://localhost:8000/uploads/\${item.itemImage}\`
                   )
                 }
               >
                 <img
-                  src={\`https://ligand-software-solutions-workshop-2.onrender.com/uploads/\${item.itemImage}\`}
+                  src={\`http://localhost:8000/uploads/\${item.itemImage}\`}
                   alt={item.itemName}
                   className="item-image"
                 />

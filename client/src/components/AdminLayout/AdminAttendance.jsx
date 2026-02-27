@@ -46,7 +46,7 @@ const AdminAttendance = () => {
     const fetchCollegeOptions = async () => {
       try {
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/options/collegeName"
+          "http://localhost:8000/api/options/collegeName"
         );
         setCollegeOptions(res.data || []);
       } catch (err) {
@@ -65,13 +65,13 @@ const AdminAttendance = () => {
         return;
       }
       try {
-        const token = localStorage.getItem("token");
+       
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/attendance/options/batches",
+          "http://localhost:8000/api/attendance/options/batches",
           {
             params: { collegeName },
-            headers: { Authorization: token ? `Bearer ${token}` : "" },
-          }
+          },
+          {withcredentials:true}
         );
         setBatchOptions(res.data || []);
       } catch (err) {
@@ -97,13 +97,13 @@ const AdminAttendance = () => {
         return;
       }
       try {
-        const token = localStorage.getItem("token");
+        
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/attendance/options/programs",
+          "http://localhost:8000/api/attendance/options/programs",
           {
             params: { collegeName, batch },
-            headers: { Authorization: token ? `Bearer ${token}` : "" },
-          }
+          },
+          {withcredentials:true}
         );
         setProgramOptions(res.data || []);
       } catch (err) {
@@ -127,13 +127,13 @@ const AdminAttendance = () => {
         return;
       }
       try {
-        const token = localStorage.getItem("token");
+       
         const res = await axios.get(
-          "https://ligand-dev-7.onrender.com/api/attendance/options/technologies",
+          "http://localhost:8000/api/attendance/options/technologies",
           {
             params: { collegeName, batch, programName },
-            headers: { Authorization: token ? `Bearer ${token}` : "" },
-          }
+          },
+          {withcredentials:true}
         );
         setTechnologyOptions(res.data || []);
       } catch (err) {
@@ -152,13 +152,13 @@ const AdminAttendance = () => {
       return alert("Select college, batch, program and technology");
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
+      
       const res = await axios.get(
-        "https://ligand-dev-7.onrender.com/api/attendance/students",
+        "http://localhost:8000/api/attendance/students",
         {
           params: { collegeName, batch, programName, technology },
-          headers: { Authorization: token ? `Bearer ${token}` : "" },
-        }
+        },
+        {withcredentials:true}
       );
       setStudents(res.data || []);
       const studentsData = res.data || [];
@@ -166,10 +166,10 @@ const AdminAttendance = () => {
       studentsData.forEach((s) => (init[s._id] = "pending"));
 
       try {
-        const attRes = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
+        const attRes = await axios.get("http://localhost:8000/api/attendance", {
           params: { date, programName, technology, collegeName, batch },
-          headers: { Authorization: token ? `Bearer ${token}` : "" },
-        });
+          
+        },{withcredentials:true});
         const existing = attRes.data || [];
         existing.forEach((r) => {
           const sid = r.student?._id || r.student;
@@ -221,11 +221,10 @@ const AdminAttendance = () => {
         to = end;
       }
 
-      const token = localStorage.getItem("token");
-      const res = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
+      const res = await axios.get("http://localhost:8000/api/attendance", {
         params: { from: from.toISOString(), to: to.toISOString() },
-        headers: { Authorization: token ? `Bearer ${token}` : "" },
-      });
+        
+      },{withcredentials:true});
       const records = res.data || [];
       const map = {};
       records.forEach((r) => {
@@ -294,13 +293,11 @@ const AdminAttendance = () => {
       })),
     };
     try {
-      const token = localStorage.getItem("token");
+      
       const res = await axios.post(
-        "https://ligand-dev-7.onrender.com/api/attendance",
+        "http://localhost:8000/api/attendance",
         payload,
-        {
-          headers: { Authorization: token ? `Bearer ${token}` : "" },
-        }
+        {withcredentials:true}
       );
       alert(`${res.data.insertedCount || 0} attendance records saved`);
     } catch (err) {
@@ -403,15 +400,15 @@ const AdminAttendance = () => {
         }
       }
 
-      const token = localStorage.getItem("token");
-      const res = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
+  
+      const res = await axios.get("http://localhost:8000/api/attendance", {
         params: {
           from: from.toISOString(),
           to: to.toISOString(),
           student: student._id,
         },
-        headers: { Authorization: token ? `Bearer ${token}` : "" },
-      });
+        
+      },{withcredentials:true});
       const entries = res.data || [];
 
       const doc = new jsPDF();
@@ -829,22 +826,17 @@ const AdminAttendance = () => {
                                           from = start;
                                           to = end;
                                         }
-                                        const token =
-                                          localStorage.getItem("token");
+                                        
                                         const res = await axios.get(
-                                          "https://ligand-dev-7.onrender.com/api/attendance",
+                                          "http://localhost:8000/api/attendance",
                                           {
                                             params: {
                                               from: from.toISOString(),
                                               to: to.toISOString(),
                                               student: s._id,
                                             },
-                                            headers: {
-                                              Authorization: token
-                                                ? `Bearer ${token}`
-                                                : "",
-                                            },
-                                          }
+                                            
+                                          },{withcredentials:true},
                                         );
                                         setPeriodRecords(res.data || []);
                                         setPeriodTitle(

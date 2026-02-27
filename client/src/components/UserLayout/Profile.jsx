@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-const API = "https://ligand-dev-7.onrender.com/api/users";
+import Loader from "../StyleComponents/Loader"
+const API = "http://localhost:8000/api/users";
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);
@@ -62,7 +62,7 @@ export default function Profile() {
 
   if (!profile) return (
     <div className="loading-container">
-      <div className="spinner"></div>
+      <Loader/>
       <p>Loading profile...</p>
     </div>
   );
@@ -219,8 +219,8 @@ export default function Profile() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          min-height: 60vh;
-          gap: 20px;
+          min-height: 100vh;
+          
         }
 
         .spinner {

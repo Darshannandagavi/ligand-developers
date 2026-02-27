@@ -80,19 +80,15 @@ const TeacherChangePassword = () => {
 
     try {
       setLoading(true);
-      const token = localStorage.getItem("teacherToken");
+      
 
       const res = await axios.post(
-        "https://ligand-dev-7.onrender.com/api/teacher/change-password",
+        "http://localhost:8000/api/teacher/change-password",
         {
           oldPassword: formData.oldPassword,
           newPassword: formData.newPassword
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        
       );
 
       toast.success(res.data.message || "Password changed successfully! ✅");

@@ -29,7 +29,7 @@ const TeacherEditProfile = () => {
       // Set profile picture - using the provided image as default
       setProfilePic(
         savedTeacher.profilePic 
-          ? `https://ligand-dev-7.onrender.com/uploads/${savedTeacher.profilePic}`
+          ? `http://localhost:8000/uploads/${savedTeacher.profilePic}`
           : "https://img.freepik.com/premium-vector/female-teacher-cute-woman-stands-with-pointer-book-school-learning-concept-teacher-s-day_335402-428.jpg"
       );
     } else {
@@ -46,21 +46,15 @@ const TeacherEditProfile = () => {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("teacherToken");
+      
       const savedTeacher = JSON.parse(localStorage.getItem("teacherInfo"));
 
-      if (!token || !savedTeacher) {
-        toast.error("Session expired. Please login again.");
-        return;
-      }
 
-      const apiUrl = `https://ligand-dev-7.onrender.com/api/teacher/update/${savedTeacher._id}`;
+
+      const apiUrl = `http://localhost:8000/api/teacher/update/${savedTeacher._id}`;
 
       const res = await axios.put(apiUrl, formData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        
       });
 
       toast.success(res.data.message || "Profile updated successfully ✅");

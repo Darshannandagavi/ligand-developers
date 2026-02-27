@@ -80,11 +80,11 @@ const TeacherRegister = () => {
     setLoading(true);
 
     try {
-      const apiUrl = "https://ligand-dev-7.onrender.com/api/teacher/register";
+      const apiUrl = "http://localhost:8000/api/teacher/register";
 
       const res = await axios.post(apiUrl, formData, {
-        headers: { "Content-Type": "application/json" },
-      });
+        headers: { "Content-Type": "application/json" }
+      },{withcredentials:true});
 
       toast.success(res.data.message || "Teacher registered successfully! 🎉");
 

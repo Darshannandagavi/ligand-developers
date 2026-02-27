@@ -1,114 +1,61 @@
-import { useEffect } from "react";
+/**
+ * Ligand Software Solutions — Clean 3D Floating Code Orb
+ * 
+ * A single, elegant 3D component with smooth animations and hover effects
+ */
+import { SiExpress, SiMongodb, SiTypescript } from "react-icons/si";
+import  { useEffect, useRef, useState, Suspense } from "react";
+import { motion } from "framer-motion";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Float, Environment, Html } from "@react-three/drei";
+
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import {
-  Clock,
-  Video,
-  Briefcase,
-  BarChart,
-  Code,
-  CheckCircle,
-  ChevronRight,
-  GraduationCap,
-  Cpu,
-  Database,
-  BookMarked,
-  Award,
-  Target,
-  Brain,
-  Rocket,
-  Star,
+  Clock, Video, Briefcase, BarChart, Code, CheckCircle,
+  ChevronRight, GraduationCap, Cpu, Database, BookMarked,
+  Award, Target, Brain, Rocket, Star, Users,
+  Zap, Mail, Phone, MapPin,
+  Twitter, Github, Linkedin, Instagram,
 } from "lucide-react";
+import { 
+  SiReact, SiNodedotjs, SiPython, SiDocker, SiJavascript
+} from "react-icons/si";
 import RangeSlider from "./RangeSlider";
-import { SiReact, SiNodedotjs, SiMongodb, SiExpress } from "react-icons/si";
-const Home = () => {
-  useEffect(() => {
-    // Initialize scroll animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: "0px 0px -50px 0px",
-    };
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("animate-fadeInUp");
-        }
-      });
-    }, observerOptions);
+gsap.registerPlugin(ScrollTrigger);
 
-    document.querySelectorAll(".animate-on-scroll").forEach((el) => {
-      observer.observe(el);
-    });
+/* ─────────────────────────────────────────────────────────────
+   PURE WHITE THEME TOKENS
+───────────────────────────────────────────────────────────── */
+const THEME = {
+  bg: "#ffffff",
+  bgAlt: "#fafafa",
+  bgGradient: "linear-gradient(180deg, #ffffff 0%, #f8faff 100%)",
+  
+  text: "#1a1e2b",
+  textLight: "#4a5568",
+  textMuted: "#718096",
+  
+  accent: "#002fff",
+  accentLight: "#4895ef",
+  accentGradient: "linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%)",
+  
+  purple: "#7209b7",
+  pink: "#f72585",
+  success: "#06d6a0",
+  warning: "#ffd166",
+  
+  border: "#e9ecef",
+  borderDark: "#dee2e6",
+  shadow: "rgba(0, 0, 0, 0.03)",
+  shadowHover: "rgba(67, 97, 238, 0.08)",
+  
+  cardBg: "#ffffff",
+  cardBgAlt: "#f8fafc",
+  glass: "rgba(255, 255, 255, 0.9)",
+};
 
-    return () => observer.disconnect();
-  }, []);
-
-  const features = [
-    {
-      icon: <Clock className="ligand-icon" />,
-      title: "Daily Assessments",
-      description: "Regular coding tests and quizzes to track your progress",
-    },
-    {
-      icon: <BookMarked className="ligand-icon" />,
-      title: "Comprehensive Notes",
-      description: "Organized study materials and reference documentation",
-    },
-    {
-      icon: <Video className="ligand-icon" />,
-      title: "Live & Recorded Classes",
-      description: "Interactive sessions with expert trainers",
-    },
-    {
-      icon: <Code className="ligand-icon" />,
-      title: "Code Repository",
-      description: "Real-world projects and practice code examples",
-    },
-    {
-      icon: <Briefcase className="ligand-icon" />,
-      title: "Mock Interviews",
-      description: "Industry-standard technical interviews practice",
-    },
-    {
-      icon: <BarChart className="ligand-icon" />,
-      title: "Performance Analytics",
-      description: "Detailed insights into your learning journey",
-    },
-  ];
-
-  const courses = [
-    "MERN Stack Development",
-    "Data Structures & Algorithms",
-    "System Design",
-    "Interview Preparation",
-    "Full Stack Projects",
-    "Industry Best Practices",
-  ];
-
-  const benefits = [
-    {
-      icon: <Rocket className="ligand-small-icon" />,
-      text: "Industry-Ready Curriculum",
-    },
-    {
-      icon: <Brain className="ligand-small-icon" />,
-      text: "Personalized Learning Path",
-    },
-    {
-      icon: <Target className="ligand-small-icon" />,
-      text: "Placement-Focused Training",
-    },
-    {
-      icon: <Award className="ligand-small-icon" />,
-      text: "Certification Programs",
-    },
-  ];
-
-  const stats = [
-    { value: "7000+", label: "Happy Learners" },
-    { value: "5☆", label: "Learners Rating" },
-    { value: "20+", label: "Partner Colleges" },
-    { value: "5000+", label: "Projects" },
-  ];
 
   const techStack = [
     {
@@ -133,68 +80,903 @@ const Home = () => {
     },
   ];
 
+
+/* ─────────────────────────────────────────────────────────────
+   GLOBAL STYLES
+───────────────────────────────────────────────────────────── */
+const GlobalStyles = () => (
+  <style>{`
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background: ${THEME.bg};
+      color: ${THEME.text};
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Custom Cursor Styles */
+    * {
+      cursor: none !important;
+    }
+
+    /* Smooth Scrolling */
+    html.lenis {
+      height: auto;
+    }
+    
+    .lenis.lenis-smooth {
+      scroll-behavior: auto;
+    }
+
+    /* Typography */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+    }
+
+    /* Gradient Text */
+    .gradient-text {
+      background: linear-gradient(135deg, #4361ee 0%, #7209b7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Grid Background */
+    // .grid-bg {
+    //   background-image: 
+    //     linear-gradient(${THEME.border} 1px, transparent 1px),
+    //     linear-gradient(90deg, ${THEME.border} 1px, transparent 1px);
+    //   background-size: 50px 50px;
+    //   opacity: 0.5;
+    // }
+
+    /* Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(2deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: ${THEME.bgAlt};
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: ${THEME.accent};
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: ${THEME.purple};
+    }
+    /* Tech Stack Card Styles */
+.ligand-tech-icon {
+  font-size: 32px;
+  transition: all 0.3s ease;
+}
+
+.ligand-tech-icon.react {
+  color: #61dafb;
+}
+
+.ligand-tech-icon.node {
+  color: #68a063;
+}
+
+.ligand-tech-icon.mongo {
+  color: #47a248;
+}
+
+.ligand-tech-icon.express {
+  color: #000000;
+}
+
+.ligand-dashboard-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.ligand-dashboard-card {
+  padding: 1.2rem 0.8rem;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.ligand-dashboard-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.ligand-dashboard-card:hover::before {
+  left: 100%;
+}
+
+.ligand-dashboard-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(67, 97, 238, 0.3);
+  box-shadow: 
+    0 15px 30px -10px rgba(67, 97, 238, 0.2),
+    0 0 0 1px rgba(67, 97, 238, 0.1) inset;
+}
+
+
+
+
+
+.ligand-tech-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.ligand-tech-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #dcdcdc;
+  letter-spacing: 0.3px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.ligand-dashboard-card:hover .ligand-tech-label {
+  opacity: 1;
+  color: rgb(255, 255, 255);
+}
+
+/* Dashboard Preview Container */
+.ligand-dashboard-preview {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.ligand-dashboard-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 24px 24px 0 0;
+  opacity: 0.9;
+}
+
+.ligand-dashboard-content {
+  margin-top: 2rem;
+  background: #343434;
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.ligand-dashboard-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 30px;
+  width: fit-content;
+}
+
+.ligand-nav-dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.ligand-nav-dot-red {
+  background-color: #ff6b6b;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
+}
+
+.ligand-nav-dot-yellow {
+  background-color: #ffd93d;
+  box-shadow: 0 2px 8px rgba(255, 217, 61, 0.4);
+}
+
+.ligand-nav-dot-green {
+  background-color: #6bcf7f;
+  box-shadow: 0 2px 8px rgba(107, 207, 127, 0.4);
+}
+
+.ligand-nav-dot:hover {
+  transform: scale(1.2);
+}
+
+.ligand-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .ligand-dashboard-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.ligand-media-player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 0 0.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.ligand-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: linear-gradient(135deg, rgba(67, 97, 238, 0.05), rgba(58, 12, 163, 0.05));
+  color: #dcdcdc;
+  border: 1px solid rgba(67, 97, 238, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.ligand-badge-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #dcdcdc;
+  margin-right: 0.6rem;
+  animation: pulse 2s infinite;
+}
+
+/* Tech Stack specific hover effects */
+.ligand-dashboard-card:hover .ligand-tech-icon.react {
+  filter: drop-shadow(0 4px 12px rgba(97, 218, 251, 0.5));
+}
+
+.ligand-dashboard-card:hover .ligand-tech-icon.node {
+  filter: drop-shadow(0 4px 12px rgba(104, 160, 99, 0.5));
+}
+
+.ligand-dashboard-card:hover .ligand-tech-icon.mongo {
+  filter: drop-shadow(0 4px 12px rgba(71, 162, 72, 0.5));
+}
+
+.ligand-dashboard-card:hover .ligand-tech-icon.express {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+/* Animation for badge dot */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ligand-dashboard-preview {
+    padding: 1.5rem;
+  }
+  
+  .ligand-dashboard-card {
+    padding: 1rem 0.5rem;
+  }
+  
+  .ligand-tech-icon {
+    font-size: 28px;
+  }
+  
+  .ligand-tech-label {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ligand-dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .ligand-dashboard-card {
+    padding: 0.8rem 0.4rem;
+  }
+  
+  .ligand-tech-icon {
+    font-size: 24px;
+  }
+}
+    
+  `}</style>
+);
+
+/* ─────────────────────────────────────────────────────────────
+   CUSTOM CURSOR
+───────────────────────────────────────────────────────────── */
+const CustomCursor = () => {
+  const cursorRef = useRef(null);
+  const cursorDotRef = useRef(null);
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    const moveCursor = (e) => {
+      if (cursorRef.current && cursorDotRef.current) {
+        cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+        cursorDotRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      }
+    };
+
+    const handleHoverStart = (e) => {
+      if (e.target.closest('a, button, [data-cursor], .interactive')) {
+        setIsHovering(true);
+      }
+    };
+
+    const handleHoverEnd = () => {
+      setIsHovering(false);
+    };
+
+    window.addEventListener('mousemove', moveCursor);
+    document.addEventListener('mouseover', handleHoverStart);
+    document.addEventListener('mouseout', handleHoverEnd);
+
+    return () => {
+      window.removeEventListener('mousemove', moveCursor);
+      window.removeEventListener('mouseover', handleHoverStart);
+      window.removeEventListener('mouseout', handleHoverEnd);
+    };
+  }, []);
+
   return (
     <>
-      <div className="ligand-container">
-        {/* Hero Section */}
-        <section className="ligand-hero">
-          <div className="ligand-container-inner">
-            <div className="ligand-grid">
-              <div className="ligand-hero-content animate-on-scroll">
-                <div className="ligand-badge">
-                  <span className="ligand-badge-dot"></span>A Dedicated Learning
-                  Platform for Ligand Students
-                </div>
+      <div
+        ref={cursorRef}
+        style={{
+          position: 'fixed',
+          width: isHovering ? '56px' : '32px',
+          height: isHovering ? '56px' : '32px',
+          border: `2px solid ${isHovering ? THEME.pink : THEME.accent}`,
+          borderRadius: '50%',
+          pointerEvents: 'none',
+          transform: 'translate(-50%, -50%)',
+          transition: 'width 0.3s, height 0.3s, border-color 0.3s',
+          zIndex: 9999,
+          mixBlendMode: 'difference',
+        }}
+      />
+      <div
+        ref={cursorDotRef}
+        style={{
+          position: 'fixed',
+          width: '4px',
+          height: '4px',
+          backgroundColor: isHovering ? THEME.pink : THEME.accent,
+          borderRadius: '50%',
+          pointerEvents: 'none',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 9999,
+        }}
+      />
+    </>
+  );
+};
 
-                <h1 className="ligand-headline">
-                  Welcome to{" "}
-                  <span className="ligand-gradient-text">
-                    Ligand Software Solutions
-                  </span>
-                </h1>
+/* ─────────────────────────────────────────────────────────────
+   ELEGANT 3D CODE ORB - Single, clean component with smooth animations
+───────────────────────────────────────────────────────────── */
+const CodeOrb = () => {
+  const orbRef = useRef();
+  const particlesRef = useRef();
+  const [hovered, setHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-                <p className="ligand-subtitle">
-                  Ligand Institution's dedicated learning platform for software
-                  engineering mastery. Access daily assessments, study
-                  materials, and track your progress all in one place.
-                </p>
+  // Smooth rotation based on mouse
+  useFrame((state) => {
+    if (orbRef.current) {
+      if (hovered) {
+        // Gentle follow mouse when hovered
+        const targetRotY = mousePos.x * 0.3;
+        const targetRotX = mousePos.y * 0.2;
+        
+        orbRef.current.rotation.y += (targetRotY - orbRef.current.rotation.y) * 0.05;
+        orbRef.current.rotation.x += (targetRotX - orbRef.current.rotation.x) * 0.05;
+      } else {
+        // Slow auto-rotation when not hovered
+        orbRef.current.rotation.y += 0.002;
+        orbRef.current.rotation.x += 0.001;
+      }
+    }
 
-                <div className="ligand-checklist">
-                  <div className="ligand-checklist-item">
-                    <CheckCircle className="ligand-check-icon" />
-                    <span className="ligand-checklist-text">
-                      Track your learning progress
-                    </span>
-                  </div>
-                  <div className="ligand-checklist-item">
-                    <CheckCircle className="ligand-check-icon" />
-                    <span className="ligand-checklist-text">
-                      Access daily coding assessments
-                    </span>
-                  </div>
-                  <div className="ligand-checklist-item">
-                    <CheckCircle className="ligand-check-icon" />
-                    <span className="ligand-checklist-text">
-                      Access comprehensive study materials
-                    </span>
-                  </div>
-                </div>
+    // Animate particles
+    if (particlesRef.current) {
+      particlesRef.current.rotation.y += 0.001;
+    }
+  });
 
-                <div className="ligand-cta-buttons">
-                  <a
-                    href="/login"
-                    className="ligand-btn-primary ligand-btn-gradient"
-                  >
-                    Student Login
-                    <ChevronRight className="ligand-btn-icon" />
-                  </a>
-                  <a href="/teacher-login" className="ligand-btn-secondary">
-                    Trainer Portal
-                  </a>
-                </div>
-              </div>
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    setMousePos({
+      x: (clientX / innerWidth - 0.5) * 2,
+      y: (clientY / innerHeight - 0.5) * 2
+    });
+  };
 
-              <div className="ligand-hero-visual animate-on-scroll">
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Tech icons to float around
+  const techIcons = [
+    { icon: SiReact, color: '#61dafb', delay: 0 },
+    { icon: SiNodedotjs, color: '#68a063', delay: 0.5 },
+    { icon: SiPython, color: '#3776ab', delay: 1 },
+    { icon: SiDocker, color: '#2496ed', delay: 1.5 },
+    { icon: SiJavascript, color: '#f7df1e', delay: 2 },
+  ];
+
+  return (
+    <group
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+    >
+      {/* Main glowing orb */}
+      <Float
+        speed={2}
+        rotationIntensity={0.4}
+        floatIntensity={0.5}
+      >
+        <mesh ref={orbRef} scale={hovered ? 1.1 : 1}>
+          <sphereGeometry args={[1.2, 64, 64]} />
+          <meshPhysicalMaterial
+            color={THEME.accent}
+            emissive={THEME.accent}
+            emissiveIntensity={hovered ? 0.8 : 0.4}
+            roughness={0.2}
+            metalness={0.1}
+            transparent
+            opacity={0.95}
+          />
+        </mesh>
+      </Float>
+
+      {/* Inner core */}
+      <mesh scale={0.4}>
+        <sphereGeometry args={[1, 32, 32]} />
+        <meshStandardMaterial
+          color="white"
+          emissive="white"
+          emissiveIntensity={1}
+        />
+      </mesh>
+
+      {/* Floating tech icons in a ring */}
+      {techIcons.map((tech, i) => {
+        const angle = (i / techIcons.length) * Math.PI * 2;
+        const radius = 2.2;
+        
+        return (
+          <Float
+            key={i}
+            speed={1.5}
+            rotationIntensity={0.2}
+            floatIntensity={0.3}
+          >
+            <Html
+              position={[
+                Math.cos(angle) * radius,
+                Math.sin(angle) * radius * 0.5,
+                Math.sin(angle) * radius * 0.3
+              ]}
+              center
+              distanceFactor={6}
+            >
+              <motion.div
+                animate={{
+                  y: [0, -5, 0],
+                  scale: hovered ? [1, 1.1, 1] : 1,
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  delay: tech.delay,
+                }}
+                style={{
+                  background: 'white',
+                  padding: '10px',
+                  borderRadius: '12px',
+                  boxShadow: `0 8px 20px ${tech.color}40`,
+                  border: `2px solid ${tech.color}`,
+                  transform: `scale(${hovered ? 1.2 : 1})`,
+                  transition: 'transform 0.3s ease',
+                }}
+              >
+                <tech.icon size={28} color={tech.color} />
+              </motion.div>
+            </Html>
+          </Float>
+        );
+      })}
+
+      {/* Subtle particle ring */}
+      <group ref={particlesRef}>
+        {[...Array(12)].map((_, i) => {
+          const angle = (i / 12) * Math.PI * 2;
+          const radius = 1.8;
+          
+          return (
+            <mesh
+              key={i}
+              position={[
+                Math.cos(angle) * radius,
+                Math.sin(angle) * radius * 0.3,
+                Math.sin(angle) * radius * 0.5
+              ]}
+            >
+              <sphereGeometry args={[0.04, 6, 6]} />
+              <meshStandardMaterial
+                color={THEME.accent}
+                emissive={THEME.accent}
+                emissiveIntensity={0.3}
+              />
+            </mesh>
+          );
+        })}
+      </group>
+
+      {/* Outer glow ring */}
+      <mesh rotation={[Math.PI / 2, 0, 0]} scale={1.8}>
+        <torusGeometry args={[1.2, 0.02, 16, 100]} />
+        <meshStandardMaterial
+          color={THEME.accent}
+          emissive={THEME.accent}
+          emissiveIntensity={0.2}
+          transparent
+          opacity={0.3}
+        />
+      </mesh>
+    </group>
+  );
+};
+
+/* ─────────────────────────────────────────────────────────────
+   3D SCENE SETUP
+───────────────────────────────────────────────────────────── */
+const ThreeScene = () => (
+  <Canvas
+    camera={{ position: [0, 0, 6], fov: 45 }}
+    style={{ width: '100%', height: '100%', background: 'transparent' }}
+    gl={{ antialias: true, alpha: true }}
+  >
+    <Suspense fallback={null}>
+      <ambientLight intensity={0.5} />
+      <pointLight position={[5, 5, 5]} intensity={1} />
+      <pointLight position={[-5, -5, -5]} intensity={0.5} color={THEME.accent} />
+      <pointLight position={[0, 5, 0]} intensity={0.8} color={THEME.pink} />
+      
+      <CodeOrb />
+      
+      <Environment preset="city" />
+    </Suspense>
+  </Canvas>
+);
+
+/* ─────────────────────────────────────────────────────────────
+   MAGNETIC BUTTON
+───────────────────────────────────────────────────────────── */
+const MagneticButton = ({ children, href, onClick, variant = 'primary', className = '' }) => {
+  const buttonRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const button = buttonRef.current;
+    if (!button) return;
+    
+    const rect = button.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    
+    button.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+  };
+
+  const handleMouseLeave = () => {
+    if (buttonRef.current) {
+      buttonRef.current.style.transform = 'translate(0, 0)';
+    }
+  };
+
+  const baseStyles = {
+    padding: '14px 32px',
+    borderRadius: '14px',
+    fontWeight: '600',
+    fontSize: '1rem',
+    textDecoration: 'none',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer',
+    border: 'none',
+    position: 'relative',
+    overflow: 'hidden',
+    letterSpacing: '0.3px',
+  };
+
+  const variantStyles = {
+    primary: {
+      background: THEME.accentGradient,
+      color: 'white',
+      boxShadow: `0 10px 25px ${THEME.accent}30`,
+    },
+    secondary: {
+      background: 'transparent',
+      color: THEME.text,
+      border: `2px solid ${THEME.border}`,
+    },
+  };
+
+  const Component = href ? 'a' : 'button';
+
+  return (
+    <Component
+      ref={buttonRef}
+      href={href}
+      onClick={onClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`interactive ${className}`}
+      style={{ ...baseStyles, ...variantStyles[variant] }}
+    >
+      {children}
+    </Component>
+  );
+};
+
+/* ─────────────────────────────────────────────────────────────
+   SECTION REVEAL ANIMATION
+───────────────────────────────────────────────────────────── */
+const SectionReveal = ({ children, delay = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-50px' }}
+    transition={{ 
+      duration: 0.7, 
+      delay, 
+      ease: [0.43, 0.13, 0.23, 0.96] 
+    }}
+  >
+    {children}
+  </motion.div>
+);
+
+/* ─────────────────────────────────────────────────────────────
+   HERO SECTION WITH 3D CODE ORB
+───────────────────────────────────────────────────────────── */
+const HeroSection = () => {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [fillHeights, setFillHeights] = useState([0, 0, 0, 0]);
+
+  // Stats data with different colors
+  const stats = [
+    { 
+      label: 'Students Trained', 
+      value: '5000+',
+      icon: <Users size={24} />,
+      color: '#4361ee',
+      fillLevel: 85
+    },
+    { 
+      label: 'Placement Rate', 
+      value: '92%',
+      icon: <Briefcase size={24} />,
+      color: '#f72585',
+      fillLevel: 92
+    },
+    { 
+      label: 'Partner Companies', 
+      value: '200+',
+      icon: <Star size={24} />,
+      color: '#06d6a0',
+      fillLevel: 70
+    },
+    { 
+      label: 'Live Projects', 
+      value: '1000+',
+      icon: <Code size={24} />,
+      color: '#ffd166',
+      fillLevel: 88
+    },
+  ];
+
+  // Update fill heights on hover
+  useEffect(() => {
+    if (hoveredIndex !== null) {
+      const newHeights = [0, 0, 0, 0];
+      newHeights[hoveredIndex] = stats[hoveredIndex].fillLevel;
+      setFillHeights(newHeights);
+    } else {
+      setFillHeights([0, 0, 0, 0]);
+    }
+  }, [hoveredIndex]);
+
+  return (
+    <section
+      style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        position: 'relative',
+        background: THEME.bgGradient,
+        overflow: 'hidden',
+      }}
+    >
+      {/* Grid Background */}
+      <GridBackground />
+
+      {/* Subtle floating gradient orbs */}
+      
+
+      <motion.div
+        animate={{
+          y: [0, 30, 0],
+          x: [0, -15, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+        style={{
+          position: 'absolute',
+          bottom: '5%',
+          left: '5%',
+          width: 500,
+          height: 500,
+          background: `radial-gradient(circle, ${THEME.pink}08 0%, transparent 70%)`,
+          borderRadius: '50%',
+          filter: 'blur(70px)',
+        }}
+      />
+
+      <div
+        style={{
+          maxWidth: 1400,
+          margin: '0 auto',
+          padding: '0 4rem',
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '4rem',
+          alignItems: 'center',
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
+        {/* Left Column - Content */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: [0.43, 0.13, 0.23, 0.96] }}
+        >
+          <div style={{ marginBottom: '2.5rem' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                display: 'inline-block',
+                padding: '8px 20px',
+                background: `${THEME.accent}08`,
+                color: THEME.accent,
+                borderRadius: '100px',
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                marginBottom: '1.5rem',
+                border: `1px solid ${THEME.accent}20`,
+              }}
+            >
+              <Zap size={14} style={{ marginRight: '6px', display: 'inline' }} />
+              A Dedicated Learning Platform for Ligand Students
+            </motion.div>
+            
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              style={{
+                fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+                lineHeight: 1.1,
+                marginBottom: '1.5rem',
+              }}
+            >
+              Master Modern
+              <br />
+              <span className="gradient-text">Software Development</span>
+            </motion.h1>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              style={{
+                fontSize: '1.125rem',
+                color: THEME.textLight,
+                lineHeight: 1.8,
+                maxWidth: '500px',
+                marginBottom: '2.5rem',
+              }}
+            >
+              Join Ligand Software Solutions and transform your career with 
+              industry-leading curriculum, hands-on projects, and personalized 
+              mentorship from expert developers.
+            </motion.p>
+          </div>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            style={{ display: 'flex', gap: '1rem', marginBottom: '3rem' }}
+          >
+            <MagneticButton href="/login" variant="primary">
+              Get Started
+              <ChevronRight size={18} />
+            </MagneticButton>
+            <MagneticButton href="#about" variant="secondary">
+              Watch Demo
+            </MagneticButton>
+          </motion.div>
+        </motion.div>
+
+        {/* Right Column - Graph Ruler Cards */}
+        
                 <div className="ligand-dashboard-preview">
                   <div className="ligand-dashboard-header"></div>
                   <div className="ligand-dashboard-content">
@@ -238,1194 +1020,877 @@ const Home = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
+     
 
-        {/* Stats Section */}
-        <section className="ligand-stats">
-          <div className="ligand-container-inner">
-            <div className="ligand-stats-grid">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="ligand-stat-card animate-on-scroll"
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
-                  <div className="ligand-stat-value">{stat.value}</div>
-                  <div className="ligand-stat-label">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+      {/* Scroll Indicator */}
+      <motion.div
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+        style={{
+          position: 'absolute',
+          bottom: '3rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.5rem',
+          color: THEME.textMuted,
+          fontSize: '0.875rem',
+          zIndex: 10,
+        }}
+      >
+        <span>Scroll to Explore</span>
+        <motion.div
+          animate={{ y: [0, 5, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          <ChevronRight size={18} style={{ transform: 'rotate(90deg)' }} />
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+};
 
-        {/* About Section */}
-        <section className="ligand-about">
-          <div className="ligand-container-inner">
-            <div className="ligand-about-content animate-on-scroll">
-              <h2 className="ligand-section-title">About Ligand Institution</h2>
-              <p className="ligand-section-description">
-                A premier software training institute offering comprehensive
-                full-stack development education across multiple technologies,
-                with industry-focused training, hands-on projects, and placement
-                assistance.
+/* ─────────────────────────────────────────────────────────────
+   FEATURES SECTION
+───────────────────────────────────────────────────────────── */
+const FeaturesSection = () => {
+  const features = [
+    {
+      icon: <Clock size={24} />,
+      title: 'Daily Assessments',
+      description: 'Regular coding challenges and quizzes to track your progress',
+      color: '#4361ee',
+    },
+    {
+      icon: <BookMarked size={24} />,
+      title: 'Comprehensive Notes',
+      description: 'Organized study materials and reference documentation',
+      color: '#7209b7',
+    },
+    {
+      icon: <Video size={24} />,
+      title: 'Live & Recorded Classes',
+      description: 'Interactive sessions with expert trainers',
+      color: '#f72585',
+    },
+    {
+      icon: <Code size={24} />,
+      title: 'Code Repository',
+      description: 'Real-world projects and practice code examples',
+      color: '#06d6a0',
+    },
+    {
+      icon: <Briefcase size={24} />,
+      title: 'Mock Interviews',
+      description: 'Industry-standard technical interview practice',
+      color: '#ffd166',
+    },
+    {
+      icon: <BarChart size={24} />,
+      title: 'Performance Analytics',
+      description: 'Detailed insights into your learning journey',
+      color: '#4361ee',
+    },
+  ];
+
+  return (
+    <section
+      style={{
+        padding: '6rem 2rem',
+        background: THEME.bgAlt,
+      }}
+    >
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <SectionReveal>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <span
+              style={{
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                color: THEME.accent,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+              }}
+            >
+              Why Choose Us
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                marginTop: '0.5rem',
+              }}
+            >
+              Everything You Need to{' '}
+              <span className="gradient-text">Succeed</span>
+            </h2>
+          </div>
+        </SectionReveal>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '2rem',
+          }}
+        >
+          {features.map((feature, index) => (
+            <motion.div
+              key={feature.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -10, scale: 1.02 }}
+              style={{
+                background: THEME.cardBg,
+                padding: '2.5rem',
+                borderRadius: '24px',
+                boxShadow: `0 10px 30px ${THEME.shadow}`,
+                border: `1px solid ${THEME.border}`,
+                transition: 'all 0.3s ease',
+                cursor: 'pointer',
+              }}
+            >
+              <div
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  borderRadius: '18px',
+                  background: `${feature.color}10`,
+                  color: feature.color,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '1.5rem',
+                }}
+              >
+                {feature.icon}
+              </div>
+              <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem' }}>
+                {feature.title}
+              </h3>
+              <p style={{ color: THEME.textLight, lineHeight: 1.6 }}>
+                {feature.description}
               </p>
-              <div className="ligand-highlights">
-                <div className="ligand-highlight">
-                  <Star className="ligand-highlight-icon" />
-                  <span>Industry Expert Trainers</span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─────────────────────────────────────────────────────────────
+   COURSES SECTION
+───────────────────────────────────────────────────────────── */
+const CoursesSection = () => {
+  const courses = [
+    {
+      title: 'MERN Stack Development',
+      description: 'Master MongoDB, Express.js, React, and Node.js',
+      icon: SiReact,
+      color: '#61dafb',
+      duration: '16 weeks',
+      level: 'Intermediate',
+      students: '2.5k+',
+    },
+    {
+      title: 'Data Structures & Algorithms',
+      description: 'Master coding interviews with DSA fundamentals',
+      icon: SiJavascript,
+      color: '#f7df1e',
+      duration: '12 weeks',
+      level: 'Beginner',
+      students: '3k+',
+    },
+    {
+      title: 'System Design',
+      description: 'Learn to design scalable distributed systems',
+      icon: SiReact,
+      color: '#4361ee',
+      duration: '10 weeks',
+      level: 'Advanced',
+      students: '1.2k+',
+    },
+    {
+      title: 'DevOps & Cloud',
+      description: 'Master Docker, Kubernetes, and cloud platforms',
+      icon: SiDocker,
+      color: '#2496ed',
+      duration: '14 weeks',
+      level: 'Intermediate',
+      students: '1.8k+',
+    },
+    {
+      title: 'Python Full Stack',
+      description: 'Build applications with Python, Django, and React',
+      icon: SiPython,
+      color: '#3776ab',
+      duration: '16 weeks',
+      level: 'Beginner',
+      students: '2.2k+',
+    },
+    {
+      title: 'Mobile Development',
+      description: 'Create cross-platform apps with React Native',
+      icon: SiReact,
+      color: '#61dafb',
+      duration: '12 weeks',
+      level: 'Intermediate',
+      students: '1.5k+',
+    },
+  ];
+
+  return (
+    <section style={{ padding: '6rem 2rem', background: THEME.bg }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <SectionReveal>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <span
+              style={{
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                color: THEME.accent,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+              }}
+            >
+              Our Programs
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                marginTop: '0.5rem',
+              }}
+            >
+              Comprehensive{' '}
+              <span className="gradient-text">Course Catalog</span>
+            </h2>
+          </div>
+        </SectionReveal>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+            gap: '2rem',
+          }}
+        >
+          {courses.map((course, index) => (
+            <motion.div
+              key={course.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -10, scale: 1.02 }}
+              style={{
+                background: THEME.cardBg,
+                padding: '2rem',
+                borderRadius: '24px',
+                boxShadow: `0 10px 30px ${THEME.shadow}`,
+                border: `1px solid ${THEME.border}`,
+                position: 'relative',
+                overflow: 'hidden',
+                cursor: 'pointer',
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '-20px',
+                  right: '-20px',
+                  fontSize: '6rem',
+                  opacity: 0.05,
+                  color: course.color,
+                  transform: 'rotate(15deg)',
+                }}
+              >
+                <course.icon />
+              </div>
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  marginBottom: '1.5rem',
+                }}
+              >
+                <div
+                  style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '16px',
+                    background: `${course.color}15`,
+                    color: course.color,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '2rem',
+                  }}
+                >
+                  <course.icon />
                 </div>
-                <div className="ligand-highlight">
-                  <Star className="ligand-highlight-icon" />
-                  <span>Project-Based Learning</span>
-                </div>
-                <div className="ligand-highlight">
-                  <Star className="ligand-highlight-icon" />
-                  <span>Placement Support</span>
+                <div>
+                  <h3 style={{ fontSize: '1.25rem' }}>{course.title}</h3>
+                  <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        padding: '4px 8px',
+                        background: THEME.bgAlt,
+                        borderRadius: '100px',
+                        color: THEME.textLight,
+                      }}
+                    >
+                      {course.duration}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        padding: '4px 8px',
+                        background: `${course.color}15`,
+                        borderRadius: '100px',
+                        color: course.color,
+                      }}
+                    >
+                      {course.level}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Features Section */}
-        <section className="ligand-features">
-          <div className="ligand-container-inner">
-            <div className="ligand-section-header animate-on-scroll">
-              <h2 className="ligand-section-title">Your Learning Dashboard</h2>
-              <p className="ligand-section-subtitle">
-                Everything you need for successful software engineering training
+              <p style={{ color: THEME.textLight, lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                {course.description}
               </p>
-            </div>
 
-            <div className="ligand-features-grid">
-              {features.map((feature, index) => (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ color: THEME.textMuted, fontSize: '0.875rem' }}>
+                  <Users size={14} style={{ display: 'inline', marginRight: '4px' }} />
+                  {course.students} enrolled
+                </span>
+                <MagneticButton variant="outline" style={{ padding: '8px 16px' }}>
+                  Learn More
+                  <ChevronRight size={14} />
+                </MagneticButton>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ─────────────────────────────────────────────────────────────
+   TESTIMONIALS SECTION
+───────────────────────────────────────────────────────────── */
+const TestimonialsSection = () => {
+  const testimonials = [
+    {
+      name: 'Sarah Johnson',
+      role: 'Full Stack Developer at Google',
+      content: 'The MERN stack course at Ligand transformed my career. The hands-on projects and mentor support were exceptional.',
+      avatar: 'SJ',
+      rating: 5,
+    },
+    {
+      name: 'Michael Chen',
+      role: 'Software Engineer at Microsoft',
+      content: 'Best investment in my education. The curriculum is up-to-date with industry standards and the mock interviews really helped.',
+      avatar: 'MC',
+      rating: 5,
+    },
+    {
+      name: 'Priya Patel',
+      role: 'DevOps Engineer at Amazon',
+      content: 'The DevOps course covered everything from basics to advanced. Now I\'m working with technologies I never thought possible.',
+      avatar: 'PP',
+      rating: 5,
+    },
+  ];
+
+  return (
+    <section
+      style={{
+        padding: '6rem 2rem',
+        background: THEME.bgAlt,
+      }}
+    >
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <SectionReveal>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <span
+              style={{
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                color: THEME.accent,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+              }}
+            >
+              Testimonials
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                marginTop: '0.5rem',
+              }}
+            >
+              What Our{' '}
+              <span className="gradient-text">Students Say</span>
+            </h2>
+          </div>
+        </SectionReveal>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '2rem',
+          }}
+        >
+          {testimonials.map((testimonial, index) => (
+            <motion.div
+              key={testimonial.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -10 }}
+              style={{
+                background: THEME.cardBg,
+                padding: '2rem',
+                borderRadius: '24px',
+                boxShadow: `0 10px 30px ${THEME.shadow}`,
+                border: `1px solid ${THEME.border}`,
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  marginBottom: '1.5rem',
+                }}
+              >
                 <div
-                  key={index}
-                  className="ligand-feature-card animate-on-scroll"
-                  style={{ transitionDelay: `${index * 100}ms` }}
+                  style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '56px',
+                    background: THEME.accentGradient,
+                    color: 'white',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.25rem',
+                    fontWeight: 600,
+                  }}
                 >
-                  <div className="ligand-feature-icon">{feature.icon}</div>
-                  <h3 className="ligand-feature-title">{feature.title}</h3>
-                  <p className="ligand-feature-description">
-                    {feature.description}
+                  {testimonial.avatar}
+                </div>
+                <div>
+                  <h4 style={{ fontSize: '1.1rem' }}>{testimonial.name}</h4>
+                  <p style={{ color: THEME.textMuted, fontSize: '0.875rem' }}>
+                    {testimonial.role}
                   </p>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Courses Section */}
-        <section className="ligand-multicollege">
-          <div className="ligand-container-inner">
-            <div className="ligand-multicollege-grid">
-              <div className="ligand-multicollege-content animate-on-scroll">
-                <h2 className="ligand-section-title">
-                  Comprehensive Course Curriculum
-                </h2>
-                <p className="ligand-section-description">
-                  Our structured curriculum covers everything from fundamentals
-                  to advanced concepts, ensuring you become industry-ready.
-                </p>
-
-                <div className="ligand-institution-list">
-                  {courses.map((item, index) => (
-                    <div key={index} className="ligand-institution-item">
-                      <CheckCircle className="ligand-list-icon" />
-                      <span className="ligand-institution-text">{item}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="ligand-tech-pill">
-                  <div className="ligand-tech-avatars">
-                    <div className="ligand-tech-avatar ligand-avatar-blue">
-                      <Code className="ligand-avatar-icon" />
-                    </div>
-                    <div className="ligand-tech-avatar ligand-avatar-green">
-                      <Database className="ligand-avatar-icon" />
-                    </div>
-                    <div className="ligand-tech-avatar ligand-avatar-orange">
-                      <Cpu className="ligand-avatar-icon" />
-                    </div>
-                  </div>
-                  <span className="ligand-tech-text">
-                    Full Stack Development Focus
-                  </span>
-                </div>
               </div>
 
-              <div className="ligand-college-grid animate-on-scroll">
-                <div className="ligand-college-container">
-                  <div className="ligand-college-grid-inner">
-                    {[
-                      {
-                        icon: <GraduationCap />,
-                        title: "Beginner",
-                        desc: "Foundations",
-                      },
-                      {
-                        icon: <Code />,
-                        title: "Intermediate",
-                        desc: "Core Concepts",
-                      },
-                      {
-                        icon: <Briefcase />,
-                        title: "Advanced",
-                        desc: "Projects",
-                      },
-                      {
-                        icon: <Award />,
-                        title: "Placement",
-                        desc: "Interview Prep",
-                      },
-                    ].map((item, i) => (
-                      <div key={i} className="ligand-college-card">
-                        <div className="ligand-college-icon">{item.icon}</div>
-                        <h4 className="ligand-college-title">{item.title}</h4>
-                        <p className="ligand-college-subtitle">{item.desc}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              <div style={{ marginBottom: '1rem' }}>
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star
+                    key={i}
+                    size={16}
+                    fill="#ffd166"
+                    color="#ffd166"
+                    style={{ display: 'inline', marginRight: '2px' }}
+                  />
+                ))}
               </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Benefits Section */}
-        <section className="ligand-benefits">
-          <div className="ligand-container-inner">
-            <div className="ligand-section-header animate-on-scroll">
-              <h2 className="ligand-section-title">
-                Why Choose Ligand Institution?
-              </h2>
-              <p className="ligand-section-subtitle">
-                Experience the difference with our student-focused approach
+              <p style={{ color: THEME.textLight, lineHeight: 1.8, fontStyle: 'italic' }}>
+                "{testimonial.content}"
               </p>
-            </div>
-
-            <div className="ligand-benefits-grid">
-              {benefits.map((benefit, index) => (
-                <div
-                  key={index}
-                  className="ligand-benefit-card animate-on-scroll"
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
-                  <div className="ligand-benefit-icon">{benefit.icon}</div>
-                  <h3 className="ligand-benefit-title">{benefit.text}</h3>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        <RangeSlider />
-
-        {/* Vision Section */}
-        <section className="ligand-vision">
-          <div className="ligand-container-inner">
-            <div className="ligand-vision-content animate-on-scroll">
-              <div className="ligand-vision-line"></div>
-              <h2 className="ligand-vision-title">Our Mission</h2>
-              <p className="ligand-vision-description">
-                To transform aspiring developers into industry-ready software
-                engineers through hands-on training, real-world projects, and
-                personalized mentorship.
-              </p>
-            </div>
-          </div>
-        </section>
+            </motion.div>
+          ))}
+        </div>
       </div>
-
-      <style>
-        {`
-          /* Ligand Landing Page CSS */
-          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap');
-
-          /* Reset and Base Styles */
-          .ligand-container {
-            min-height: 100vh;
-            background-color: #ffffff;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            overflow-x: hidden;
-          }
-
-          .ligand-container-inner {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 1rem;
-          }
-
-          /* Typography */
-          .ligand-headline {
-            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            line-height: 1.2;
-            color: #111827;
-            margin-bottom: 1.5rem;
-          }
-
-          .ligand-gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-          }
-
-          .ligand-subtitle {
-            font-size: 1.25rem;
-            line-height: 1.8;
-            color: #4b5563;
-            margin-bottom: 2rem;
-          }
-
-          .ligand-section-title {
-            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 1.5rem;
-            text-align: center;
-          }
-
-          .ligand-section-description {
-            font-size: 1.125rem;
-            line-height: 1.8;
-            color: #4b5563;
-            max-width: 768px;
-            margin: 0 auto;
-          }
-
-          .ligand-section-subtitle {
-            font-size: 1.25rem;
-            color: #6b7280;
-            text-align: center;
-            max-width: 768px;
-            margin: 0 auto 3rem;
-          }
-
-          /* Animations */
-          .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-          }
-
-          .animate-fadeInUp {
-            opacity: 1;
-            transform: translateY(0);
-          }
-
-          /* Hero Section */
-          .ligand-hero {
-            position: relative;
-            padding: 5rem 0 8rem;
-            overflow: hidden;
-          }
-
-          .ligand-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 4rem;
-            align-items: center;
-          }
-
-          @media (min-width: 1024px) {
-            .ligand-grid {
-              grid-template-columns: 1fr 1fr;
-              gap: 6rem;
-            }
-          }
-
-          .ligand-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            background: linear-gradient(to right, #f5f3ff, #eff6ff);
-            color: #7c3aed;
-            margin-bottom: 2rem;
-            margin-top:25px;
-          }
-
-          .ligand-badge-dot {
-            width: 0.5rem;
-            height: 0.5rem;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin-right: 0.5rem;
-            animation: pulse 2s infinite;
-          }
-
-          @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-          }
-
-          .ligand-checklist {
-            margin-bottom: 2.5rem;
-          }
-
-          .ligand-checklist-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.75rem;
-          }
-
-          .ligand-check-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            color: #10b981;
-            margin-right: 0.75rem;
-          }
-
-          .ligand-checklist-text {
-            font-size: 1.125rem;
-            font-weight: 500;
-            color: #374151;
-          }
-
-          /* Buttons */
-          .ligand-cta-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-          }
-
-          .ligand-btn-primary, .ligand-btn-secondary {
-            padding: 1rem 2rem;
-            font-weight: 600;
-            border-radius: 0.75rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            text-decoration: none;
-          }
-
-          .ligand-btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-          }
-
-          .ligand-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
-          }
-
-          .ligand-btn-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            margin-left: 0.5rem;
-            transition: transform 0.3s ease;
-          }
-
-          .ligand-btn-primary:hover .ligand-btn-icon {
-            transform: translateX(4px);
-          }
-
-          .ligand-btn-secondary {
-            background: white;
-            color: #1f2937;
-            border: 2px solid #e5e7eb;
-          }
-
-          .ligand-btn-secondary:hover {
-            border-color: #d1d5db;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-          }
-
-          /* Dashboard Preview */
-          .ligand-dashboard-preview {
-            position: relative;
-            background: linear-gradient(to bottom right, #f5f3ff, #eff6ff);
-            border-radius: 1.5rem;
-            padding: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-          }
-
-          .ligand-dashboard-header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 1.5rem 1.5rem 0 0;
-          }
-
-          .ligand-dashboard-content {
-            margin-top: 2rem;
-            background: white;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-          }
-
-          .ligand-dashboard-nav {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-          }
-
-          .ligand-nav-dot {
-            width: 0.75rem;
-            height: 0.75rem;
-            border-radius: 50%;
-          }
-
-          .ligand-nav-dot-red {
-            background-color: #f87171;
-          }
-
-          .ligand-nav-dot-yellow {
-            background-color: #fbbf24;
-          }
-
-          .ligand-nav-dot-green {
-            background-color: #10b981;
-          }
-
-          .ligand-dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-          }
-
-          @media (min-width: 768px) {
-            .ligand-dashboard-grid {
-              grid-template-columns: repeat(4, 1fr);
-            }
-          }
-
-          .ligand-dashboard-card {
-            height: 5rem;
-            border-radius: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          .ligand-tech-icon-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-          }
-
-          .ligand-tech-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #4b5563;
-          }
-
-          .ligand-card-gradient {
-            background: linear-gradient(to right, #f5f3ff, #e0e7ff);
-          }
-
-          .ligand-card-gray {
-            background: linear-gradient(to right, #f9fafb, #f3f4f6);
-          }
-
-          .ligand-media-player {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          .ligand-class-indicator {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: linear-gradient(to right, #fef2f2, #fee2e2);
-            border-radius: 9999px;
-            color: #dc2626;
-            font-weight: 500;
-            font-size: 0.875rem;
-          }
-
-          .ligand-live-dot {
-            width: 0.5rem;
-            height: 0.5rem;
-            border-radius: 50%;
-            background-color: #dc2626;
-            animation: pulse 1.5s infinite;
-          }
-
-          /* Stats Section */
-          .ligand-stats {
-            padding: 4rem 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          }
-
-          .ligand-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-          }
-
-          @media (min-width: 768px) {
-            .ligand-stats-grid {
-              grid-template-columns: repeat(4, 1fr);
-            }
-          }
-
-          .ligand-stat-card {
-            text-align: center;
-            color: white;
-          }
-
-          .ligand-stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-          }
-
-          .ligand-stat-label {
-            font-size: 1rem;
-            opacity: 0.9;
-          }
-
-          /* About Section */
-          .ligand-about {
-            padding: 5rem 0;
-            background-color: #f9fafb;
-          }
-
-          .ligand-highlights {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 2rem;
-          }
-
-          @media (min-width: 768px) {
-            .ligand-highlights {
-              flex-direction: row;
-              justify-content: center;
-              gap: 2rem;
-            }
-          }
-
-          .ligand-highlight {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: #4f46e5;
-            font-weight: 500;
-          }
-
-          .ligand-highlight-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-          }
-
-          /* Features Section */
-          .ligand-features {
-            padding: 5rem 0;
-          }
-
-          .ligand-features-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-          }
-
-          @media (min-width: 768px) {
-            .ligand-features-grid {
-              grid-template-columns: repeat(2, 1fr);
-            }
-          }
-
-          @media (min-width: 1024px) {
-            .ligand-features-grid {
-              grid-template-columns: repeat(3, 1fr);
-            }
-          }
-
-          .ligand-feature-card {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 2rem;
-            border: 1px solid #f3f4f6;
-            transition: all 0.3s ease;
-            cursor: pointer;
-          }
-
-          .ligand-feature-card:hover {
-            transform: translateY(-4px);
-            border-color: #e9d5ff;
-            box-shadow: 0 20px 40px -12px rgba(102, 126, 234, 0.2);
-          }
-
-          .ligand-feature-icon {
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease;
-          }
-
-          .ligand-feature-card:hover .ligand-feature-icon {
-            transform: scale(1.1);
-          }
-
-          .ligand-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-          }
-
-          .ligand-feature-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 0.75rem;
-          }
-
-          .ligand-feature-description {
-            color: #6b7280;
-            line-height: 1.6;
-          }
-
-          /* Multi-College Section (Courses) */
-          .ligand-multicollege {
-            padding: 5rem 0;
-            background: linear-gradient(to right, #f5f3ff, #eff6ff);
-          }
-
-          .ligand-multicollege-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 4rem;
-            align-items: center;
-          }
-
-          @media (min-width: 1024px) {
-            .ligand-multicollege-grid {
-              grid-template-columns: 1fr 1fr;
-              gap: 6rem;
-            }
-          }
-
-          .ligand-institution-list {
-            margin: 2rem 0;
-          }
-
-          .ligand-institution-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-          }
-
-          .ligand-list-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-            color: #10b981;
-            margin-right: 0.75rem;
-          }
-
-          .ligand-institution-text {
-            font-size: 1.125rem;
-            font-weight: 500;
-            color: #374151;
-          }
-
-          .ligand-tech-pill {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.75rem 1.5rem;
-            background: white;
-            border-radius: 9999px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            margin-top: 2rem;
-          }
-
-          .ligand-tech-avatars {
-            display: flex;
-            margin-right: 1rem;
-          }
-
-          .ligand-tech-avatar {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            border: 2px solid white;
-          }
-
-          .ligand-avatar-blue {
-            background: linear-gradient(to right, #60a5fa, #3b82f6);
-            z-index: 3;
-          }
-
-          .ligand-avatar-green {
-            background: linear-gradient(to right, #34d399, #10b981);
-            margin-left: -0.75rem;
-            z-index: 2;
-          }
-
-          .ligand-avatar-orange {
-            background: linear-gradient(to right, #fb923c, #f97316);
-            margin-left: -0.75rem;
-            z-index: 1;
-          }
-
-          .ligand-avatar-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-          }
-
-          .ligand-tech-text {
-            font-weight: 600;
-            color: #1f2937;
-          }
-
-          .ligand-college-container {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 2rem;
-            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
-          }
-
-          .ligand-college-grid-inner {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-          }
-          .ligand-tech-icon {
-  font-size: 40px;
-}
-
-.ligand-tech-icon.react {
-  color: #61dafb;
-}
-
-.ligand-tech-icon.node {
-  color: #339933;
-}
-
-.ligand-tech-icon.mongo {
-  color: #47a248;
-}
-
-.ligand-tech-icon.express {
-  color: #000000;
-}
-          .ligand-college-card {
-            background: #f9fafb;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-          }
-
-          .ligand-college-card:hover {
-            background: linear-gradient(to bottom right, white, #f5f3ff);
-            transform: translateY(-2px);
-          }
-
-          .ligand-college-icon {
-            width: 4rem;
-            height: 4rem;
-            margin: 0 auto 1rem;
-            color: #667eea;
-          }
-
-          .ligand-college-icon svg {
-            width: 2rem;
-            height: 2rem;
-          }
-
-          .ligand-college-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 0.5rem;
-          }
-
-          .ligand-college-subtitle {
-            font-size: 0.875rem;
-            color: #6b7280;
-          }
-
-          /* Benefits Section */
-          .ligand-benefits {
-            padding: 5rem 0;
-          }
-
-          .ligand-benefits-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            max-width: 896px;
-            margin: 0 auto;
-          }
-
-          @media (min-width: 768px) {
-            .ligand-benefits-grid {
-              grid-template-columns: repeat(2, 1fr);
-            }
-          }
-
-          @media (min-width: 1024px) {
-            .ligand-benefits-grid {
-              grid-template-columns: repeat(4, 1fr);
-            }
-          }
-
-          .ligand-benefit-card {
-            text-align: center;
-            padding: 2rem;
-            border-radius: 1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-          }
-
-          .ligand-benefit-card:hover {
-            background: linear-gradient(to bottom right, white, #f5f3ff);
-          }
-
-          .ligand-benefit-icon {
-            width: 4rem;
-            height: 4rem;
-            margin: 0 auto 1.5rem;
-            border-radius: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-          }
-
-          .ligand-small-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-          }
-
-          .ligand-benefit-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            color: #111827;
-          }
-
-          /* Vision Section */
-          .ligand-vision {
-            padding: 5rem 0;
-            
-          }
-
-          .ligand-vision-content {
-            max-width: 768px;
-            margin: 0 auto;
-            text-align: center;
-          }
-
-          .ligand-vision-line {
-            width: 4rem;
-            height: 0.25rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0 auto 2rem;
-            border-radius: 9999px;
-          }
-
-          .ligand-vision-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: #403f3fff;
-            margin-bottom: 1.5rem;
-          }
-
-          .ligand-vision-description {
-            font-size: 1.25rem;
-            line-height: 1.8;
-            color: #515050ff;
-          }
-
-          /* CTA Section */
-          .ligand-cta {
-            padding: 5rem 0;
-          }
-
-          .ligand-cta-container {
-            max-width: 896px;
-            margin: 0 auto;
-            background: linear-gradient(to right, #f5f3ff, #eff6ff);
-            border-radius: 2rem;
-            padding: 3rem;
-            text-align: center;
-          }
-
-          .ligand-cta-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: #111827;
-            margin-bottom: 1.5rem;
-          }
-
-          .ligand-cta-description {
-            font-size: 1.25rem;
-            color: #4b5563;
-            max-width: 576px;
-            margin: 0 auto 2.5rem;
-          }
-          .ligand-dashboard-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-  .ligand-dashboard-card {
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.ligand-dashboard-card:hover {
-  transform: translateY(-4px);
-}
-          .ligand-cta-buttons-final {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 3rem;
-          }
-
-          @media (min-width: 640px) {
-            .ligand-cta-buttons-final {
-              flex-direction: row;
-              flex-wrap: wrap;
-            }
-          }
-
-          .ligand-btn-gradient-final {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3);
-          }
-
-          .ligand-btn-gradient-final:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 25px 50px rgba(102, 126, 234, 0.4);
-          }
-
-          .ligand-btn-secondary-final {
-            padding: 1rem 2.5rem;
-            font-weight: 600;
-            border-radius: 0.75rem;
-            background: white;
-            color: #1f2937;
-            border: 2px solid #d1d5db;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          .ligand-btn-secondary-final:hover {
-            border-color: #9ca3af;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-          }
-
-          .ligand-trust-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.75rem 1.5rem;
-            background: white;
-            border-radius: 9999px;
-            box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1);
-            border-top: 1px solid #e5e7eb;
-            padding-top: 2rem;
-          }
-
-          .ligand-shield-icon {
-            width: 1.25rem;
-            height: 1.25rem;
-            color: #10b981;
-            margin-right: 0.75rem;
-          }
-
-          .ligand-trust-text {
-            color: #374151;
-            font-weight: 500;
-          }
-
-          /* Footer */
-          .ligand-footer {
-            background: #111827;
-            color: white;
-            padding: 4rem 0 2rem;
-          }
-
-          .ligand-footer-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
-          }
-
-          @media (min-width: 768px) {
-            .ligand-footer-content {
-              grid-template-columns: 2fr 3fr;
-            }
-          }
-
-          .ligand-footer-brand {
-            max-width: 300px;
-          }
-
-          .ligand-footer-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-          }
-
-          .ligand-footer-tagline {
-            opacity: 0.7;
-            margin-bottom: 1.5rem;
-          }
-
-          .ligand-footer-contact {
-            opacity: 0.8;
-            font-size: 0.875rem;
-            line-height: 1.6;
-          }
-
-          .ligand-footer-links {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-          }
-
-          @media (min-width: 768px) {
-            .ligand-footer-links {
-              grid-template-columns: repeat(3, 1fr);
-            }
-          }
-
-          .ligand-footer-column h4 {
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: white;
-          }
-
-          .ligand-footer-column a {
-            display: block;
-            color: #d1d5db;
-            margin-bottom: 0.75rem;
-            transition: color 0.3s ease;
-            text-decoration: none;
-            font-size: 0.875rem;
-          }
-
-          .ligand-footer-column a:hover {
-            color: white;
-          }
-
-          .ligand-footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            text-align: center;
-            font-size: 0.875rem;
-            opacity: 0.7;
-          }
-
-          @media (min-width: 768px) {
-            .ligand-footer-bottom {
-              flex-direction: row;
-              justify-content: space-between;
-              text-align: left;
-            }
-          }
-
-          .ligand-footer-note {
-            color: #a5b4fc;
-            font-weight: 500;
-          }
-
-          /* Tech Icons */
-          .ligand-tech-icon {
-            width: 1.5rem;
-            height: 1.5rem;
-          }
-
-          /* Responsive Adjustments */
-          @media (max-width: 768px) {
-            .ligand-headline {
-              font-size: 2.25rem;
-            }
-           
-            .ligand-section-title {
-              font-size: 1.875rem;
-            }
-           
-            .ligand-vision-title {
-              font-size: 1.875rem;
-            }
-           
-            .ligand-cta-title {
-              font-size: 1.875rem;
-            }
-           
-            .ligand-cta-container {
-              padding: 2rem;
-            }
-          }
-
-          @media (max-width: 640px) {
-            .ligand-hero {
-              padding: 3rem 0 5rem;
-            }
-           
-            .ligand-about,
-            .ligand-features,
-            .ligand-multicollege,
-            .ligand-benefits,
-            .ligand-vision,
-            .ligand-cta {
-              padding: 3rem 0;
-            }
-           
-            .ligand-headline {
-              font-size: 2rem;
-            }
-           
-            .ligand-subtitle {
-              font-size: 1.125rem;
-            }
-          }
-        `}
-      </style>
+    </section>
+  );
+};
+
+/* ─────────────────────────────────────────────────────────────
+   BENEFITS SECTION
+───────────────────────────────────────────────────────────── */
+const BenefitsSection = () => {
+  const benefits = [
+    {
+      icon: <Rocket size={28} />,
+      title: 'Industry-Ready Curriculum',
+      description: 'Learn what actually matters in the industry',
+    },
+    {
+      icon: <Brain size={28} />,
+      title: 'Personalized Learning',
+      description: 'Adaptive learning paths based on your goals',
+    },
+    {
+      icon: <Target size={28} />,
+      title: 'Placement Focused',
+      description: 'Dedicated placement assistance and support',
+    },
+    {
+      icon: <Award size={28} />,
+      title: 'Certification',
+      description: 'Get certified and boost your resume',
+    },
+  ];
+
+  return (
+    <section style={{ padding: '6rem 2rem', background: THEME.bg }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <SectionReveal>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <span
+              style={{
+                fontSize: '0.875rem',
+                fontWeight: 600,
+                color: THEME.accent,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+              }}
+            >
+              Benefits
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                marginTop: '0.5rem',
+              }}
+            >
+              Why Students{' '}
+              <span className="gradient-text">Choose Us</span>
+            </h2>
+          </div>
+        </SectionReveal>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '2rem',
+            marginBottom: '4rem',
+          }}
+        >
+          {benefits.map((benefit, index) => (
+            <motion.div
+              key={benefit.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ y: -10 }}
+              style={{
+                background: THEME.cardBg,
+                padding: '2.5rem',
+                borderRadius: '24px',
+                boxShadow: `0 10px 30px ${THEME.shadow}`,
+                border: `1px solid ${THEME.border}`,
+                textAlign: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: '70px',
+                  height: '70px',
+                  borderRadius: '70px',
+                  background: `${THEME.accent}10`,
+                  color: THEME.accent,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 1.5rem',
+                }}
+              >
+                {benefit.icon}
+              </div>
+              <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+                {benefit.title}
+              </h3>
+              <p style={{ color: THEME.textLight, fontSize: '0.875rem' }}>
+                {benefit.description}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Range Slider Component */}
+        <RangeSlider />
+      </div>
+    </section>
+  );
+};
+
+/* ─────────────────────────────────────────────────────────────
+   FOOTER SECTION
+───────────────────────────────────────────────────────────── */
+const Footer = () => {
+  return (
+    <footer
+      style={{
+        background: THEME.text,
+        color: 'white',
+        padding: '4rem 2rem 2rem',
+      }}
+    >
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '2fr 1fr 1fr 1.5fr',
+            gap: '4rem',
+            marginBottom: '4rem',
+          }}
+        >
+          {/* Brand Column */}
+          <div>
+            <h3 style={{ fontSize: '1.75rem', marginBottom: '1rem' }}>
+              Ligand<span style={{ color: THEME.accent }}>.</span>
+            </h3>
+            <p style={{ color: '#94a3b8', lineHeight: 1.8, marginBottom: '1.5rem' }}>
+              Empowering the next generation of software developers with
+              industry-focused training and mentorship.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              {[Twitter, Github, Linkedin, Instagram].map((Icon, i) => (
+                <motion.a
+                  key={i}
+                  href="#"
+                  whileHover={{ y: -5, color: THEME.accent }}
+                  style={{ color: '#94a3b8', transition: 'color 0.3s ease' }}
+                >
+                  <Icon size={20} />
+                </motion.a>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>Quick Links</h4>
+            <ul style={{ listStyle: 'none' }}>
+              {['About Us', 'Courses', 'Blog', 'Careers'].map((item) => (
+                <li key={item} style={{ marginBottom: '0.75rem' }}>
+                  <a
+                    href="#"
+                    style={{
+                      color: '#94a3b8',
+                      textDecoration: 'none',
+                      transition: 'color 0.3s ease',
+                    }}
+                    onMouseEnter={(e) => (e.target.style.color = THEME.accent)}
+                    onMouseLeave={(e) => (e.target.style.color = '#94a3b8')}
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>Support</h4>
+            <ul style={{ listStyle: 'none' }}>
+              {['FAQ', 'Help Center', 'Terms', 'Privacy'].map((item) => (
+                <li key={item} style={{ marginBottom: '0.75rem' }}>
+                  <a
+                    href="#"
+                    style={{
+                      color: '#94a3b8',
+                      textDecoration: 'none',
+                      transition: 'color 0.3s ease',
+                    }}
+                    onMouseEnter={(e) => (e.target.style.color = THEME.accent)}
+                    onMouseLeave={(e) => (e.target.style.color = '#94a3b8')}
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>Contact</h4>
+            <ul style={{ listStyle: 'none' }}>
+              {[
+                { icon: Mail, text: 'hello@ligand.com' },
+                { icon: Phone, text: '+1 (555) 123-4567' },
+                { icon: MapPin, text: 'San Francisco, CA' },
+              ].map(({ icon: Icon, text }) => (
+                <li
+                  key={text}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.75rem',
+                    marginBottom: '0.75rem',
+                    color: '#94a3b8',
+                  }}
+                >
+                  <Icon size={16} />
+                  <span>{text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div
+          style={{
+            borderTop: `1px solid #2d3748`,
+            paddingTop: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            color: '#94a3b8',
+            fontSize: '0.875rem',
+          }}
+        >
+          <span>© 2024 Ligand Software Solutions. All rights reserved.</span>
+          <span>Made with <span style={{ color: THEME.pink }}>❤</span> for developers</span>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+const GridCell = () => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <div
+      style={{
+        position: "relative",
+        border: `1px solid ${THEME.border}`,
+        pointerEvents: "auto",
+        cursor: "pointer",
+        overflow: "hidden"
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Gradient Layer */}
+      <motion.div
+        initial={false}
+        animate={{
+          opacity: isHovered ? 1 : 0
+        }}
+        transition={{
+          duration: isHovered ? 0.15 : 2,
+          ease: "easeOut"
+        }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "linear-gradient(90deg, #ff6b6b, #ff8e53)",
+        }}
+      />
+
+      {/* Border animation */}
+      <motion.div
+        initial={false}
+        animate={{
+          borderColor: isHovered ? "#ff6b6b" : THEME.border
+        }}
+        transition={{
+          duration: isHovered ? 0.15 : 2.2,
+          ease: "easeOut"
+        }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          border: `1px solid`,
+          pointerEvents: "none"
+        }}
+      />
+    </div>
+  );
+};
+
+
+const GridBackground = () => {
+  const rows = 9;
+  const cols = 17;
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        display: "grid",
+        gridTemplateColumns: `repeat(${cols}, 1fr)`,
+        gridTemplateRows: `repeat(${rows}, 1fr)`,
+        zIndex: 0,
+        pointerEvents: "none",
+      }}
+    >
+      {Array.from({ length: rows * cols }).map((_, i) => (
+        <GridCell key={i} index={i} />
+      ))}
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────────────────────────────
+   MAIN HOME COMPONENT
+───────────────────────────────────────────────────────────── */
+const Home = () => {
+  useEffect(() => {
+    // Initialize Lenis smooth scroll
+    let lenis;
+    import("@studio-freight/lenis").then(({ default: Lenis }) => {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smooth: true,
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+
+      requestAnimationFrame(raf);
+    });
+
+    return () => {
+      if (lenis) lenis.destroy();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
+  return (
+    <>
+    {/* <GridBackground /> */}
+      <GlobalStyles />
+      <CustomCursor />
+      
+      <main style={{marginTop:"50px"}}>
+        <HeroSection />
+        <FeaturesSection />
+        <CoursesSection />
+        <TestimonialsSection />
+        <BenefitsSection />
+      </main>
     </>
   );
 };
