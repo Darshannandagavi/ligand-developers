@@ -6,47 +6,47 @@ import axios from "axios";
 import Loader from "../StyleComponents/Loader";
 
 const AdminLayout = () => {
-//   const navigate = useNavigate();
-//   const [authorized, setAuthorized] = useState(null);
+  const navigate = useNavigate();
+  const [authorized, setAuthorized] = useState(null);
 
-//   useEffect(() => {
-//     const checkAuth = async () => {
-//       try {
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
 
-//         await axios.get("/api/users/getme");
-//         setAuthorized(true);
-//       } catch (err) {
-//         // If 401 Unauthorized, user is not logged in
-//         if (err.response?.status === 401) {
-//           setAuthorized(false);
-//           navigate("/login");
-//         } else {
-//           // Other errors - still allow access (network issue, etc)
-//           console.warn("Auth check failed:", err.message);
-//           setAuthorized(true);
-//         }
-//       }
-//     };
+        await axios.get("/api/users/getme");
+        setAuthorized(true);
+      } catch (err) {
+        // If 401 Unauthorized, user is not logged in
+        if (err.response?.status === 401) {
+          setAuthorized(false);
+          navigate("/login");
+        } else {
+          // Other errors - still allow access (network issue, etc)
+          console.warn("Auth check failed:", err.message);
+          setAuthorized(true);
+        }
+      }
+    };
 
-//     checkAuth();
-//   }, [navigate]);
+    checkAuth();
+  }, [navigate]);
 
-//  if (authorized === null) {
-//   return (
-//     <div
-//       style={{
-//         minHeight: "100vh",
-//         display: "flex",
-//         justifyContent: "center",
-//         alignItems: "center",
-//       }}
-//     >
-//       <Loader />
-//     </div>
-//   );
-// }
+ if (authorized === null) {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Loader />
+    </div>
+  );
+}
 
-//   if (!authorized) return null;
+  if (!authorized) return null;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
