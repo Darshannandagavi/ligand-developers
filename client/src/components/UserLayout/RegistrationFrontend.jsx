@@ -750,7 +750,7 @@ const Register = () => {
     
     setIsLoading(true);
     try {
-      const res = await axios.post("https://ligand-dev-7.onrender.com/api/users/register", formData);
+      const res = await axios.post("http://localhost:8000/api/users/register", formData);
       setMessage({ text: res.data.message, type: "success" });
       setFormData({ name: "", email: "", contact: "", password: "" });
       setValidated(false);

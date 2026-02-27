@@ -16,6 +16,7 @@ const UserLayout = () => {
         await axios.get("/api/users/profile",{withCredentials: true,});
         setAuthorized(true);
       } catch (err) {
+        console.log(err)
         if (err.response?.status === 401) {
           setAuthorized(false);
           navigate("/login");

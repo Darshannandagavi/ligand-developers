@@ -117,13 +117,7 @@ const GlobalStyles = () => (
       font-weight: 700;
     }
 
-    /* Gradient Text */
-    .gradient-text {
-      background: linear-gradient(135deg, #4361ee 0%, #7209b7 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+   
 
     /* Grid Background */
     // .grid-bg {
@@ -146,23 +140,7 @@ const GlobalStyles = () => (
     }
 
     /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: ${THEME.bgAlt};
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: ${THEME.accent};
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: ${THEME.purple};
-    }
+    
     /* Tech Stack Card Styles */
 .ligand-tech-icon {
   font-size: 32px;
@@ -1504,142 +1482,35 @@ const BenefitsSection = () => {
 /* ─────────────────────────────────────────────────────────────
    FOOTER SECTION
 ───────────────────────────────────────────────────────────── */
-const Footer = () => {
-  return (
-    <footer
-      style={{
-        background: THEME.text,
-        color: 'white',
-        padding: '4rem 2rem 2rem',
-      }}
-    >
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '2fr 1fr 1fr 1.5fr',
-            gap: '4rem',
-            marginBottom: '4rem',
-          }}
-        >
-          {/* Brand Column */}
-          <div>
-            <h3 style={{ fontSize: '1.75rem', marginBottom: '1rem' }}>
-              Ligand<span style={{ color: THEME.accent }}>.</span>
-            </h3>
-            <p style={{ color: '#94a3b8', lineHeight: 1.8, marginBottom: '1.5rem' }}>
-              Empowering the next generation of software developers with
-              industry-focused training and mentorship.
-            </p>
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              {[Twitter, Github, Linkedin, Instagram].map((Icon, i) => (
-                <motion.a
-                  key={i}
-                  href="#"
-                  whileHover={{ y: -5, color: THEME.accent }}
-                  style={{ color: '#94a3b8', transition: 'color 0.3s ease' }}
-                >
-                  <Icon size={20} />
-                </motion.a>
-              ))}
-            </div>
-          </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>Quick Links</h4>
-            <ul style={{ listStyle: 'none' }}>
-              {['About Us', 'Courses', 'Blog', 'Careers'].map((item) => (
-                <li key={item} style={{ marginBottom: '0.75rem' }}>
-                  <a
-                    href="#"
-                    style={{
-                      color: '#94a3b8',
-                      textDecoration: 'none',
-                      transition: 'color 0.3s ease',
-                    }}
-                    onMouseEnter={(e) => (e.target.style.color = THEME.accent)}
-                    onMouseLeave={(e) => (e.target.style.color = '#94a3b8')}
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
 
-          {/* Support */}
-          <div>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>Support</h4>
-            <ul style={{ listStyle: 'none' }}>
-              {['FAQ', 'Help Center', 'Terms', 'Privacy'].map((item) => (
-                <li key={item} style={{ marginBottom: '0.75rem' }}>
-                  <a
-                    href="#"
-                    style={{
-                      color: '#94a3b8',
-                      textDecoration: 'none',
-                      transition: 'color 0.3s ease',
-                    }}
-                    onMouseEnter={(e) => (e.target.style.color = THEME.accent)}
-                    onMouseLeave={(e) => (e.target.style.color = '#94a3b8')}
-                  >
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem' }}>Contact</h4>
-            <ul style={{ listStyle: 'none' }}>
-              {[
-                { icon: Mail, text: 'hello@ligand.com' },
-                { icon: Phone, text: '+1 (555) 123-4567' },
-                { icon: MapPin, text: 'San Francisco, CA' },
-              ].map(({ icon: Icon, text }) => (
-                <li
-                  key={text}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.75rem',
-                    marginBottom: '0.75rem',
-                    color: '#94a3b8',
-                  }}
-                >
-                  <Icon size={16} />
-                  <span>{text}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div
-          style={{
-            borderTop: `1px solid #2d3748`,
-            paddingTop: '2rem',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            color: '#94a3b8',
-            fontSize: '0.875rem',
-          }}
-        >
-          <span>© 2024 Ligand Software Solutions. All rights reserved.</span>
-          <span>Made with <span style={{ color: THEME.pink }}>❤</span> for developers</span>
-        </div>
-      </div>
-    </footer>
-  );
-};
-
-const GridCell = () => {
+const GridCell = ({ introActive }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [introOn, setIntroOn] = useState(false);
+
+  useEffect(() => {
+    if (introActive) {
+      // randomly activate some cells
+      if (Math.random() > 0.7) {
+        const delay = Math.random() * 800;
+
+        const timer = setTimeout(() => {
+          setIntroOn(true);
+
+          // fade out before intro ends
+          setTimeout(() => {
+            setIntroOn(false);
+          }, 500);
+        }, delay);
+
+        return () => clearTimeout(timer);
+      }
+    } else {
+      setIntroOn(false);
+    }
+  }, [introActive]);
+
+  const active = introActive ? introOn : isHovered;
 
   return (
     <div
@@ -1648,21 +1519,15 @@ const GridCell = () => {
         border: `1px solid ${THEME.border}`,
         pointerEvents: "auto",
         cursor: "pointer",
-        overflow: "hidden"
+        overflow: "hidden",
       }}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => !introActive && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Gradient Layer */}
       <motion.div
         initial={false}
-        animate={{
-          opacity: isHovered ? 1 : 0
-        }}
-        transition={{
-          duration: isHovered ? 0.15 : 2,
-          ease: "easeOut"
-        }}
+        animate={{ opacity: active ? 1 : 0 }}
+        transition={{ duration: 0.4 }}
         style={{
           position: "absolute",
           inset: 0,
@@ -1670,31 +1535,36 @@ const GridCell = () => {
         }}
       />
 
-      {/* Border animation */}
       <motion.div
         initial={false}
         animate={{
-          borderColor: isHovered ? "#ff6b6b" : THEME.border
+          borderColor: active ? "#ff6b6b" : THEME.border,
         }}
-        transition={{
-          duration: isHovered ? 0.15 : 2.2,
-          ease: "easeOut"
-        }}
+        transition={{ duration: 0.4 }}
         style={{
           position: "absolute",
           inset: 0,
           border: `1px solid`,
-          pointerEvents: "none"
+          pointerEvents: "none",
         }}
       />
     </div>
   );
 };
 
-
 const GridBackground = () => {
   const rows = 9;
   const cols = 17;
+
+  const [introActive, setIntroActive] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIntroActive(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div
@@ -1709,12 +1579,11 @@ const GridBackground = () => {
       }}
     >
       {Array.from({ length: rows * cols }).map((_, i) => (
-        <GridCell key={i} index={i} />
+        <GridCell key={i} introActive={introActive} />
       ))}
     </div>
   );
 };
-
 /* ─────────────────────────────────────────────────────────────
    MAIN HOME COMPONENT
 ───────────────────────────────────────────────────────────── */
