@@ -93,23 +93,23 @@ const AdminNewDashboard = () => {
         examsRes,
         notesRes,
       ] = await Promise.all([
-        axios.get("http://localhost:8000/api/users", { withCredentials: true }),
-        axios.get("http://localhost:8000/api/options/collegeName", {
+        axios.get("https://ligand-dev-7.onrender.com/api/users", { withCredentials: true }),
+        axios.get("https://ligand-dev-7.onrender.com/api/options/collegeName", {
           withCredentials: true,
         }),
-        axios.get("http://localhost:8000/api/attendance", {
+        axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
           withCredentials: true,
         }),
-        axios.get("http://localhost:8000/api/fee-payment", {
+        axios.get("https://ligand-dev-7.onrender.com/api/fee-payment", {
           withCredentials: true,
         }),
-        axios.get("http://localhost:8000/api/fee-groups", {
+        axios.get("https://ligand-dev-7.onrender.com/api/fee-groups", {
           withCredentials: true,
         }),
-        axios.get("http://localhost:8000/api/exams/examsforadmin", {
+        axios.get("https://ligand-dev-7.onrender.com/api/exams/examsforadmin", {
           withCredentials: true,
         }),
-        axios.get("http://localhost:8000/api/notes/admin", {
+        axios.get("https://ligand-dev-7.onrender.com/api/notes/admin", {
           withCredentials: true,
         }),
       ]);

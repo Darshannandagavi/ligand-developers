@@ -47,7 +47,7 @@
 //   // ---------------------------- FETCH OPTIONS ----------------------------
 //   useEffect(() => {
 //     axios
-//       .get("http://localhost:8000/api/options/collegeName")
+//       .get("https://ligand-dev-7.onrender.com/api/options/collegeName")
 //       .then((res) => setCollegeOptions(res.data || []))
 //       .catch(() => setCollegeOptions([]));
 //   }, []);
@@ -56,7 +56,7 @@
 //     if (!filters.collegeName) return setBatchOptions([]);
 
 //     axios
-//       .get("http://localhost:8000/api/attendance/options/batches", {
+//       .get("https://ligand-dev-7.onrender.com/api/attendance/options/batches", {
 //         params: { collegeName: filters.collegeName },
 //         headers: { Authorization: `Bearer ${token}` },
 //       })
@@ -68,7 +68,7 @@
 //     if (!filters.collegeName || !filters.batch) return setProgramOptions([]);
 
 //     axios
-//       .get("http://localhost:8000/api/attendance/options/programs", {
+//       .get("https://ligand-dev-7.onrender.com/api/attendance/options/programs", {
 //         params: {
 //           collegeName: filters.collegeName,
 //           batch: filters.batch,
@@ -84,7 +84,7 @@
 //       return setTechnologyOptions([]);
 
 //     axios
-//       .get("http://localhost:8000/api/attendance/options/technologies", {
+//       .get("https://ligand-dev-7.onrender.com/api/attendance/options/technologies", {
 //         params: {
 //           collegeName: filters.collegeName,
 //           batch: filters.batch,
@@ -140,7 +140,7 @@
 //       setLoading(true);
 
 //       const res = await axios.get(
-//         "http://localhost:8000/api/fee-groups/students",
+//         "https://ligand-dev-7.onrender.com/api/fee-groups/students",
 //         {
 //           params: filters,
 //           headers: { Authorization: `Bearer ${token}` },
@@ -179,7 +179,7 @@
 //       setActionLoading(true);
 
 //       await axios.post(
-//         `http://localhost:8000/api/fee-groups/${groupId}/students/${studentId}/payment`,
+//         `https://ligand-dev-7.onrender.com/api/fee-groups/${groupId}/students/${studentId}/payment`,
 //         form,
 //         {
 //           headers: {
@@ -233,7 +233,7 @@
 //   const openHistory = async (groupId, studentId, studentName) => {
 //     try {
 //       const res = await axios.get(
-//         `http://localhost:8000/api/fee-groups/${groupId}`,
+//         `https://ligand-dev-7.onrender.com/api/fee-groups/${groupId}`,
 //         { headers: { Authorization: `Bearer ${token}` } }
 //       );
 
@@ -772,7 +772,7 @@
 //                           <td className="admin-payments-history-receipt">
 //                             {h.receipt ? (
 //                               <a
-//                                 href={`http://localhost:8000/uploads/receipts/${h.receipt}`}
+//                                 href={`https://ligand-dev-7.onrender.com/uploads/receipts/${h.receipt}`}
 //                                 target="_blank"
 //                                 rel="noreferrer"
 //                                 className="admin-payments-receipt-link"
@@ -1873,7 +1873,7 @@ export default function AdminPaymentsMark() {
   // ---------------------------- FETCH OPTIONS ----------------------------
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/options/collegeName")
+      .get("https://ligand-dev-7.onrender.com/api/options/collegeName")
       .then((res) => setCollegeOptions(res.data || []))
       .catch(() => setCollegeOptions([]));
   }, []);
@@ -1882,7 +1882,7 @@ export default function AdminPaymentsMark() {
     if (!filters.collegeName) return setBatchOptions([]);
 
     axios
-      .get("http://localhost:8000/api/attendance/options/batches", {
+      .get("https://ligand-dev-7.onrender.com/api/attendance/options/batches", {
         params: { collegeName: filters.collegeName },
         
       })
@@ -1895,7 +1895,7 @@ export default function AdminPaymentsMark() {
 
     axios
       .get(
-        "http://localhost:8000/api/attendance/options/programs",
+        "https://ligand-dev-7.onrender.com/api/attendance/options/programs",
         {
           params: {
             collegeName: filters.collegeName,
@@ -1914,7 +1914,7 @@ export default function AdminPaymentsMark() {
 
     axios
       .get(
-        "http://localhost:8000/api/attendance/options/technologies",
+        "https://ligand-dev-7.onrender.com/api/attendance/options/technologies",
         {
           params: {
             collegeName: filters.collegeName,
@@ -1972,7 +1972,7 @@ export default function AdminPaymentsMark() {
       setLoading(true);
 
       const res = await axios.get(
-        "http://localhost:8000/api/fee-groups/students",
+        "https://ligand-dev-7.onrender.com/api/fee-groups/students",
         {
           params: filters,
           
@@ -2075,7 +2075,7 @@ export default function AdminPaymentsMark() {
       setActionLoading(true);
 
       await axios.post(
-        `http://localhost:8000/api/fee-groups/${groupId}/students/${studentId}/payment`,
+        `https://ligand-dev-7.onrender.com/api/fee-groups/${groupId}/students/${studentId}/payment`,
         form,
         {
           
@@ -2133,7 +2133,7 @@ export default function AdminPaymentsMark() {
   const openHistoryModal = async (groupId, studentId, studentName) => {
     try {
       const res = await axios.get(
-        `http://localhost:8000/api/fee-groups/${groupId}`,
+        `https://ligand-dev-7.onrender.com/api/fee-groups/${groupId}`,
         
       );
 

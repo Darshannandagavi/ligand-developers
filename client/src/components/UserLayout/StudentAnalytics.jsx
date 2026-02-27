@@ -3,7 +3,7 @@ import axios from "axios";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import Loader from "../StyleComponents/Loader";
 
-const API = "http://localhost:8000/api";
+const API = "https://ligand-dev-7.onrender.com/api";
 
 // ----------------------------------------------------------
 // SAFE GET

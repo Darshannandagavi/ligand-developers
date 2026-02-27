@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../StyleComponents/Loader"
-const API = "http://localhost:8000/api/users";
+const API = "https://ligand-dev-7.onrender.com/api/users";
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);

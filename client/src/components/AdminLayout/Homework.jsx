@@ -14,7 +14,7 @@ const Homework = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
 
-  const API_URL = "http://localhost:8000/api/assignments";
+  const API_URL = "https://ligand-dev-7.onrender.com/api/assignments";
 
   // 📦 Fetch all homeworks
   const fetchHomeworks = async () => {

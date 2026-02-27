@@ -83,7 +83,7 @@ const TeacherChangePassword = () => {
       
 
       const res = await axios.post(
-        "http://localhost:8000/api/teacher/change-password",
+        "https://ligand-dev-7.onrender.com/api/teacher/change-password",
         {
           oldPassword: formData.oldPassword,
           newPassword: formData.newPassword

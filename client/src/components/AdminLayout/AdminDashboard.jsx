@@ -25,7 +25,7 @@ const AdminDashboard = () => {
       setLoading(true);
       
       const res = await axios.get(
-        "http://localhost:8000/api/users",
+        "https://ligand-dev-7.onrender.com/api/users",
         {   
         },{withcredentials:true},
       );
@@ -46,7 +46,7 @@ const AdminDashboard = () => {
         const types = ["batch", "collegeName"];
         const responses = await Promise.all(
           types.map((type) =>
-            axios.get(`http://localhost:8000/api/options/${type}`),
+            axios.get(`https://ligand-dev-7.onrender.com/api/options/${type}`),
           ),
         );
         setBatchOptions(responses[0].data || []);
@@ -119,7 +119,7 @@ const AdminDashboard = () => {
       if (batchToPassout) payload.batch = batchToPassout;
 
       const res = await axios.post(
-        "http://localhost:8000/api/users/make-passout",
+        "https://ligand-dev-7.onrender.com/api/users/make-passout",
         payload,
         {withcredentials:true}
       );

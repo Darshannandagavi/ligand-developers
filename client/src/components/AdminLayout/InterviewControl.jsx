@@ -3,7 +3,7 @@ import axios from "axios";
 import { FiPlus, FiTrash2, FiEdit, FiSave, FiX } from "react-icons/fi";
 import "./InterviewControl.css";
 
-const API_BASE = "http://localhost:8000/api";
+const API_BASE = "https://ligand-dev-7.onrender.com/api";
 
 const AdminPage = () => {
   const [topics, setTopics] = useState([]);

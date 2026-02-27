@@ -32,7 +32,7 @@ export default function AttendExam() {
         setLoading((prev) => ({ ...prev, exams: true }));
 
         const res = await axios.get(
-          "http://localhost:8000/api/exams/foruser/forcollege",
+          "https://ligand-dev-7.onrender.com/api/exams/foruser/forcollege",
           { withCredentials: true },
         );
 
@@ -197,7 +197,7 @@ export default function AttendExam() {
       };
 
       const res = await axios.post(
-        "http://localhost:8000/api/attempts/submit",
+        "https://ligand-dev-7.onrender.com/api/attempts/submit",
         payload,
       );
 

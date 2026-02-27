@@ -255,7 +255,7 @@ const handleLogout = useCallback(
       onConfirm: async () => {
         try {
           await axios.post(
-            "http://localhost:8000/api/users/logout",
+            "https://ligand-dev-7.onrender.com/api/users/logout",
             {},
             { withCredentials: true }
           );

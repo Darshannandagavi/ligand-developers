@@ -16,7 +16,7 @@ const StudentDelete = () => {
   // ================================
   const fetchStudents = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/users", {
+      const res = await axios.get("https://ligand-dev-7.onrender.com/api/users", {
       },{withcredentials:true},);
       setStudents(res.data);
       setFilteredStudents(res.data);
@@ -33,7 +33,7 @@ const StudentDelete = () => {
   // ================================
   const deleteStudent = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/users/${id}`, {
+      await axios.delete(`https://ligand-dev-7.onrender.com/api/users/${id}`, {
         
       },{withcredentials:true},);
 

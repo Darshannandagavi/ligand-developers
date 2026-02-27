@@ -15,10 +15,10 @@ const Notes = ({ user }) => {
     const fetchNotes = async () => {
       try {
         setLoading(true);
-        const user = await axios.get(`http://localhost:8000/api/users/getme`);
+        const user = await axios.get(`https://ligand-dev-7.onrender.com/api/users/getme`);
         setCollegeName(user.data.collegeName)
         
-        const res = await axios.get(`http://localhost:8000/api/notes/foruser/${collegeName}`);
+        const res = await axios.get(`https://ligand-dev-7.onrender.com/api/notes/foruser/${collegeName}`);
         setNotes(res.data);
         setError(null);
         

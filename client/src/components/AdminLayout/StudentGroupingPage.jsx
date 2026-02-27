@@ -24,10 +24,10 @@ export default function AdminGroupingPage() {
       setLoading(true);
       
       const [groupRes, userRes] = await Promise.all([
-        axios.get("http://localhost:8000/api/fee-groups", {
+        axios.get("https://ligand-dev-7.onrender.com/api/fee-groups", {
           
         }),
-        axios.get("http://localhost:8000/api/users", {
+        axios.get("https://ligand-dev-7.onrender.com/api/users", {
           
         })
       ]);

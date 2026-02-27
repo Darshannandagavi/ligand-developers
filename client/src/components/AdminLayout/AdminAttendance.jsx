@@ -46,7 +46,7 @@ const AdminAttendance = () => {
     const fetchCollegeOptions = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/options/collegeName"
+          "https://ligand-dev-7.onrender.com/api/options/collegeName"
         );
         setCollegeOptions(res.data || []);
       } catch (err) {
@@ -67,7 +67,7 @@ const AdminAttendance = () => {
       try {
        
         const res = await axios.get(
-          "http://localhost:8000/api/attendance/options/batches",
+          "https://ligand-dev-7.onrender.com/api/attendance/options/batches",
           {
             params: { collegeName },
           },
@@ -99,7 +99,7 @@ const AdminAttendance = () => {
       try {
         
         const res = await axios.get(
-          "http://localhost:8000/api/attendance/options/programs",
+          "https://ligand-dev-7.onrender.com/api/attendance/options/programs",
           {
             params: { collegeName, batch },
           },
@@ -129,7 +129,7 @@ const AdminAttendance = () => {
       try {
        
         const res = await axios.get(
-          "http://localhost:8000/api/attendance/options/technologies",
+          "https://ligand-dev-7.onrender.com/api/attendance/options/technologies",
           {
             params: { collegeName, batch, programName },
           },
@@ -154,7 +154,7 @@ const AdminAttendance = () => {
     try {
       
       const res = await axios.get(
-        "http://localhost:8000/api/attendance/students",
+        "https://ligand-dev-7.onrender.com/api/attendance/students",
         {
           params: { collegeName, batch, programName, technology },
         },
@@ -166,7 +166,7 @@ const AdminAttendance = () => {
       studentsData.forEach((s) => (init[s._id] = "pending"));
 
       try {
-        const attRes = await axios.get("http://localhost:8000/api/attendance", {
+        const attRes = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
           params: { date, programName, technology, collegeName, batch },
           
         },{withcredentials:true});
@@ -221,7 +221,7 @@ const AdminAttendance = () => {
         to = end;
       }
 
-      const res = await axios.get("http://localhost:8000/api/attendance", {
+      const res = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
         params: { from: from.toISOString(), to: to.toISOString() },
         
       },{withcredentials:true});
@@ -295,7 +295,7 @@ const AdminAttendance = () => {
     try {
       
       const res = await axios.post(
-        "http://localhost:8000/api/attendance",
+        "https://ligand-dev-7.onrender.com/api/attendance",
         payload,
         {withcredentials:true}
       );
@@ -401,7 +401,7 @@ const AdminAttendance = () => {
       }
 
   
-      const res = await axios.get("http://localhost:8000/api/attendance", {
+      const res = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
         params: {
           from: from.toISOString(),
           to: to.toISOString(),
@@ -828,7 +828,7 @@ const AdminAttendance = () => {
                                         }
                                         
                                         const res = await axios.get(
-                                          "http://localhost:8000/api/attendance",
+                                          "https://ligand-dev-7.onrender.com/api/attendance",
                                           {
                                             params: {
                                               from: from.toISOString(),

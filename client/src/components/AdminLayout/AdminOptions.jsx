@@ -23,7 +23,7 @@ const AdminOptions = () => {
     type: "",
   });
 
-  const API_URL = "http://localhost:8000/api/options";
+  const API_URL = "https://ligand-dev-7.onrender.com/api/options";
 
   // Show notification
   const showNotification = (message, type = "info") => {

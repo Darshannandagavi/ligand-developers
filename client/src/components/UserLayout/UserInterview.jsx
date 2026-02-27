@@ -4,7 +4,7 @@ import "./InterviewPage.css";
 import { useAlert } from "../StyleComponents/AlertContext";
 
 
-const API_BASE = "http://localhost:8000/api"; 
+const API_BASE = "https://ligand-dev-7.onrender.com/api"; 
 const GROQ_API_KEY = process.env.REACT_APP_GROQ_API_KEY || "";
 if (!GROQ_API_KEY) {
   console.warn("REACT_APP_GROQ_API_KEY is not set. Groq API calls will fail.");

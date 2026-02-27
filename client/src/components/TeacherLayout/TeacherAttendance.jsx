@@ -45,7 +45,7 @@ const TeacherAttendance = () => {
     const fetchCollegeOptions = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/options/collegeName"
+          "https://ligand-dev-7.onrender.com/api/options/collegeName"
         );
         setCollegeOptions(res.data || []);
       } catch (err) {
@@ -66,7 +66,7 @@ const TeacherAttendance = () => {
       try {
         
         const res = await axios.get(
-          "http://localhost:8000/api/attendance/options/batches",
+          "https://ligand-dev-7.onrender.com/api/attendance/options/batches",
           {
             params: { collegeName },
             
@@ -98,7 +98,7 @@ const TeacherAttendance = () => {
       try {
         
         const res = await axios.get(
-          "http://localhost:8000/api/attendance/options/programs",
+          "https://ligand-dev-7.onrender.com/api/attendance/options/programs",
           {
             params: { collegeName, batch },
             
@@ -128,7 +128,7 @@ const TeacherAttendance = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "http://localhost:8000/api/attendance/options/technologies",
+          "https://ligand-dev-7.onrender.com/api/attendance/options/technologies",
           {
             params: { collegeName, batch, programName },
             headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -155,7 +155,7 @@ const TeacherAttendance = () => {
       const teacher = JSON.parse(localStorage.getItem("teacherInfo"));
       const teacherId = teacher?._id;
       const res = await axios.get(
-        "http://localhost:8000/api/attendance/students/forteacher",
+        "https://ligand-dev-7.onrender.com/api/attendance/students/forteacher",
         {
            params: { collegeName, batch, programName, technology, teacherId },
             headers: { Authorization: `Bearer ${token}` },
@@ -167,7 +167,7 @@ const TeacherAttendance = () => {
       studentsData.forEach((s) => (init[s._id] = "pending"));
 
       try {
-        const attRes = await axios.get("http://localhost:8000/api/attendance", {
+        const attRes = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
           params: { date, programName, technology, collegeName, batch },
           headers: { Authorization: token ? `Bearer ${token}` : "" },
         });
@@ -223,7 +223,7 @@ const TeacherAttendance = () => {
       }
 
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:8000/api/attendance", {
+      const res = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
         params: { from: from.toISOString(), to: to.toISOString() },
         headers: { Authorization: token ? `Bearer ${token}` : "" },
       });
@@ -297,7 +297,7 @@ const TeacherAttendance = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
-        "http://localhost:8000/api/attendance",
+        "https://ligand-dev-7.onrender.com/api/attendance",
         payload,
         {
           headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -405,7 +405,7 @@ const TeacherAttendance = () => {
       }
 
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:8000/api/attendance", {
+      const res = await axios.get("https://ligand-dev-7.onrender.com/api/attendance", {
         params: {
           from: from.toISOString(),
           to: to.toISOString(),
@@ -836,7 +836,7 @@ const TeacherAttendance = () => {
                                         const token =
                                           localStorage.getItem("token");
                                         const res = await axios.get(
-                                          "http://localhost:8000/api/attendance",
+                                          "https://ligand-dev-7.onrender.com/api/attendance",
                                           {
                                             params: {
                                               from: from.toISOString(),

@@ -17,7 +17,7 @@ export default function AdminApproveStudents() {
   // Fetch all students
   const fetchStudents = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/users", {},{withcredentials: true});
+      const res = await axios.get("https://ligand-dev-7.onrender.com/api/users", {},{withcredentials: true});
 
       const studentList = res.data.filter((u) => u.role === "student");
       setStudents(studentList);
@@ -77,7 +77,7 @@ export default function AdminApproveStudents() {
     setActionLoading(id);
     try {
       await axios.put(
-        `http://localhost:8000/api/users/approve/${id}`,
+        `https://ligand-dev-7.onrender.com/api/users/approve/${id}`,
         { isApproved: value },
         {withCredentials:true },
       );
@@ -106,7 +106,7 @@ export default function AdminApproveStudents() {
 
     try {
       const res = await axios.put(
-        "http://localhost:8000/api/users/approve-by-date",
+        "https://ligand-dev-7.onrender.com/api/users/approve-by-date",
         { date: selectedDate },
         {withCredentials:true },
       );

@@ -27,7 +27,7 @@
 //     const fetchTeachers = async () => {
 //       try {
 //         console.log('Fetching teachers...');
-//         const response = await axios.get('http://localhost:8000/api/teacher', {
+//         const response = await axios.get('https://ligand-dev-7.onrender.com/api/teacher', {
 //           headers: { 
 //             Authorization: `Bearer ${token}`,
 //             'Content-Type': 'application/json'
@@ -49,7 +49,7 @@
 //   useEffect(() => {
 //     const fetch = async () => {
 //       try {
-//         const res = await axios.get('http://localhost:8000/api/options/collegeName');
+//         const res = await axios.get('https://ligand-dev-7.onrender.com/api/options/collegeName');
 //         setCollegeOptions(res.data || []);
 //       } catch {
 //         setCollegeOptions([]);
@@ -64,7 +64,7 @@
 //     (async () => {
 //       try {
         
-//         const res = await axios.get('http://localhost:8000/api/attendance/options/batches', { 
+//         const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/batches', { 
 //           params: { collegeName }, 
 //           headers: { Authorization: token ? `Bearer ${token}` : '' } 
 //         });
@@ -78,7 +78,7 @@
 //     if (!collegeName || !batch) { setProgramOptions([]); setProgramName(''); return; }
 //     (async () => {
 //       try {
-//         const res = await axios.get('http://localhost:8000/api/attendance/options/programs', { 
+//         const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/programs', { 
 //           params: { collegeName, batch }, 
 //           headers: { Authorization: token ? `Bearer ${token}` : '' } 
 //         });
@@ -92,7 +92,7 @@
 //     if (!collegeName || !batch || !programName) { setTechnologyOptions([]); setTechnology(''); return; }
 //     (async () => {
 //       try {
-//         const res = await axios.get('http://localhost:8000/api/attendance/options/technologies', { 
+//         const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/technologies', { 
 //           params: { collegeName, batch, programName }, 
 //           headers: { Authorization: token ? `Bearer ${token}` : '' } 
 //         });
@@ -109,7 +109,7 @@
 //   try {
 //     // 1) Fetch ALL students based on filters
 //     const res = await axios.get(
-//       "http://localhost:8000/api/attendance/students",
+//       "https://ligand-dev-7.onrender.com/api/attendance/students",
 //       {
 //         params: { collegeName, batch, programName, technology },
 //         headers: { Authorization: token ? `Bearer ${token}` : "" }
@@ -119,7 +119,7 @@
 
 //     // 2) Fetch existing fee groups for same filters
 //     const groupsRes = await axios.get(
-//       "http://localhost:8000/api/fee-groups",
+//       "https://ligand-dev-7.onrender.com/api/fee-groups",
 //       {
 //         params: { collegeName, batch, programName, technology },
 //         headers: { Authorization: token ? `Bearer ${token}` : "" }
@@ -162,7 +162,7 @@
 //   const loadSummary = async () => {
 //     try {
 //       setSummaryLoading(true);
-//       const res = await axios.get('http://localhost:8000/api/fee-groups/installments/summary', { 
+//       const res = await axios.get('https://ligand-dev-7.onrender.com/api/fee-groups/installments/summary', { 
 //         params: { collegeName, batch, programName, technology }, 
 //         headers: { Authorization: token ? `Bearer ${token}` : '' } 
 //       });
@@ -201,7 +201,7 @@
 
 //     try {
 //       // First create the fee group
-//       await axios.post('http://localhost:8000/api/fee-groups', { 
+//       await axios.post('https://ligand-dev-7.onrender.com/api/fee-groups', { 
 //         name: groupName, 
 //         collegeName, 
 //         batch, 
@@ -215,7 +215,7 @@
 
 //       // Then update the teacher field for all selected students
 //       const updatePromises = [...selected].map(studentId => 
-//         axios.put(`http://localhost:8000/api/users/${studentId}`, {
+//         axios.put(`https://ligand-dev-7.onrender.com/api/users/${studentId}`, {
 //           teacher: selectedTeacher
 //         }, {
 //           headers: { Authorization: token ? `Bearer ${token}` : '' }
@@ -415,7 +415,7 @@ const AdminPayments = () => {
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/teacher', {
+        const response = await axios.get('https://ligand-dev-7.onrender.com/api/teacher', {
           
         });
         if (response.data) {
@@ -432,7 +432,7 @@ const AdminPayments = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/options/collegeName');
+        const res = await axios.get('https://ligand-dev-7.onrender.com/api/options/collegeName');
         setCollegeOptions(res.data || []);
       } catch {
         setCollegeOptions([]);
@@ -446,7 +446,7 @@ const AdminPayments = () => {
     if (!collegeName) { setBatchOptions([]); setBatch(''); return; }
     (async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/attendance/options/batches', { 
+        const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/batches', { 
           params: { collegeName }, 
          
         });
@@ -460,7 +460,7 @@ const AdminPayments = () => {
     if (!collegeName || !batch) { setProgramOptions([]); setProgramName(''); return; }
     (async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/attendance/options/programs', { 
+        const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/programs', { 
           params: { collegeName, batch }, 
           
         });
@@ -474,7 +474,7 @@ const AdminPayments = () => {
     if (!collegeName || !batch || !programName) { setTechnologyOptions([]); setTechnology(''); return; }
     (async () => {
       try {
-        const res = await axios.get('http://localhost:8000/api/attendance/options/technologies', { 
+        const res = await axios.get('https://ligand-dev-7.onrender.com/api/attendance/options/technologies', { 
           params: { collegeName, batch, programName }, 
           
         });
@@ -492,7 +492,7 @@ const AdminPayments = () => {
     try {
       // Fetch ALL students based on filters
       const res = await axios.get(
-        "http://localhost:8000/api/attendance/students",
+        "https://ligand-dev-7.onrender.com/api/attendance/students",
         {
           params: { collegeName, batch, programName, technology },
           
@@ -502,7 +502,7 @@ const AdminPayments = () => {
 
       // Fetch existing fee groups for same filters
       const groupsRes = await axios.get(
-        "http://localhost:8000/api/fee-groups",
+        "https://ligand-dev-7.onrender.com/api/fee-groups",
         {
           params: { collegeName, batch, programName, technology },
           
@@ -540,7 +540,7 @@ const AdminPayments = () => {
   const loadSummary = async () => {
     try {
       setSummaryLoading(true);
-      const res = await axios.get('http://localhost:8000/api/fee-groups/installments/summary', { 
+      const res = await axios.get('https://ligand-dev-7.onrender.com/api/fee-groups/installments/summary', { 
         params: { collegeName, batch, programName, technology }, 
         
       });
@@ -586,7 +586,7 @@ const AdminPayments = () => {
 
     try {
       // Create the fee group
-      await axios.post('http://localhost:8000/api/fee-groups', { 
+      await axios.post('https://ligand-dev-7.onrender.com/api/fee-groups', { 
         name: groupName.trim(), 
         collegeName, 
         batch, 
@@ -600,7 +600,7 @@ const AdminPayments = () => {
 
       // Update teacher field for all selected students
       const updatePromises = [...selected].map(studentId => 
-        axios.put(`http://localhost:8000/api/users/${studentId}`, {
+        axios.put(`https://ligand-dev-7.onrender.com/api/users/${studentId}`, {
           teacher: selectedTeacher
         }, {
           

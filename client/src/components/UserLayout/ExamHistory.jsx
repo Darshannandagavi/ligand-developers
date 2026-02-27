@@ -48,7 +48,7 @@ export default function ExamHistory() {
 
     async function fetchHistory() {
       try {
-        const res = await axios.get("http://localhost:8000/api/attempts/my", {
+        const res = await axios.get("https://ligand-dev-7.onrender.com/api/attempts/my", {
           withCredentials: true,
         });
 
