@@ -13,7 +13,7 @@ const UserLayout = () => {
     const checkAuth = async () => {
       try {
         // Try to fetch protected data to check if authenticated
-        await axios.get("/api/users/profile");
+        await axios.get("/api/users/profile",{withCredentials: true,});
         setAuthorized(true);
       } catch (err) {
         if (err.response?.status === 401) {

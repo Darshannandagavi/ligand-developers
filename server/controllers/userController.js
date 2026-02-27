@@ -124,10 +124,10 @@ export const login = async (req, res) => {
 
     // Set HTTP-only cookie (browser will send this automatically with requests)
     res.cookie("token", token, {
-      httpOnly: true,        // ✅ Not accessible to JavaScript
-      secure: process.env.NODE_ENV === "production", // HTTPS only in production
-      sameSite: "Lax",       // CSRF protection
-    });
+  httpOnly: true,
+  secure: true,
+  sameSite: "None",
+});
 
     // Return user data (NO TOKEN in response)
     res.status(200).json({
