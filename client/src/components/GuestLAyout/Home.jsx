@@ -1753,7 +1753,7 @@ const Home = () => {
         <HeroSection />
         <FeaturesSection />
         <CoursesSection />
-        <TestimonialsSection />
+        
         <BenefitsSection />
       </main>
     </>
