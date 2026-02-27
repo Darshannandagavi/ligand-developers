@@ -121,7 +121,6 @@ const AdminNewDashboard = () => {
       const feeGroups = feeGroupsRes.data;
       const exams = examsRes.data;
       const notes = notesRes.data;
-      console.log(feePayments);
       const totalStudents = users.length;
       const currentStudents = users.filter((u) => !u.isPassout).length;
       const passoutStudents = users.filter((u) => u.isPassout).length;

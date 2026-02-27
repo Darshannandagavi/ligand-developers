@@ -13,7 +13,11 @@ const AdminLayout = () => {
     const checkAuth = async () => {
       try {
 
-        await axios.get("/api/users/getme");
+        const res=await axios.get("/api/users/getme");
+        
+        if(res.data.role!="admin"){
+          navigate("/");
+        }
         setAuthorized(true);
       } catch (err) {
         // If 401 Unauthorized, user is not logged in
