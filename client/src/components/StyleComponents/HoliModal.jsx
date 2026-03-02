@@ -27,15 +27,10 @@ const HoliModal = () => {
       // Check if current date is within range
       const isWithinHoliRange = today >= startDate && today <= endDate;
       
-      console.log('Date check:', {
-        today: today.toDateString(),
-        startDate: startDate.toDateString(),
-        endDate: endDate.toDateString(),
-        isWithinHoliRange
-      });
+      
       
       if (!isWithinHoliRange) {
-        console.log('Not within Holi date range');
+     
         setIsOpen(false);
         return;
       }
@@ -44,19 +39,15 @@ const HoliModal = () => {
       const modalShownKey = `holiModalShown_${currentYear}`;
       const hasModalBeenShown = localStorage.getItem(modalShownKey);
       
-      console.log('localStorage check:', { 
-        key: modalShownKey, 
-        hasModalBeenShown,
-        timestamp: new Date().toLocaleString()
-      });
+      
       
       if (!hasModalBeenShown) {
         // Show modal and set localStorage
-        console.log('Showing modal for the first time this year');
+        
         setIsOpen(true);
         localStorage.setItem(modalShownKey, 'true');
       } else {
-        console.log('Modal already shown this year');
+        
         setIsOpen(false);
       }
     };
