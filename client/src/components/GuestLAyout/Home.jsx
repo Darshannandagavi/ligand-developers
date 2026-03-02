@@ -480,9 +480,6 @@ const CustomCursor = () => {
         ref={cursorRef}
         style={{
           position: "fixed",
-          width: isHovering ? "56px" : "32px",
-          height: isHovering ? "56px" : "32px",
-          border: `2px solid ${isHovering ? THEME.pink : THEME.accent}`,
           borderRadius: "50%",
           pointerEvents: "none",
           transform: "translate(-50%, -50%)",
@@ -495,15 +492,22 @@ const CustomCursor = () => {
         ref={cursorDotRef}
         style={{
           position: "fixed",
-          width: "4px",
-          height: "4px",
-          backgroundColor: isHovering ? THEME.pink : THEME.accent,
+          width: isHovering ? "45px" : "30px",
+          height: isHovering ? "45px" : "30px",
+          backgroundColor: isHovering ? "white" : THEME.accent,
           borderRadius: "50%",
           pointerEvents: "none",
           transform: "translate(-50%, -50%)",
           zIndex: 9999,
+          mixBlendMode: isHovering ? "normal" : "difference",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "24px",
         }}
-      />
+      >
+        {isHovering && "👆"}
+      </div>
     </>
   );
 };
