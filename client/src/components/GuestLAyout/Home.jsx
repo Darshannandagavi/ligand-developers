@@ -1,10 +1,10 @@
 /**
  * Ligand Software Solutions — Clean 3D Floating Code Orb
- * 
+ *
  * A single, elegant 3D component with smooth animations and hover effects
  */
 import { SiExpress, SiMongodb, SiTypescript } from "react-icons/si";
-import  { useEffect, useRef, useState, Suspense } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Environment, Html } from "@react-three/drei";
@@ -12,16 +12,41 @@ import { Float, Environment, Html } from "@react-three/drei";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import {
-  Clock, Video, Briefcase, BarChart, Code, CheckCircle,
-  ChevronRight, GraduationCap, Cpu, Database, BookMarked,
-  Award, Target, Brain, Rocket, Star, Users,
-  Zap, Mail, Phone, MapPin,
-  Twitter, Github, Linkedin, Instagram,
+  Clock,
+  Video,
+  Briefcase,
+  BarChart,
+  Code,
+  CheckCircle,
+  ChevronRight,
+  GraduationCap,
+  Cpu,
+  Database,
+  BookMarked,
+  Award,
+  Target,
+  Brain,
+  Rocket,
+  Star,
+  Users,
+  Zap,
+  Mail,
+  Phone,
+  MapPin,
+  Twitter,
+  Github,
+  Linkedin,
+  Instagram,
 } from "lucide-react";
-import { 
-  SiReact, SiNodedotjs, SiPython, SiDocker, SiJavascript
+import {
+  SiReact,
+  SiNodedotjs,
+  SiPython,
+  SiDocker,
+  SiJavascript,
 } from "react-icons/si";
 import RangeSlider from "./RangeSlider";
+import HoliModal from "../StyleComponents/HoliModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,54 +57,52 @@ const THEME = {
   bg: "#ffffff",
   bgAlt: "#fafafa",
   bgGradient: "linear-gradient(180deg, #ffffff 0%, #f8faff 100%)",
-  
+
   text: "#1a1e2b",
   textLight: "#4a5568",
   textMuted: "#718096",
-  
+
   accent: "#002fff",
   accentLight: "#4895ef",
   accentGradient: "linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%)",
-  
+
   purple: "#7209b7",
   pink: "#f72585",
   success: "#06d6a0",
   warning: "#ffd166",
-  
+
   border: "#e9ecef",
   borderDark: "#dee2e6",
   shadow: "rgba(0, 0, 0, 0.03)",
   shadowHover: "rgba(67, 97, 238, 0.08)",
-  
+
   cardBg: "#ffffff",
   cardBgAlt: "#f8fafc",
   glass: "rgba(255, 255, 255, 0.9)",
 };
 
-
-  const techStack = [
-    {
-      icon: <SiReact className="ligand-tech-icon react" />,
-      label: "React",
-      url: "https://react.dev",
-    },
-    {
-      icon: <SiNodedotjs className="ligand-tech-icon node" />,
-      label: "Node.js",
-      url: "https://nodejs.org",
-    },
-    {
-      icon: <SiMongodb className="ligand-tech-icon mongo" />,
-      label: "MongoDB",
-      url: "https://www.mongodb.com",
-    },
-    {
-      icon: <SiExpress className="ligand-tech-icon express" />,
-      label: "Express.js",
-      url: "https://expressjs.com",
-    },
-  ];
-
+const techStack = [
+  {
+    icon: <SiReact className="ligand-tech-icon react" />,
+    label: "React",
+    url: "https://react.dev",
+  },
+  {
+    icon: <SiNodedotjs className="ligand-tech-icon node" />,
+    label: "Node.js",
+    url: "https://nodejs.org",
+  },
+  {
+    icon: <SiMongodb className="ligand-tech-icon mongo" />,
+    label: "MongoDB",
+    url: "https://www.mongodb.com",
+  },
+  {
+    icon: <SiExpress className="ligand-tech-icon express" />,
+    label: "Express.js",
+    url: "https://expressjs.com",
+  },
+];
 
 /* ─────────────────────────────────────────────────────────────
    GLOBAL STYLES
@@ -431,7 +454,7 @@ const CustomCursor = () => {
     };
 
     const handleHoverStart = (e) => {
-      if (e.target.closest('a, button, [data-cursor], .interactive')) {
+      if (e.target.closest("a, button, [data-cursor], .interactive")) {
         setIsHovering(true);
       }
     };
@@ -440,14 +463,14 @@ const CustomCursor = () => {
       setIsHovering(false);
     };
 
-    window.addEventListener('mousemove', moveCursor);
-    document.addEventListener('mouseover', handleHoverStart);
-    document.addEventListener('mouseout', handleHoverEnd);
+    window.addEventListener("mousemove", moveCursor);
+    document.addEventListener("mouseover", handleHoverStart);
+    document.addEventListener("mouseout", handleHoverEnd);
 
     return () => {
-      window.removeEventListener('mousemove', moveCursor);
-      window.removeEventListener('mouseover', handleHoverStart);
-      window.removeEventListener('mouseout', handleHoverEnd);
+      window.removeEventListener("mousemove", moveCursor);
+      window.removeEventListener("mouseover", handleHoverStart);
+      window.removeEventListener("mouseout", handleHoverEnd);
     };
   }, []);
 
@@ -456,28 +479,28 @@ const CustomCursor = () => {
       <div
         ref={cursorRef}
         style={{
-          position: 'fixed',
-          width: isHovering ? '56px' : '32px',
-          height: isHovering ? '56px' : '32px',
+          position: "fixed",
+          width: isHovering ? "56px" : "32px",
+          height: isHovering ? "56px" : "32px",
           border: `2px solid ${isHovering ? THEME.pink : THEME.accent}`,
-          borderRadius: '50%',
-          pointerEvents: 'none',
-          transform: 'translate(-50%, -50%)',
-          transition: 'width 0.3s, height 0.3s, border-color 0.3s',
+          borderRadius: "50%",
+          pointerEvents: "none",
+          transform: "translate(-50%, -50%)",
+          transition: "width 0.3s, height 0.3s, border-color 0.3s",
           zIndex: 9999,
-          mixBlendMode: 'difference',
+          mixBlendMode: "difference",
         }}
       />
       <div
         ref={cursorDotRef}
         style={{
-          position: 'fixed',
-          width: '4px',
-          height: '4px',
+          position: "fixed",
+          width: "4px",
+          height: "4px",
           backgroundColor: isHovering ? THEME.pink : THEME.accent,
-          borderRadius: '50%',
-          pointerEvents: 'none',
-          transform: 'translate(-50%, -50%)',
+          borderRadius: "50%",
+          pointerEvents: "none",
+          transform: "translate(-50%, -50%)",
           zIndex: 9999,
         }}
       />
@@ -501,9 +524,11 @@ const CodeOrb = () => {
         // Gentle follow mouse when hovered
         const targetRotY = mousePos.x * 0.3;
         const targetRotX = mousePos.y * 0.2;
-        
-        orbRef.current.rotation.y += (targetRotY - orbRef.current.rotation.y) * 0.05;
-        orbRef.current.rotation.x += (targetRotX - orbRef.current.rotation.x) * 0.05;
+
+        orbRef.current.rotation.y +=
+          (targetRotY - orbRef.current.rotation.y) * 0.05;
+        orbRef.current.rotation.x +=
+          (targetRotX - orbRef.current.rotation.x) * 0.05;
       } else {
         // Slow auto-rotation when not hovered
         orbRef.current.rotation.y += 0.002;
@@ -522,145 +547,143 @@ const CodeOrb = () => {
     const { innerWidth, innerHeight } = window;
     setMousePos({
       x: (clientX / innerWidth - 0.5) * 2,
-      y: (clientY / innerHeight - 0.5) * 2
+      y: (clientY / innerHeight - 0.5) * 2,
     });
   };
 
   useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   // Tech icons to float around
   const techIcons = [
-    { icon: SiReact, color: '#61dafb', delay: 0 },
-    { icon: SiNodedotjs, color: '#68a063', delay: 0.5 },
-    { icon: SiPython, color: '#3776ab', delay: 1 },
-    { icon: SiDocker, color: '#2496ed', delay: 1.5 },
-    { icon: SiJavascript, color: '#f7df1e', delay: 2 },
+    { icon: SiReact, color: "#61dafb", delay: 0 },
+    { icon: SiNodedotjs, color: "#68a063", delay: 0.5 },
+    { icon: SiPython, color: "#3776ab", delay: 1 },
+    { icon: SiDocker, color: "#2496ed", delay: 1.5 },
+    { icon: SiJavascript, color: "#f7df1e", delay: 2 },
   ];
 
   return (
-    <group
-      onPointerEnter={() => setHovered(true)}
-      onPointerLeave={() => setHovered(false)}
-    >
-      {/* Main glowing orb */}
-      <Float
-        speed={2}
-        rotationIntensity={0.4}
-        floatIntensity={0.5}
+    <>
+      <group
+        onPointerEnter={() => setHovered(true)}
+        onPointerLeave={() => setHovered(false)}
       >
-        <mesh ref={orbRef} scale={hovered ? 1.1 : 1}>
-          <sphereGeometry args={[1.2, 64, 64]} />
-          <meshPhysicalMaterial
-            color={THEME.accent}
-            emissive={THEME.accent}
-            emissiveIntensity={hovered ? 0.8 : 0.4}
-            roughness={0.2}
-            metalness={0.1}
-            transparent
-            opacity={0.95}
+        {/* Main glowing orb */}
+        <Float speed={2} rotationIntensity={0.4} floatIntensity={0.5}>
+          <mesh ref={orbRef} scale={hovered ? 1.1 : 1}>
+            <sphereGeometry args={[1.2, 64, 64]} />
+            <meshPhysicalMaterial
+              color={THEME.accent}
+              emissive={THEME.accent}
+              emissiveIntensity={hovered ? 0.8 : 0.4}
+              roughness={0.2}
+              metalness={0.1}
+              transparent
+              opacity={0.95}
+            />
+          </mesh>
+        </Float>
+
+        {/* Inner core */}
+        <mesh scale={0.4}>
+          <sphereGeometry args={[1, 32, 32]} />
+          <meshStandardMaterial
+            color="white"
+            emissive="white"
+            emissiveIntensity={1}
           />
         </mesh>
-      </Float>
 
-      {/* Inner core */}
-      <mesh scale={0.4}>
-        <sphereGeometry args={[1, 32, 32]} />
-        <meshStandardMaterial
-          color="white"
-          emissive="white"
-          emissiveIntensity={1}
-        />
-      </mesh>
+        {/* Floating tech icons in a ring */}
+        {techIcons.map((tech, i) => {
+          const angle = (i / techIcons.length) * Math.PI * 2;
+          const radius = 2.2;
 
-      {/* Floating tech icons in a ring */}
-      {techIcons.map((tech, i) => {
-        const angle = (i / techIcons.length) * Math.PI * 2;
-        const radius = 2.2;
-        
-        return (
-          <Float
-            key={i}
-            speed={1.5}
-            rotationIntensity={0.2}
-            floatIntensity={0.3}
-          >
-            <Html
-              position={[
-                Math.cos(angle) * radius,
-                Math.sin(angle) * radius * 0.5,
-                Math.sin(angle) * radius * 0.3
-              ]}
-              center
-              distanceFactor={6}
-            >
-              <motion.div
-                animate={{
-                  y: [0, -5, 0],
-                  scale: hovered ? [1, 1.1, 1] : 1,
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: tech.delay,
-                }}
-                style={{
-                  background: 'white',
-                  padding: '10px',
-                  borderRadius: '12px',
-                  boxShadow: `0 8px 20px ${tech.color}40`,
-                  border: `2px solid ${tech.color}`,
-                  transform: `scale(${hovered ? 1.2 : 1})`,
-                  transition: 'transform 0.3s ease',
-                }}
-              >
-                <tech.icon size={28} color={tech.color} />
-              </motion.div>
-            </Html>
-          </Float>
-        );
-      })}
-
-      {/* Subtle particle ring */}
-      <group ref={particlesRef}>
-        {[...Array(12)].map((_, i) => {
-          const angle = (i / 12) * Math.PI * 2;
-          const radius = 1.8;
-          
           return (
-            <mesh
+            <Float
               key={i}
-              position={[
-                Math.cos(angle) * radius,
-                Math.sin(angle) * radius * 0.3,
-                Math.sin(angle) * radius * 0.5
-              ]}
+              speed={1.5}
+              rotationIntensity={0.2}
+              floatIntensity={0.3}
             >
-              <sphereGeometry args={[0.04, 6, 6]} />
-              <meshStandardMaterial
-                color={THEME.accent}
-                emissive={THEME.accent}
-                emissiveIntensity={0.3}
-              />
-            </mesh>
+              <Html
+                position={[
+                  Math.cos(angle) * radius,
+                  Math.sin(angle) * radius * 0.5,
+                  Math.sin(angle) * radius * 0.3,
+                ]}
+                center
+                distanceFactor={6}
+              >
+                <motion.div
+                  animate={{
+                    y: [0, -5, 0],
+                    scale: hovered ? [1, 1.1, 1] : 1,
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    delay: tech.delay,
+                  }}
+                  style={{
+                    background: "white",
+                    padding: "10px",
+                    borderRadius: "12px",
+                    boxShadow: `0 8px 20px ${tech.color}40`,
+                    border: `2px solid ${tech.color}`,
+                    transform: `scale(${hovered ? 1.2 : 1})`,
+                    transition: "transform 0.3s ease",
+                  }}
+                >
+                  <tech.icon size={28} color={tech.color} />
+                </motion.div>
+              </Html>
+            </Float>
           );
         })}
-      </group>
 
-      {/* Outer glow ring */}
-      <mesh rotation={[Math.PI / 2, 0, 0]} scale={1.8}>
-        <torusGeometry args={[1.2, 0.02, 16, 100]} />
-        <meshStandardMaterial
-          color={THEME.accent}
-          emissive={THEME.accent}
-          emissiveIntensity={0.2}
-          transparent
-          opacity={0.3}
-        />
-      </mesh>
-    </group>
+        {/* Subtle particle ring */}
+        <group ref={particlesRef}>
+          {[...Array(12)].map((_, i) => {
+            const angle = (i / 12) * Math.PI * 2;
+            const radius = 1.8;
+
+            return (
+              <mesh
+                key={i}
+                position={[
+                  Math.cos(angle) * radius,
+                  Math.sin(angle) * radius * 0.3,
+                  Math.sin(angle) * radius * 0.5,
+                ]}
+              >
+                <sphereGeometry args={[0.04, 6, 6]} />
+                <meshStandardMaterial
+                  color={THEME.accent}
+                  emissive={THEME.accent}
+                  emissiveIntensity={0.3}
+                />
+              </mesh>
+            );
+          })}
+        </group>
+
+        {/* Outer glow ring */}
+        <mesh rotation={[Math.PI / 2, 0, 0]} scale={1.8}>
+          <torusGeometry args={[1.2, 0.02, 16, 100]} />
+          <meshStandardMaterial
+            color={THEME.accent}
+            emissive={THEME.accent}
+            emissiveIntensity={0.2}
+            transparent
+            opacity={0.3}
+          />
+        </mesh>
+      </group>
+    </>
   );
 };
 
@@ -670,17 +693,21 @@ const CodeOrb = () => {
 const ThreeScene = () => (
   <Canvas
     camera={{ position: [0, 0, 6], fov: 45 }}
-    style={{ width: '100%', height: '100%', background: 'transparent' }}
+    style={{ width: "100%", height: "100%", background: "transparent" }}
     gl={{ antialias: true, alpha: true }}
   >
     <Suspense fallback={null}>
       <ambientLight intensity={0.5} />
       <pointLight position={[5, 5, 5]} intensity={1} />
-      <pointLight position={[-5, -5, -5]} intensity={0.5} color={THEME.accent} />
+      <pointLight
+        position={[-5, -5, -5]}
+        intensity={0.5}
+        color={THEME.accent}
+      />
       <pointLight position={[0, 5, 0]} intensity={0.8} color={THEME.pink} />
-      
+
       <CodeOrb />
-      
+
       <Environment preset="city" />
     </Suspense>
   </Canvas>
@@ -689,57 +716,63 @@ const ThreeScene = () => (
 /* ─────────────────────────────────────────────────────────────
    MAGNETIC BUTTON
 ───────────────────────────────────────────────────────────── */
-const MagneticButton = ({ children, href, onClick, variant = 'primary', className = '' }) => {
+const MagneticButton = ({
+  children,
+  href,
+  onClick,
+  variant = "primary",
+  className = "",
+}) => {
   const buttonRef = useRef(null);
 
   const handleMouseMove = (e) => {
     const button = buttonRef.current;
     if (!button) return;
-    
+
     const rect = button.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    
+
     button.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
   };
 
   const handleMouseLeave = () => {
     if (buttonRef.current) {
-      buttonRef.current.style.transform = 'translate(0, 0)';
+      buttonRef.current.style.transform = "translate(0, 0)";
     }
   };
 
   const baseStyles = {
-    padding: '14px 32px',
-    borderRadius: '14px',
-    fontWeight: '600',
-    fontSize: '1rem',
-    textDecoration: 'none',
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '8px',
-    transition: 'all 0.3s ease',
-    cursor: 'pointer',
-    border: 'none',
-    position: 'relative',
-    overflow: 'hidden',
-    letterSpacing: '0.3px',
+    padding: "14px 32px",
+    borderRadius: "14px",
+    fontWeight: "600",
+    fontSize: "1rem",
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "8px",
+    transition: "all 0.3s ease",
+    cursor: "pointer",
+    border: "none",
+    position: "relative",
+    overflow: "hidden",
+    letterSpacing: "0.3px",
   };
 
   const variantStyles = {
     primary: {
       background: THEME.accentGradient,
-      color: 'white',
+      color: "white",
       boxShadow: `0 10px 25px ${THEME.accent}30`,
     },
     secondary: {
-      background: 'transparent',
+      background: "transparent",
       color: THEME.text,
       border: `2px solid ${THEME.border}`,
     },
   };
 
-  const Component = href ? 'a' : 'button';
+  const Component = href ? "a" : "button";
 
   return (
     <Component
@@ -763,11 +796,11 @@ const SectionReveal = ({ children, delay = 0 }) => (
   <motion.div
     initial={{ opacity: 0, y: 40 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: '-50px' }}
-    transition={{ 
-      duration: 0.7, 
-      delay, 
-      ease: [0.43, 0.13, 0.23, 0.96] 
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{
+      duration: 0.7,
+      delay,
+      ease: [0.43, 0.13, 0.23, 0.96],
     }}
   >
     {children}
@@ -783,33 +816,33 @@ const HeroSection = () => {
 
   // Stats data with different colors
   const stats = [
-    { 
-      label: 'Students Trained', 
-      value: '5000+',
+    {
+      label: "Students Trained",
+      value: "5000+",
       icon: <Users size={24} />,
-      color: '#4361ee',
-      fillLevel: 85
+      color: "#4361ee",
+      fillLevel: 85,
     },
-    { 
-      label: 'Placement Rate', 
-      value: '92%',
+    {
+      label: "Placement Rate",
+      value: "92%",
       icon: <Briefcase size={24} />,
-      color: '#f72585',
-      fillLevel: 92
+      color: "#f72585",
+      fillLevel: 92,
     },
-    { 
-      label: 'Partner Companies', 
-      value: '200+',
+    {
+      label: "Partner Companies",
+      value: "200+",
       icon: <Star size={24} />,
-      color: '#06d6a0',
-      fillLevel: 70
+      color: "#06d6a0",
+      fillLevel: 70,
     },
-    { 
-      label: 'Live Projects', 
-      value: '1000+',
+    {
+      label: "Live Projects",
+      value: "1000+",
       icon: <Code size={24} />,
-      color: '#ffd166',
-      fillLevel: 88
+      color: "#ffd166",
+      fillLevel: 88,
     },
   ];
 
@@ -827,19 +860,18 @@ const HeroSection = () => {
   return (
     <section
       style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        position: 'relative',
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        position: "relative",
         background: THEME.bgGradient,
-        overflow: 'hidden',
+        overflow: "hidden",
       }}
     >
       {/* Grid Background */}
       <GridBackground />
 
       {/* Subtle floating gradient orbs */}
-      
 
       <motion.div
         animate={{
@@ -849,30 +881,30 @@ const HeroSection = () => {
         transition={{
           duration: 10,
           repeat: Infinity,
-          ease: 'easeInOut',
+          ease: "easeInOut",
         }}
         style={{
-          position: 'absolute',
-          bottom: '5%',
-          left: '5%',
+          position: "absolute",
+          bottom: "5%",
+          left: "5%",
           width: 500,
           height: 500,
           background: `radial-gradient(circle, ${THEME.pink}08 0%, transparent 70%)`,
-          borderRadius: '50%',
-          filter: 'blur(70px)',
+          borderRadius: "50%",
+          filter: "blur(70px)",
         }}
       />
-
+      <HoliModal />
       <div
         style={{
           maxWidth: 1400,
-          margin: '0 auto',
-          padding: '0 4rem',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '4rem',
-          alignItems: 'center',
-          position: 'relative',
+          margin: "0 auto",
+          padding: "0 4rem",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: "4rem",
+          alignItems: "center",
+          position: "relative",
           zIndex: 2,
         }}
       >
@@ -882,56 +914,59 @@ const HeroSection = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: [0.43, 0.13, 0.23, 0.96] }}
         >
-          <div style={{ marginBottom: '2.5rem' }}>
+          <div style={{ marginBottom: "2.5rem" }}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               style={{
-                display: 'inline-block',
-                padding: '8px 20px',
+                display: "inline-block",
+                padding: "8px 20px",
                 background: `${THEME.accent}08`,
                 color: THEME.accent,
-                borderRadius: '100px',
-                fontSize: '0.875rem',
+                borderRadius: "100px",
+                fontSize: "0.875rem",
                 fontWeight: 600,
-                marginBottom: '1.5rem',
+                marginBottom: "1.5rem",
                 border: `1px solid ${THEME.accent}20`,
               }}
             >
-              <Zap size={14} style={{ marginRight: '6px', display: 'inline' }} />
+              <Zap
+                size={14}
+                style={{ marginRight: "6px", display: "inline" }}
+              />
               A Dedicated Learning Platform for Ligand Students
             </motion.div>
-            
+
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
               style={{
-                fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+                fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
                 lineHeight: 1.1,
-                marginBottom: '1.5rem',
+                marginBottom: "1.5rem",
               }}
             >
               Master Modern
               <br />
               <span className="gradient-text">Software Development</span>
             </motion.h1>
-            
+
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
               style={{
-                fontSize: '1.125rem',
+                fontSize: "1.125rem",
                 color: THEME.textLight,
                 lineHeight: 1.8,
-                maxWidth: '500px',
-                marginBottom: '2.5rem',
+                maxWidth: "500px",
+                marginBottom: "2.5rem",
               }}
             >
-              Join Ligand Software Solutions and transform your career with 
-              industry-leading curriculum, hands-on projects, and personalized 
+              Join Ligand Software Solutions and transform your career with
+              industry-leading curriculum, hands-on projects, and personalized
               mentorship from expert developers.
             </motion.p>
           </div>
@@ -941,7 +976,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            style={{ display: 'flex', gap: '1rem', marginBottom: '3rem' }}
+            style={{ display: "flex", gap: "1rem", marginBottom: "3rem" }}
           >
             <MagneticButton href="/login" variant="primary">
               Get Started
@@ -954,67 +989,62 @@ const HeroSection = () => {
         </motion.div>
 
         {/* Right Column - Graph Ruler Cards */}
-        
-                <div className="ligand-dashboard-preview">
-                  <div className="ligand-dashboard-header"></div>
-                  <div className="ligand-dashboard-content">
-                    <div className="ligand-dashboard-nav">
-                      <div className="ligand-nav-dot ligand-nav-dot-red"></div>
-                      <div className="ligand-nav-dot ligand-nav-dot-yellow"></div>
-                      <div className="ligand-nav-dot ligand-nav-dot-green"></div>
-                    </div>
-                    <div className="ligand-dashboard-grid">
-                      {techStack.map((tech, i) => (
-                        <a
-                          key={tech.label}
-                          href={tech.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="ligand-dashboard-link"
-                        >
-                          <div
-                            className={`ligand-dashboard-card ${
-                              i % 2 === 0
-                                ? "ligand-card-gradient"
-                                : "ligand-card-gray"
-                            }`}
-                          >
-                            <div className="ligand-tech-icon-wrapper">
-                              {tech.icon}
-                              <span className="ligand-tech-label">
-                                {tech.label}
-                              </span>
-                            </div>
-                          </div>
-                        </a>
-                      ))}
-                    </div>
-                    <div className="ligand-media-player">
-                      <div className="ligand-badge">
-                        <div className="ligand-badge-dot"></div>
-                        <span>A Dedicated Learning Platform for Ligand Students</span>
-                      </div>
+
+        <div className="ligand-dashboard-preview">
+          <div className="ligand-dashboard-header"></div>
+          <div className="ligand-dashboard-content">
+            <div className="ligand-dashboard-nav">
+              <div className="ligand-nav-dot ligand-nav-dot-red"></div>
+              <div className="ligand-nav-dot ligand-nav-dot-yellow"></div>
+              <div className="ligand-nav-dot ligand-nav-dot-green"></div>
+            </div>
+            <div className="ligand-dashboard-grid">
+              {techStack.map((tech, i) => (
+                <a
+                  key={tech.label}
+                  href={tech.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ligand-dashboard-link"
+                >
+                  <div
+                    className={`ligand-dashboard-card ${
+                      i % 2 === 0 ? "ligand-card-gradient" : "ligand-card-gray"
+                    }`}
+                  >
+                    <div className="ligand-tech-icon-wrapper">
+                      {tech.icon}
+                      <span className="ligand-tech-label">{tech.label}</span>
                     </div>
                   </div>
-                </div>
+                </a>
+              ))}
+            </div>
+            <div className="ligand-media-player">
+              <div className="ligand-badge">
+                <div className="ligand-badge-dot"></div>
+                <span>A Dedicated Learning Platform for Ligand Students</span>
               </div>
-     
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Scroll Indicator */}
       <motion.div
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
         style={{
-          position: 'absolute',
-          bottom: '3rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.5rem',
+          position: "absolute",
+          bottom: "3rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "0.5rem",
           color: THEME.textMuted,
-          fontSize: '0.875rem',
+          fontSize: "0.875rem",
           zIndex: 10,
         }}
       >
@@ -1023,7 +1053,7 @@ const HeroSection = () => {
           animate={{ y: [0, 5, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         >
-          <ChevronRight size={18} style={{ transform: 'rotate(90deg)' }} />
+          <ChevronRight size={18} style={{ transform: "rotate(90deg)" }} />
         </motion.div>
       </motion.div>
     </section>
@@ -1037,70 +1067,71 @@ const FeaturesSection = () => {
   const features = [
     {
       icon: <Clock size={24} />,
-      title: 'Daily Assessments',
-      description: 'Regular coding challenges and quizzes to track your progress',
-      color: '#4361ee',
+      title: "Daily Assessments",
+      description:
+        "Regular coding challenges and quizzes to track your progress",
+      color: "#4361ee",
     },
     {
       icon: <BookMarked size={24} />,
-      title: 'Comprehensive Notes',
-      description: 'Organized study materials and reference documentation',
-      color: '#7209b7',
+      title: "Comprehensive Notes",
+      description: "Organized study materials and reference documentation",
+      color: "#7209b7",
     },
     {
       icon: <Video size={24} />,
-      title: 'Live & Recorded Classes',
-      description: 'Interactive sessions with expert trainers',
-      color: '#f72585',
+      title: "Live & Recorded Classes",
+      description: "Interactive sessions with expert trainers",
+      color: "#f72585",
     },
     {
       icon: <Code size={24} />,
-      title: 'Code Repository',
-      description: 'Real-world projects and practice code examples',
-      color: '#06d6a0',
+      title: "Code Repository",
+      description: "Real-world projects and practice code examples",
+      color: "#06d6a0",
     },
     {
       icon: <Briefcase size={24} />,
-      title: 'Mock Interviews',
-      description: 'Industry-standard technical interview practice',
-      color: '#ffd166',
+      title: "Mock Interviews",
+      description: "Industry-standard technical interview practice",
+      color: "#ffd166",
     },
     {
       icon: <BarChart size={24} />,
-      title: 'Performance Analytics',
-      description: 'Detailed insights into your learning journey',
-      color: '#4361ee',
+      title: "Performance Analytics",
+      description: "Detailed insights into your learning journey",
+      color: "#4361ee",
     },
   ];
 
   return (
     <section
       style={{
-        padding: '6rem 2rem',
+        padding: "6rem 2rem",
         background: THEME.bgAlt,
       }}
     >
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <SectionReveal>
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <div style={{ textAlign: "center", marginBottom: "4rem" }}>
             <span
               style={{
-                fontSize: '0.875rem',
+                fontSize: "0.875rem",
                 fontWeight: 600,
                 color: THEME.accent,
-                textTransform: 'uppercase',
-                letterSpacing: '2px',
+                textTransform: "uppercase",
+                letterSpacing: "2px",
               }}
             >
               Why Choose Us
             </span>
             <h2
               style={{
-                fontSize: 'clamp(2rem, 4vw, 3rem)',
-                marginTop: '0.5rem',
+                fontSize: "clamp(2rem, 4vw, 3rem)",
+                marginTop: "0.5rem",
               }}
             >
-              Everything You Need to{' '}
+              Everything You Need to{" "}
               <span className="gradient-text">Succeed</span>
             </h2>
           </div>
@@ -1108,9 +1139,9 @@ const FeaturesSection = () => {
 
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '2rem',
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "2rem",
           }}
         >
           {features.map((feature, index) => (
@@ -1123,30 +1154,30 @@ const FeaturesSection = () => {
               whileHover={{ y: -10, scale: 1.02 }}
               style={{
                 background: THEME.cardBg,
-                padding: '2.5rem',
-                borderRadius: '24px',
+                padding: "2.5rem",
+                borderRadius: "24px",
                 boxShadow: `0 10px 30px ${THEME.shadow}`,
                 border: `1px solid ${THEME.border}`,
-                transition: 'all 0.3s ease',
-                cursor: 'pointer',
+                transition: "all 0.3s ease",
+                cursor: "pointer",
               }}
             >
               <div
                 style={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: '18px',
+                  width: "60px",
+                  height: "60px",
+                  borderRadius: "18px",
                   background: `${feature.color}10`,
                   color: feature.color,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '1.5rem',
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: "1.5rem",
                 }}
               >
                 {feature.icon}
               </div>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem' }}>
+              <h3 style={{ fontSize: "1.25rem", marginBottom: "0.75rem" }}>
                 {feature.title}
               </h3>
               <p style={{ color: THEME.textLight, lineHeight: 1.6 }}>
@@ -1166,84 +1197,84 @@ const FeaturesSection = () => {
 const CoursesSection = () => {
   const courses = [
     {
-      title: 'MERN Stack Development',
-      description: 'Master MongoDB, Express.js, React, and Node.js',
+      title: "MERN Stack Development",
+      description: "Master MongoDB, Express.js, React, and Node.js",
       icon: SiReact,
-      color: '#61dafb',
-      duration: '16 weeks',
-      level: 'Intermediate',
-      students: '2.5k+',
+      color: "#61dafb",
+      duration: "16 weeks",
+      level: "Intermediate",
+      students: "2.5k+",
     },
     {
-      title: 'Data Structures & Algorithms',
-      description: 'Master coding interviews with DSA fundamentals',
+      title: "Data Structures & Algorithms",
+      description: "Master coding interviews with DSA fundamentals",
       icon: SiJavascript,
-      color: '#f7df1e',
-      duration: '12 weeks',
-      level: 'Beginner',
-      students: '3k+',
+      color: "#f7df1e",
+      duration: "12 weeks",
+      level: "Beginner",
+      students: "3k+",
     },
     {
-      title: 'System Design',
-      description: 'Learn to design scalable distributed systems',
+      title: "System Design",
+      description: "Learn to design scalable distributed systems",
       icon: SiReact,
-      color: '#4361ee',
-      duration: '10 weeks',
-      level: 'Advanced',
-      students: '1.2k+',
+      color: "#4361ee",
+      duration: "10 weeks",
+      level: "Advanced",
+      students: "1.2k+",
     },
     {
-      title: 'DevOps & Cloud',
-      description: 'Master Docker, Kubernetes, and cloud platforms',
+      title: "DevOps & Cloud",
+      description: "Master Docker, Kubernetes, and cloud platforms",
       icon: SiDocker,
-      color: '#2496ed',
-      duration: '14 weeks',
-      level: 'Intermediate',
-      students: '1.8k+',
+      color: "#2496ed",
+      duration: "14 weeks",
+      level: "Intermediate",
+      students: "1.8k+",
     },
     {
-      title: 'Python Full Stack',
-      description: 'Build applications with Python, Django, and React',
+      title: "Python Full Stack",
+      description: "Build applications with Python, Django, and React",
       icon: SiPython,
-      color: '#3776ab',
-      duration: '16 weeks',
-      level: 'Beginner',
-      students: '2.2k+',
+      color: "#3776ab",
+      duration: "16 weeks",
+      level: "Beginner",
+      students: "2.2k+",
     },
     {
-      title: 'Mobile Development',
-      description: 'Create cross-platform apps with React Native',
+      title: "Mobile Development",
+      description: "Create cross-platform apps with React Native",
       icon: SiReact,
-      color: '#61dafb',
-      duration: '12 weeks',
-      level: 'Intermediate',
-      students: '1.5k+',
+      color: "#61dafb",
+      duration: "12 weeks",
+      level: "Intermediate",
+      students: "1.5k+",
     },
   ];
 
   return (
-    <section style={{ padding: '6rem 2rem', background: THEME.bg }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+    <section style={{ padding: "6rem 2rem", background: THEME.bg }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <SectionReveal>
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <div style={{ textAlign: "center", marginBottom: "4rem" }}>
             <span
               style={{
-                fontSize: '0.875rem',
+                fontSize: "0.875rem",
                 fontWeight: 600,
                 color: THEME.accent,
-                textTransform: 'uppercase',
-                letterSpacing: '2px',
+                textTransform: "uppercase",
+                letterSpacing: "2px",
               }}
             >
               Our Programs
             </span>
             <h2
               style={{
-                fontSize: 'clamp(2rem, 4vw, 3rem)',
-                marginTop: '0.5rem',
+                fontSize: "clamp(2rem, 4vw, 3rem)",
+                marginTop: "0.5rem",
               }}
             >
-              Comprehensive{' '}
+              Comprehensive{" "}
               <span className="gradient-text">Course Catalog</span>
             </h2>
           </div>
@@ -1251,9 +1282,9 @@ const CoursesSection = () => {
 
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-            gap: '2rem',
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+            gap: "2rem",
           }}
         >
           {courses.map((course, index) => (
@@ -1266,24 +1297,24 @@ const CoursesSection = () => {
               whileHover={{ y: -10, scale: 1.02 }}
               style={{
                 background: THEME.cardBg,
-                padding: '2rem',
-                borderRadius: '24px',
+                padding: "2rem",
+                borderRadius: "24px",
                 boxShadow: `0 10px 30px ${THEME.shadow}`,
                 border: `1px solid ${THEME.border}`,
-                position: 'relative',
-                overflow: 'hidden',
-                cursor: 'pointer',
+                position: "relative",
+                overflow: "hidden",
+                cursor: "pointer",
               }}
             >
               <div
                 style={{
-                  position: 'absolute',
-                  bottom: '-20px',
-                  right: '-20px',
-                  fontSize: '6rem',
+                  position: "absolute",
+                  bottom: "-20px",
+                  right: "-20px",
+                  fontSize: "6rem",
                   opacity: 0.05,
                   color: course.color,
-                  transform: 'rotate(15deg)',
+                  transform: "rotate(15deg)",
                 }}
               >
                 <course.icon />
@@ -1291,36 +1322,42 @@ const CoursesSection = () => {
 
               <div
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  marginBottom: '1.5rem',
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                  marginBottom: "1.5rem",
                 }}
               >
                 <div
                   style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '16px',
+                    width: "56px",
+                    height: "56px",
+                    borderRadius: "16px",
                     background: `${course.color}15`,
                     color: course.color,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '2rem',
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "2rem",
                   }}
                 >
                   <course.icon />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.25rem' }}>{course.title}</h3>
-                  <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                  <h3 style={{ fontSize: "1.25rem" }}>{course.title}</h3>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "0.5rem",
+                      marginTop: "0.5rem",
+                    }}
+                  >
                     <span
                       style={{
-                        fontSize: '0.75rem',
-                        padding: '4px 8px',
+                        fontSize: "0.75rem",
+                        padding: "4px 8px",
                         background: THEME.bgAlt,
-                        borderRadius: '100px',
+                        borderRadius: "100px",
                         color: THEME.textLight,
                       }}
                     >
@@ -1328,10 +1365,10 @@ const CoursesSection = () => {
                     </span>
                     <span
                       style={{
-                        fontSize: '0.75rem',
-                        padding: '4px 8px',
+                        fontSize: "0.75rem",
+                        padding: "4px 8px",
                         background: `${course.color}15`,
-                        borderRadius: '100px',
+                        borderRadius: "100px",
                         color: course.color,
                       }}
                     >
@@ -1341,16 +1378,34 @@ const CoursesSection = () => {
                 </div>
               </div>
 
-              <p style={{ color: THEME.textLight, lineHeight: 1.6, marginBottom: '1.5rem' }}>
+              <p
+                style={{
+                  color: THEME.textLight,
+                  lineHeight: 1.6,
+                  marginBottom: "1.5rem",
+                }}
+              >
                 {course.description}
               </p>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ color: THEME.textMuted, fontSize: '0.875rem' }}>
-                  <Users size={14} style={{ display: 'inline', marginRight: '4px' }} />
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <span style={{ color: THEME.textMuted, fontSize: "0.875rem" }}>
+                  <Users
+                    size={14}
+                    style={{ display: "inline", marginRight: "4px" }}
+                  />
                   {course.students} enrolled
                 </span>
-                <MagneticButton variant="outline" style={{ padding: '8px 16px' }}>
+                <MagneticButton
+                  variant="outline"
+                  style={{ padding: "8px 16px" }}
+                >
                   Learn More
                   <ChevronRight size={14} />
                 </MagneticButton>
@@ -1374,60 +1429,59 @@ const BenefitsSection = () => {
   const benefits = [
     {
       icon: <Rocket size={28} />,
-      title: 'Industry-Ready Curriculum',
-      description: 'Learn what actually matters in the industry',
+      title: "Industry-Ready Curriculum",
+      description: "Learn what actually matters in the industry",
     },
     {
       icon: <Brain size={28} />,
-      title: 'Personalized Learning',
-      description: 'Adaptive learning paths based on your goals',
+      title: "Personalized Learning",
+      description: "Adaptive learning paths based on your goals",
     },
     {
       icon: <Target size={28} />,
-      title: 'Placement Focused',
-      description: 'Dedicated placement assistance and support',
+      title: "Placement Focused",
+      description: "Dedicated placement assistance and support",
     },
     {
       icon: <Award size={28} />,
-      title: 'Certification',
-      description: 'Get certified and boost your resume',
+      title: "Certification",
+      description: "Get certified and boost your resume",
     },
   ];
 
   return (
-    <section style={{ padding: '6rem 2rem', background: THEME.bg }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+    <section style={{ padding: "6rem 2rem", background: THEME.bg }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <SectionReveal>
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <div style={{ textAlign: "center", marginBottom: "4rem" }}>
             <span
               style={{
-                fontSize: '0.875rem',
+                fontSize: "0.875rem",
                 fontWeight: 600,
                 color: THEME.accent,
-                textTransform: 'uppercase',
-                letterSpacing: '2px',
+                textTransform: "uppercase",
+                letterSpacing: "2px",
               }}
             >
               Benefits
             </span>
             <h2
               style={{
-                fontSize: 'clamp(2rem, 4vw, 3rem)',
-                marginTop: '0.5rem',
+                fontSize: "clamp(2rem, 4vw, 3rem)",
+                marginTop: "0.5rem",
               }}
             >
-              Why Students{' '}
-              <span className="gradient-text">Choose Us</span>
+              Why Students <span className="gradient-text">Choose Us</span>
             </h2>
           </div>
         </SectionReveal>
 
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-            gap: '2rem',
-            marginBottom: '4rem',
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "2rem",
+            marginBottom: "4rem",
           }}
         >
           {benefits.map((benefit, index) => (
@@ -1440,32 +1494,32 @@ const BenefitsSection = () => {
               whileHover={{ y: -10 }}
               style={{
                 background: THEME.cardBg,
-                padding: '2.5rem',
-                borderRadius: '24px',
+                padding: "2.5rem",
+                borderRadius: "24px",
                 boxShadow: `0 10px 30px ${THEME.shadow}`,
                 border: `1px solid ${THEME.border}`,
-                textAlign: 'center',
+                textAlign: "center",
               }}
             >
               <div
                 style={{
-                  width: '70px',
-                  height: '70px',
-                  borderRadius: '70px',
+                  width: "70px",
+                  height: "70px",
+                  borderRadius: "70px",
                   background: `${THEME.accent}10`,
                   color: THEME.accent,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 1.5rem',
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto 1.5rem",
                 }}
               >
                 {benefit.icon}
               </div>
-              <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+              <h3 style={{ fontSize: "1.1rem", marginBottom: "0.5rem" }}>
                 {benefit.title}
               </h3>
-              <p style={{ color: THEME.textLight, fontSize: '0.875rem' }}>
+              <p style={{ color: THEME.textLight, fontSize: "0.875rem" }}>
                 {benefit.description}
               </p>
             </motion.div>
@@ -1482,7 +1536,6 @@ const BenefitsSection = () => {
 /* ─────────────────────────────────────────────────────────────
    FOOTER SECTION
 ───────────────────────────────────────────────────────────── */
-
 
 const GridCell = ({ introActive }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -1608,21 +1661,21 @@ const Home = () => {
 
     return () => {
       if (lenis) lenis.destroy();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
   return (
     <>
-    {/* <GridBackground /> */}
+      {/* <GridBackground /> */}
       <GlobalStyles />
       <CustomCursor />
-      
-      <main style={{marginTop:"50px"}}>
+
+      <main style={{ marginTop: "50px" }}>
         <HeroSection />
         <FeaturesSection />
         <CoursesSection />
-        
+
         <BenefitsSection />
       </main>
     </>
