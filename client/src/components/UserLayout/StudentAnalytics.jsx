@@ -109,6 +109,7 @@ export default function StudentAnalytics() {
   hasRun.current = true;
 
   const init = async () => {
+    await loadAnalytics();
     await loadStudent();
     await checkPendingFees();
   };
