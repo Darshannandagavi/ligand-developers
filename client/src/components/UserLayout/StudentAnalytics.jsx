@@ -35,6 +35,7 @@ export default function StudentAnalytics() {
   const [activeModal, setActiveModal] = useState(null);
   const [modalData, setModalData] = useState([]);
   const hasRun = useRef(false);
+  const [paymentQR, setPaymentQR] = useState(null);
   const { showAlert } = useAlert();
 
   // ----------------------------------------------------------
@@ -219,12 +220,18 @@ export default function StudentAnalytics() {
         </p>
       </header>
       {paymentQR && (
-        <div className="qr-modal">
-          <h3>Scan to Pay</h3>
-          <QRCodeCanvas value={paymentQR} size={220} />
-          <p>Scan this QR using PhonePe / GPay / Paytm</p>
-        </div>
-      )}
+  <div className="qr-overlay">
+    <div className="qr-box">
+      <h3>Scan to Pay</h3>
+
+      <QRCodeCanvas value={paymentQR} size={220} />
+
+      <p>Scan this QR using PhonePe / GPay / Paytm</p>
+
+      <button onClick={() => setPaymentQR(null)}>Close</button>
+    </div>
+  </div>
+)}
       {/* Stats Overview Cards */}
       <div className="student-analytics-stats-grid">
         <div className="student-analytics-stat-card student-analytics-stat-attendance">
@@ -267,7 +274,7 @@ export default function StudentAnalytics() {
           </div>
         </div>
       </div>
-
+      
       {/* Main Analytics Grid */}
       <div className="student-analytics-grid">
         {/* Attendance Card */}
@@ -633,6 +640,35 @@ export default function StudentAnalytics() {
 
       {/* Internal CSS */}
       <style jsx>{`
+
+      .qr-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.qr-box {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  width: 300px;
+}
+
+.qr-box button {
+  margin-top: 15px;
+  padding: 8px 16px;
+  border: none;
+  background: #667eea;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
         /* Reset and Base Styles */
         .student-analytics-container * {
           margin: 0;
@@ -1775,3 +1811,5 @@ function renderModalContent(modalType, data, studentId) {
       );
   }
 }
+
+
