@@ -94,7 +94,7 @@ export default function StudentAnalytics() {
           onConfirm: () => {
             const amount = res.data.pendingFees[0].pendingFee;
 
-            const upiLink = `upi://pay?pa=9876543210@upi&pn=Ligand%20Academy&am=${amount}&cu=INR`;
+            const upiLink = `upi://pay?pa=8722585715@upi&pn=Ligand%20Academy&am=${amount}&cu=INR`;
 
             const isMobile = /Android|iPhone/i.test(navigator.userAgent);
 
