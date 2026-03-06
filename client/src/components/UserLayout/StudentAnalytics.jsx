@@ -3,6 +3,7 @@ import axios from "axios";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import Loader from "../StyleComponents/Loader";
 import { useRef } from "react";
+import { useAlert } from "../StyleComponents/AlertContext";
 
 const API = "https://ligand-dev-7.onrender.com/api";
 
@@ -35,6 +36,7 @@ export default function StudentAnalytics() {
   const [activeModal, setActiveModal] = useState(null);
   const [modalData, setModalData] = useState([]);
   const hasRun = useRef(false);
+  const { showAlert } = useAlert();
   // ----------------------------------------------------------
   // LocalStorage
   // ----------------------------------------------------------
@@ -78,13 +80,18 @@ export default function StudentAnalytics() {
 
   const checkPendingFees = async () => {
     try {
-      const res = await axios.get(
-        `/api/fee-groups/student/pending-fees`,
-        { withCredentials: true },
-      );
+      const res = await axios.get(`/api/fee-groups/student/pending-fees`, {
+        withCredentials: true,
+      });
       console.log(res.data);
       if (res.data.hasPending) {
-        alert(`Pending Fee: ₹${res.data.pendingFees[0].pendingFee}`);
+        showAlert({
+          type: "warning",
+          title: "Pending Fee",
+          message: `You have a pending fee of ₹${res.data.pendingFees[0].pendingFee}`,
+          confirmText: "Pay Now",
+          cancelText: "Later",
+        });
       }
     } catch (err) {
       console.error("Pending fee check failed", err);
@@ -105,17 +112,17 @@ export default function StudentAnalytics() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-  if (hasRun.current) return;
-  hasRun.current = true;
+    if (hasRun.current) return;
+    hasRun.current = true;
 
-  const init = async () => {
-    await loadAnalytics();
-    await loadStudent();
-    await checkPendingFees();
-  };
+    const init = async () => {
+      await loadAnalytics();
+      await loadStudent();
+      await checkPendingFees();
+    };
 
-  init();
-}, []);
+    init();
+  }, []);
 
   // ----------------------------------------------------------
   // CALCULATIONS
