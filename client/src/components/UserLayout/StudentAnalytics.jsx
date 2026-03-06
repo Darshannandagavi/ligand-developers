@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import Loader from "../StyleComponents/Loader";
-import { useRef } from "react";
 import { useAlert } from "../StyleComponents/AlertContext";
 
 const API = "https://ligand-dev-7.onrender.com/api";
@@ -37,6 +36,7 @@ export default function StudentAnalytics() {
   const [modalData, setModalData] = useState([]);
   const hasRun = useRef(false);
   const { showAlert } = useAlert();
+
   // ----------------------------------------------------------
   // LocalStorage
   // ----------------------------------------------------------
@@ -91,6 +91,24 @@ export default function StudentAnalytics() {
           message: `You have a pending fee of ₹${res.data.pendingFees[0].pendingFee}`,
           confirmText: "Pay Now",
           cancelText: "Later",
+          onConfirm: () => {
+            const amount = res.data.pendingFees[0].pendingFee;
+
+            const upiLink = `upi://pay?pa=9876543210@upi&pn=Ligand%20Academy&am=${amount}&cu=INR`;
+
+            const isMobile = /Android|iPhone/i.test(navigator.userAgent);
+
+            if (isMobile) {
+              window.location.href = upiLink;
+            } else {
+              showAlert({
+                type: "info",
+                title: "Mobile Required",
+                message: "Please open this page on mobile to pay using UPI.",
+                confirmText: "OK",
+              });
+            }
+          },
         });
       }
     } catch (err) {
@@ -98,17 +116,7 @@ export default function StudentAnalytics() {
     }
   };
 
-  const loadStudent = async () => {
-    try {
-      const res = await axios.get(`${API}/users/getme`, {
-        withCredentials: true,
-      });
-      console.log(res.data);
-      setStudent(res.data);
-    } catch (err) {
-      console.error("Failed to load student");
-    }
-  };
+  
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -116,8 +124,13 @@ export default function StudentAnalytics() {
     hasRun.current = true;
 
     const init = async () => {
-      await loadAnalytics();
-      await loadStudent();
+      const res = await axios.get(`${API}/users/getme`, {
+        withCredentials: true,
+      });
+
+      setStudent(res.data);
+
+      await loadAnalytics(res.data);
       await checkPendingFees();
     };
 
