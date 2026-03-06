@@ -470,81 +470,7 @@ export const paidStudentsForInstallment = async (req, res) => {
 
 
 
-// export const recordPayment = async (req, res) => {
-//   try {
-//     const { id } = req.params; // FeeGroup ID
-//     const studentId = req.body?.studentId || req.params.studentId;
-//     const { amount } = req.body;
 
-//     if (!amount || amount <= 0) {
-//       return res.status(400).json({ error: "Invalid payment amount" });
-//     }
-
-//     const group = await FeeGroup.findById(id);
-//     if (!group) return res.status(404).json({ error: "Group not found" });
-
-//     const studentEntry = group.students.find((s) => {
-//       const sid =
-//         s.student && (s.student._id || s.student.id)
-//           ? String(s.student._id || s.student.id)
-//           : String(s.student);
-//       return sid === String(studentId);
-//     });
-
-//     if (!studentEntry)
-//       return res.status(404).json({ error: "Student not found in any group" });
-
-//     // Ensure numeric values
-//     studentEntry.totalFee = Number(studentEntry.totalFee || 0);
-//     studentEntry.paidFee = Number(studentEntry.paidFee || 0);
-
-//     // Recalculate currentFee before applying new payment
-//     studentEntry.currentFee = studentEntry.totalFee - studentEntry.paidFee;
-
-//     // Calculate amount to apply
-//     const apply = Math.min(amount, studentEntry.currentFee);
-
-//     // Update paidFee and currentFee
-//     studentEntry.paidFee += apply;
-//     studentEntry.currentFee -= apply;
-//     console.log(
-//       "here is the data",
-//       studentEntry.totalFee,
-//       studentEntry.currentFee,
-//       studentEntry.paidFee
-//     );
-//     // Update status
-//     studentEntry.status = studentEntry.currentFee <= 0 ? "Paid" : "Pending";
-
-//     // Initialize paymentHistory array if needed
-//     if (!Array.isArray(studentEntry.paymentHistory))
-//       studentEntry.paymentHistory = [];
-
-//     // Add payment history
-//     if (apply > 0) {
-//       studentEntry.paymentHistory.push({
-//         amount: apply,
-//         by: req.user?.id || null,
-//         paidOn: new Date(),
-//       });
-//     }
-
-//     await group.save();
-
-//     res.json({
-//       success: true,
-//       studentId,
-//       totalFee: studentEntry.totalFee,
-//       paidFee: studentEntry.paidFee,
-//       currentFee: studentEntry.currentFee,
-//       status: studentEntry.status,
-//       paymentHistory: studentEntry.paymentHistory,
-//     });
-//   } catch (err) {
-//     console.error("[recordPayment] error:", err);
-//     res.status(500).json({ error: err.message });
-//   }
-// };
 
 
 export const recordPayment = async (req, res) => {
@@ -612,6 +538,50 @@ export const recordPayment = async (req, res) => {
 
   } catch (err) {
     console.error("recordPayment error:", err);
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+
+export const getStudentPendingFees = async (req, res) => {
+  try {
+    const studentId = req.user.id;
+
+    const groups = await FeeGroup.find({
+      "students.student": studentId
+    }).lean();
+
+    let pendingFees = [];
+
+    groups.forEach((g) => {
+      (g.students || []).forEach((s) => {
+        if (String(s.student) === String(studentId)) {
+          const pendingAmount = (s.totalFee || 0) - (s.paidFee || 0);
+
+          if (pendingAmount > 0) {
+            pendingFees.push({
+              groupId: g._id,
+              groupName: g.name,
+              collegeName: g.collegeName,
+              programName: g.programName,
+              technology: g.technology,
+              totalFee: s.totalFee,
+              paidFee: s.paidFee,
+              pendingFee: pendingAmount,
+              status: s.status
+            });
+          }
+        }
+      });
+    });
+
+    res.json({
+      hasPending: pendingFees.length > 0,
+      pendingFees
+    });
+
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };

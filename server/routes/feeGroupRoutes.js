@@ -1,6 +1,6 @@
 import express from 'express';
 import { auth } from '../middleware/auth.js';
-import { createFeeGroup, listFeeGroups, getFeeGroup, markInstallmentPaid, markInstallmentUnpaid, dashboard, listStudentFees, installmentsSummary, paidStudentsForInstallment, recordPayment } from '../controllers/feeGroupController.js';
+import { createFeeGroup, listFeeGroups, getFeeGroup, markInstallmentPaid, markInstallmentUnpaid, dashboard, listStudentFees, installmentsSummary, paidStudentsForInstallment, recordPayment, getStudentPendingFees } from '../controllers/feeGroupController.js';
 
 // import multer from "multer";
 import upload from '../middleware/upload.js';
@@ -21,7 +21,7 @@ router.get('/installments/summary', auth, installmentsSummary);
 router.get('/installments/:index/paid', auth, paidStudentsForInstallment);
 router.post("/:id/pay", auth, upload.single("receipt"),
 recordPayment);
-
+router.get("/student/pending-fees", auth, getStudentPendingFees);
 router.get('/:id', auth, getFeeGroup);
 
 export default router;

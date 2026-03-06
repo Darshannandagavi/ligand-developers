@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import Loader from "../StyleComponents/Loader";
+import { useRef } from "react";
 
 const API = "https://ligand-dev-7.onrender.com/api";
 
@@ -21,7 +22,6 @@ async function safeGet(url, config = {}) {
   }
 }
 
-
 export default function StudentAnalytics() {
   const [data, setData] = useState({
     attendance: [],
@@ -34,7 +34,7 @@ export default function StudentAnalytics() {
   const [loading, setLoading] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
   const [modalData, setModalData] = useState([]);
-
+  const hasRun = useRef(false);
   // ----------------------------------------------------------
   // LocalStorage
   // ----------------------------------------------------------
@@ -58,7 +58,7 @@ export default function StudentAnalytics() {
         }),
         safeGet(
           `${API}/fee-groups/students?collegeName=${studentData.collegeName}&batch=${studentData.batch}&programName=${studentData.programName}&technology=${studentData.technology}`,
-          { withCredentials: true }
+          { withCredentials: true },
         ),
         safeGet(`${API}/homeworkstatus/${studentData._id}`, {
           withCredentials: true,
@@ -76,12 +76,27 @@ export default function StudentAnalytics() {
     setLoading(false);
   };
 
+  const checkPendingFees = async () => {
+    try {
+      const res = await axios.get(
+        `/api/fee-groups/student/pending-fees`,
+        { withCredentials: true },
+      );
+      console.log(res.data);
+      if (res.data.hasPending) {
+        alert(`Pending Fee: ₹${res.data.pendingFees[0].pendingFee}`);
+      }
+    } catch (err) {
+      console.error("Pending fee check failed", err);
+    }
+  };
+
   const loadStudent = async () => {
     try {
       const res = await axios.get(`${API}/users/getme`, {
         withCredentials: true,
       });
-      console.log(res.data)
+      console.log(res.data);
       setStudent(res.data);
     } catch (err) {
       console.error("Failed to load student");
@@ -89,26 +104,24 @@ export default function StudentAnalytics() {
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-useEffect(() => {
+  useEffect(() => {
+  if (hasRun.current) return;
+  hasRun.current = true;
+
   const init = async () => {
     await loadStudent();
+    await checkPendingFees();
   };
+
   init();
 }, []);
-
-useEffect(() => {
-  if (student) {
-    loadAnalytics(student);
-  }
-}, [student]);
-
 
   // ----------------------------------------------------------
   // CALCULATIONS
   // ----------------------------------------------------------
   const totalDays = data.attendance.length;
   const presentDays = data.attendance.filter(
-    (a) => a?.status === "present"
+    (a) => a?.status === "present",
   ).length;
   const attendancePercent = totalDays
     ? Math.round((presentDays / totalDays) * 100)
@@ -120,8 +133,7 @@ useEffect(() => {
 
   if (data.fees.length > 0) {
     const entry = data.fees[0]?.students?.find(
-      (s) => String(s.student?._id) === String(student?._id)
-
+      (s) => String(s.student?._id) === String(student?._id),
     );
 
     if (entry) {
@@ -132,20 +144,31 @@ useEffect(() => {
   }
 
   // Calculate average exam score
-  const averageExamScore = data.exams.length > 0
-    ? Math.round(data.exams.reduce((acc, exam) => acc + (exam?.percentage || 0), 0) / data.exams.length)
-    : 0;
+  const averageExamScore =
+    data.exams.length > 0
+      ? Math.round(
+          data.exams.reduce((acc, exam) => acc + (exam?.percentage || 0), 0) /
+            data.exams.length,
+        )
+      : 0;
 
   // Calculate average interview score
-  const averageInterviewScore = data.interview.length > 0
-    ? Math.round(data.interview.reduce((acc, score) => acc + (score?.score || 0), 0) / data.interview.length)
-    : 0;
+  const averageInterviewScore =
+    data.interview.length > 0
+      ? Math.round(
+          data.interview.reduce((acc, score) => acc + (score?.score || 0), 0) /
+            data.interview.length,
+        )
+      : 0;
 
   // Calculate homework completion rate
-  const completedHomework = data.homework.filter(hw => hw?.status === 'completed' || hw?.status === 'graded').length;
-  const homeworkCompletionRate = data.homework.length > 0
-    ? Math.round((completedHomework / data.homework.length) * 100)
-    : 0;
+  const completedHomework = data.homework.filter(
+    (hw) => hw?.status === "completed" || hw?.status === "graded",
+  ).length;
+  const homeworkCompletionRate =
+    data.homework.length > 0
+      ? Math.round((completedHomework / data.homework.length) * 100)
+      : 0;
 
   // Open modal with data
   const openModal = (modalType, modalData) => {
@@ -155,7 +178,18 @@ useEffect(() => {
 
   if (loading) {
     return (
-      <div style={{minHeight:"200px",height:"100%",width:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}><Loader/></div>
+      <div
+        style={{
+          minHeight: "200px",
+          height: "100%",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Loader />
+      </div>
     );
   }
 
@@ -163,8 +197,12 @@ useEffect(() => {
     <div className="student-analytics-container">
       {/* Header */}
       <header className="student-analytics-header">
-        <h1 className="student-analytics-title"><MdOutlineSpaceDashboard/> Student Analytics Dashboard</h1>
-        <p className="student-analytics-subtitle">Comprehensive overview of your academic performance and progress</p>
+        <h1 className="student-analytics-title">
+          <MdOutlineSpaceDashboard /> Student Analytics Dashboard
+        </h1>
+        <p className="student-analytics-subtitle">
+          Comprehensive overview of your academic performance and progress
+        </p>
       </header>
 
       {/* Stats Overview Cards */}
@@ -174,7 +212,9 @@ useEffect(() => {
           <div className="student-analytics-stat-content">
             <h3>{attendancePercent}%</h3>
             <p>Attendance</p>
-            <span>{presentDays}/{totalDays} days</span>
+            <span>
+              {presentDays}/{totalDays} days
+            </span>
           </div>
         </div>
 
@@ -201,7 +241,9 @@ useEffect(() => {
           <div className="student-analytics-stat-content">
             <h3>{homeworkCompletionRate}%</h3>
             <p>Homework Done</p>
-            <span>{completedHomework}/{data.homework.length} completed</span>
+            <span>
+              {completedHomework}/{data.homework.length} completed
+            </span>
           </div>
         </div>
       </div>
@@ -211,33 +253,43 @@ useEffect(() => {
         {/* Attendance Card */}
         <div className="student-analytics-card student-analytics-card-attendance">
           <div className="student-analytics-card-header">
-            <h2 className="student-analytics-card-title">Attendance Overview</h2>
-            <span className="student-analytics-card-badge">{attendancePercent}%</span>
+            <h2 className="student-analytics-card-title">
+              Attendance Overview
+            </h2>
+            <span className="student-analytics-card-badge">
+              {attendancePercent}%
+            </span>
           </div>
           <div className="student-analytics-card-content">
             <div className="student-analytics-progress">
-              <div 
+              <div
                 className="student-analytics-progress-bar student-analytics-progress-attendance"
                 style={{ width: `${attendancePercent}%` }}
               ></div>
             </div>
             <div className="student-analytics-stats-row">
               <div className="student-analytics-stat-item">
-                <span className="student-analytics-stat-value">{presentDays}</span>
+                <span className="student-analytics-stat-value">
+                  {presentDays}
+                </span>
                 <span className="student-analytics-stat-label">Present</span>
               </div>
               <div className="student-analytics-stat-item">
-                <span className="student-analytics-stat-value">{totalDays - presentDays}</span>
+                <span className="student-analytics-stat-value">
+                  {totalDays - presentDays}
+                </span>
                 <span className="student-analytics-stat-label">Absent</span>
               </div>
               <div className="student-analytics-stat-item">
-                <span className="student-analytics-stat-value">{totalDays}</span>
+                <span className="student-analytics-stat-value">
+                  {totalDays}
+                </span>
                 <span className="student-analytics-stat-label">Total Days</span>
               </div>
             </div>
-            <button 
+            <button
               className="student-analytics-view-details"
-              onClick={() => openModal('attendance', data.attendance)}
+              onClick={() => openModal("attendance", data.attendance)}
             >
               View Full Details →
             </button>
@@ -248,21 +300,29 @@ useEffect(() => {
         <div className="student-analytics-card student-analytics-card-exam">
           <div className="student-analytics-card-header">
             <h2 className="student-analytics-card-title">Exam Performance</h2>
-            <span className="student-analytics-card-badge">{data.exams.length} exams</span>
+            <span className="student-analytics-card-badge">
+              {data.exams.length} exams
+            </span>
           </div>
           <div className="student-analytics-card-content">
             {data.exams.length === 0 ? (
-              <p className="student-analytics-no-data">No exams attempted yet</p>
+              <p className="student-analytics-no-data">
+                No exams attempted yet
+              </p>
             ) : (
               <>
                 <div className="student-analytics-exam-list">
                   {data.exams.slice(0, 3).map((ex, i) => (
                     <div key={i} className="student-analytics-exam-item">
-                      <span className="student-analytics-exam-name">{ex?.exam?.examTitle || `Exam ${i + 1}`}</span>
+                      <span className="student-analytics-exam-name">
+                        {ex?.exam?.examTitle || `Exam ${i + 1}`}
+                      </span>
                       <div className="student-analytics-exam-score">
-                        <span className="student-analytics-exam-percentage">{ex?.percentage || 0}%</span>
+                        <span className="student-analytics-exam-percentage">
+                          {ex?.percentage || 0}%
+                        </span>
                         <div className="student-analytics-exam-progress">
-                          <div 
+                          <div
                             className="student-analytics-exam-progress-bar"
                             style={{ width: `${ex?.percentage || 0}%` }}
                           ></div>
@@ -271,9 +331,9 @@ useEffect(() => {
                     </div>
                   ))}
                 </div>
-                <button 
+                <button
                   className="student-analytics-view-details"
-                  onClick={() => openModal('exams', data.exams)}
+                  onClick={() => openModal("exams", data.exams)}
                 >
                   View All Exams →
                 </button>
@@ -286,11 +346,15 @@ useEffect(() => {
         <div className="student-analytics-card student-analytics-card-interview">
           <div className="student-analytics-card-header">
             <h2 className="student-analytics-card-title">Interview Coaching</h2>
-            <span className="student-analytics-card-badge">{data.interview.length} sessions</span>
+            <span className="student-analytics-card-badge">
+              {data.interview.length} sessions
+            </span>
           </div>
           <div className="student-analytics-card-content">
             {data.interview.length === 0 ? (
-              <p className="student-analytics-no-data">No interview sessions yet</p>
+              <p className="student-analytics-no-data">
+                No interview sessions yet
+              </p>
             ) : (
               <>
                 <div className="student-analytics-interview-list">
@@ -300,34 +364,39 @@ useEffect(() => {
                         {sc?.topicId?.name || `Topic ${i + 1}`}
                       </div>
                       <div className="student-analytics-interview-score">
-                        <span className="student-analytics-score-value">{sc?.score || 0}/{sc?.total || 10}</span>
+                        <span className="student-analytics-score-value">
+                          {sc?.score || 0}/{sc?.total || 10}
+                        </span>
                         <div className="student-analytics-score-circle">
                           <svg width="60" height="60">
-                            <circle 
-                              cx="30" 
-                              cy="30" 
-                              r="25" 
+                            <circle
+                              cx="30"
+                              cy="30"
+                              r="25"
                               className="student-analytics-score-circle-bg"
                             />
-                            <circle 
-                              cx="30" 
-                              cy="30" 
-                              r="25" 
+                            <circle
+                              cx="30"
+                              cy="30"
+                              r="25"
                               className="student-analytics-score-circle-fill"
                               strokeDasharray={`${((sc?.score || 0) / (sc?.total || 10)) * 157} 157`}
                             />
                           </svg>
                           <span className="student-analytics-score-percentage">
-                            {Math.round(((sc?.score || 0) / (sc?.total || 10)) * 100)}%
+                            {Math.round(
+                              ((sc?.score || 0) / (sc?.total || 10)) * 100,
+                            )}
+                            %
                           </span>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
-                <button 
+                <button
                   className="student-analytics-view-details"
-                  onClick={() => openModal('interview', data.interview)}
+                  onClick={() => openModal("interview", data.interview)}
                 >
                   View All Sessions →
                 </button>
@@ -341,14 +410,16 @@ useEffect(() => {
           <div className="student-analytics-card-header">
             <h2 className="student-analytics-card-title">Fee Status</h2>
             <span className="student-analytics-card-badge">
-              {paidFee >= totalFee ? 'Paid' : 'Pending'}
+              {paidFee >= totalFee ? "Paid" : "Pending"}
             </span>
           </div>
           <div className="student-analytics-card-content">
             <div className="student-analytics-fee-summary">
               <div className="student-analytics-fee-item">
                 <span className="student-analytics-fee-label">Total Fee</span>
-                <span className="student-analytics-fee-amount">₹{totalFee}</span>
+                <span className="student-analytics-fee-amount">
+                  ₹{totalFee}
+                </span>
               </div>
               <div className="student-analytics-fee-item student-analytics-fee-paid">
                 <span className="student-analytics-fee-label">Paid</span>
@@ -356,21 +427,25 @@ useEffect(() => {
               </div>
               <div className="student-analytics-fee-item student-analytics-fee-pending">
                 <span className="student-analytics-fee-label">Pending</span>
-                <span className="student-analytics-fee-amount">₹{pendingFee}</span>
+                <span className="student-analytics-fee-amount">
+                  ₹{pendingFee}
+                </span>
               </div>
             </div>
             <div className="student-analytics-fee-progress">
-              <div 
+              <div
                 className="student-analytics-fee-progress-bar"
-                style={{ width: `${totalFee > 0 ? (paidFee / totalFee) * 100 : 0}%` }}
+                style={{
+                  width: `${totalFee > 0 ? (paidFee / totalFee) * 100 : 0}%`,
+                }}
               ></div>
             </div>
             <div className="student-analytics-fee-percentage">
               {totalFee > 0 ? Math.round((paidFee / totalFee) * 100) : 0}% Paid
             </div>
-            <button 
+            <button
               className="student-analytics-view-details"
-              onClick={() => openModal('fees', data.fees)}
+              onClick={() => openModal("fees", data.fees)}
             >
               View Fee Details →
             </button>
@@ -381,11 +456,15 @@ useEffect(() => {
         <div className="student-analytics-card student-analytics-card-homework">
           <div className="student-analytics-card-header">
             <h2 className="student-analytics-card-title">Homework Progress</h2>
-            <span className="student-analytics-card-badge">{completedHomework}/{data.homework.length}</span>
+            <span className="student-analytics-card-badge">
+              {completedHomework}/{data.homework.length}
+            </span>
           </div>
           <div className="student-analytics-card-content">
             {data.homework.length === 0 ? (
-              <p className="student-analytics-no-data">No homework assigned yet</p>
+              <p className="student-analytics-no-data">
+                No homework assigned yet
+              </p>
             ) : (
               <>
                 <div className="student-analytics-homework-list">
@@ -399,15 +478,17 @@ useEffect(() => {
                           Chapter {hw?.homeworkId?.chapterNumber || i + 1}
                         </span>
                       </div>
-                      <span className={`student-analytics-homework-status student-analytics-status-${hw?.status?.toLowerCase()}`}>
-                        {hw?.status || 'Pending'}
+                      <span
+                        className={`student-analytics-homework-status student-analytics-status-${hw?.status?.toLowerCase()}`}
+                      >
+                        {hw?.status || "Pending"}
                       </span>
                     </div>
                   ))}
                 </div>
-                <button 
+                <button
                   className="student-analytics-view-details"
-                  onClick={() => openModal('homework', data.homework)}
+                  onClick={() => openModal("homework", data.homework)}
                 >
                   View All Assignments →
                 </button>
@@ -419,56 +500,82 @@ useEffect(() => {
         {/* Overall Performance Card */}
         <div className="student-analytics-card student-analytics-card-overall">
           <div className="student-analytics-card-header">
-            <h2 className="student-analytics-card-title">Overall Performance</h2>
+            <h2 className="student-analytics-card-title">
+              Overall Performance
+            </h2>
             <span className="student-analytics-card-badge">
-              {Math.round((attendancePercent + averageExamScore + averageInterviewScore * 10 + homeworkCompletionRate) / 4)}%
+              {Math.round(
+                (attendancePercent +
+                  averageExamScore +
+                  averageInterviewScore * 10 +
+                  homeworkCompletionRate) /
+                  4,
+              )}
+              %
             </span>
           </div>
           <div className="student-analytics-card-content">
             <div className="student-analytics-performance-metrics">
               <div className="student-analytics-performance-metric">
-                <span className="student-analytics-performance-label">Attendance</span>
+                <span className="student-analytics-performance-label">
+                  Attendance
+                </span>
                 <div className="student-analytics-performance-bar">
-                  <div 
+                  <div
                     className="student-analytics-performance-fill student-analytics-performance-attendance"
                     style={{ width: `${attendancePercent}%` }}
                   ></div>
                 </div>
-                <span className="student-analytics-performance-value">{attendancePercent}%</span>
+                <span className="student-analytics-performance-value">
+                  {attendancePercent}%
+                </span>
               </div>
               <div className="student-analytics-performance-metric">
-                <span className="student-analytics-performance-label">Exams</span>
+                <span className="student-analytics-performance-label">
+                  Exams
+                </span>
                 <div className="student-analytics-performance-bar">
-                  <div 
+                  <div
                     className="student-analytics-performance-fill student-analytics-performance-exam"
                     style={{ width: `${averageExamScore}%` }}
                   ></div>
                 </div>
-                <span className="student-analytics-performance-value">{averageExamScore}%</span>
+                <span className="student-analytics-performance-value">
+                  {averageExamScore}%
+                </span>
               </div>
               <div className="student-analytics-performance-metric">
-                <span className="student-analytics-performance-label">Interviews</span>
+                <span className="student-analytics-performance-label">
+                  Interviews
+                </span>
                 <div className="student-analytics-performance-bar">
-                  <div 
+                  <div
                     className="student-analytics-performance-fill student-analytics-performance-interview"
                     style={{ width: `${averageInterviewScore * 10}%` }}
                   ></div>
                 </div>
-                <span className="student-analytics-performance-value">{averageInterviewScore}/10</span>
+                <span className="student-analytics-performance-value">
+                  {averageInterviewScore}/10
+                </span>
               </div>
               <div className="student-analytics-performance-metric">
-                <span className="student-analytics-performance-label">Homework</span>
+                <span className="student-analytics-performance-label">
+                  Homework
+                </span>
                 <div className="student-analytics-performance-bar">
-                  <div 
+                  <div
                     className="student-analytics-performance-fill student-analytics-performance-homework"
                     style={{ width: `${homeworkCompletionRate}%` }}
                   ></div>
                 </div>
-                <span className="student-analytics-performance-value">{homeworkCompletionRate}%</span>
+                <span className="student-analytics-performance-value">
+                  {homeworkCompletionRate}%
+                </span>
               </div>
             </div>
             <p className="student-analytics-performance-note">
-              Your overall performance is calculated based on attendance, exams, interviews, and homework completion.
+              Your overall performance is calculated based on attendance, exams,
+              interviews, and homework completion.
             </p>
           </div>
         </div>
@@ -477,17 +584,20 @@ useEffect(() => {
       {/* Modal for Details */}
       {activeModal && (
         <div className="student-analytics-modal">
-          <div className="student-analytics-modal-overlay" onClick={() => setActiveModal(null)}></div>
+          <div
+            className="student-analytics-modal-overlay"
+            onClick={() => setActiveModal(null)}
+          ></div>
           <div className="student-analytics-modal-content">
             <div className="student-analytics-modal-header">
               <h2 className="student-analytics-modal-title">
-                {activeModal === 'attendance' && 'Attendance Details'}
-                {activeModal === 'exams' && 'Exam Performance Details'}
-                {activeModal === 'interview' && 'Interview Sessions'}
-                {activeModal === 'fees' && 'Fee Payment History'}
-                {activeModal === 'homework' && 'Homework Assignments'}
+                {activeModal === "attendance" && "Attendance Details"}
+                {activeModal === "exams" && "Exam Performance Details"}
+                {activeModal === "interview" && "Interview Sessions"}
+                {activeModal === "fees" && "Fee Payment History"}
+                {activeModal === "homework" && "Homework Assignments"}
               </h2>
-              <button 
+              <button
                 className="student-analytics-modal-close"
                 onClick={() => setActiveModal(null)}
               >
@@ -508,7 +618,7 @@ useEffect(() => {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .student-analytics-container {
@@ -538,8 +648,12 @@ useEffect(() => {
         }
 
         @keyframes student-analytics-spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
 
         /* Header */
@@ -552,16 +666,15 @@ useEffect(() => {
         .student-analytics-title {
           font-size: 36px;
           font-weight: 700;
-          color:black;
+          color: black;
           margin-bottom: 12px;
-          
         }
 
         .student-analytics-subtitle {
           font-size: 16px;
           opacity: 0.9;
           max-width: 600px;
-          color:black;
+          color: black;
           margin: 0 auto;
         }
 
@@ -1082,8 +1195,12 @@ useEffect(() => {
         }
 
         @keyframes student-analytics-fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
 
         .student-analytics-modal-content {
@@ -1281,82 +1398,122 @@ function renderModalContent(modalType, data, studentId) {
   }
 
   switch (modalType) {
-    case 'attendance':
+    case "attendance":
       return (
         <div className="student-analytics-modal-list">
           {data.map((a, i) => (
             <div key={i} className="student-analytics-modal-item">
               <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Date:</span>
+                <span className="student-analytics-modal-item-label">
+                  Date:
+                </span>
                 <span className="student-analytics-modal-item-value">
-                  {new Date(a.date).toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
+                  {new Date(a.date).toLocaleDateString("en-US", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
                   })}
                 </span>
               </div>
               <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Status:</span>
-                <span className={`student-analytics-modal-item-value status-${a.status}`}>
+                <span className="student-analytics-modal-item-label">
+                  Status:
+                </span>
+                <span
+                  className={`student-analytics-modal-item-value status-${a.status}`}
+                >
                   {a.status}
                 </span>
               </div>
               <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Program:</span>
-                <span className="student-analytics-modal-item-value">{a.programName || "N/A"}</span>
+                <span className="student-analytics-modal-item-label">
+                  Program:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {a.programName || "N/A"}
+                </span>
               </div>
               <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Technology:</span>
-                <span className="student-analytics-modal-item-value">{a.technology || "N/A"}</span>
+                <span className="student-analytics-modal-item-label">
+                  Technology:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {a.technology || "N/A"}
+                </span>
               </div>
               <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Batch:</span>
-                <span className="student-analytics-modal-item-value">{a.student?.batch || "N/A"}</span>
+                <span className="student-analytics-modal-item-label">
+                  Batch:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {a.student?.batch || "N/A"}
+                </span>
               </div>
               <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Marked By:</span>
-                <span className="student-analytics-modal-item-value">{a.markedBy?.email || "Admin"}</span>
+                <span className="student-analytics-modal-item-label">
+                  Marked By:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {a.markedBy?.email || "Admin"}
+                </span>
               </div>
             </div>
           ))}
         </div>
       );
 
-    case 'exams':
+    case "exams":
       return (
         <div className="student-analytics-modal-list">
           {data.map((ex, i) => (
             <div key={i} className="student-analytics-modal-item">
               <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Exam:</span>
-                <span className="student-analytics-modal-item-value">{ex.exam?.examTitle || `Exam ${i + 1}`}</span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Score:</span>
-                <span className="student-analytics-modal-item-value">{ex.score || 0}/{ex.totalQuestions || 0}</span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Percentage:</span>
-                <span className="student-analytics-modal-item-value">{ex.percentage || 0}%</span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Attempted On:</span>
+                <span className="student-analytics-modal-item-label">
+                  Exam:
+                </span>
                 <span className="student-analytics-modal-item-value">
-                  {new Date(ex.createdAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
+                  {ex.exam?.examTitle || `Exam ${i + 1}`}
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Score:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {ex.score || 0}/{ex.totalQuestions || 0}
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Percentage:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {ex.percentage || 0}%
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Attempted On:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {new Date(ex.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
                   })}
                 </span>
               </div>
               <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Status:</span>
-                <span className={`student-analytics-modal-item-value ${(ex.percentage || 0) >= 60 ? 'status-present' : 'status-absent'}`}>
-                  {(ex.percentage || 0) >= 60 ? 'Passed' : 'Failed'}
+                <span className="student-analytics-modal-item-label">
+                  Status:
+                </span>
+                <span
+                  className={`student-analytics-modal-item-value ${(ex.percentage || 0) >= 60 ? "status-present" : "status-absent"}`}
+                >
+                  {(ex.percentage || 0) >= 60 ? "Passed" : "Failed"}
                 </span>
               </div>
             </div>
@@ -1364,38 +1521,60 @@ function renderModalContent(modalType, data, studentId) {
         </div>
       );
 
-    case 'interview':
+    case "interview":
       return (
         <div className="student-analytics-modal-list">
           {data.map((sc, i) => (
             <div key={i} className="student-analytics-modal-item">
               <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Topic:</span>
-                <span className="student-analytics-modal-item-value">{sc.topicId?.name || `Topic ${i + 1}`}</span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Score:</span>
-                <span className="student-analytics-modal-item-value">{sc.score || 0}/{sc.total || 10}</span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Strengths:</span>
-                <span className="student-analytics-modal-item-value">{sc.strengths || "Not specified"}</span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Weaknesses:</span>
-                <span className="student-analytics-modal-item-value">{sc.weaknesses || "Not specified"}</span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Feedback:</span>
-                <span className="student-analytics-modal-item-value">{sc.feedback || "No feedback provided"}</span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Date:</span>
+                <span className="student-analytics-modal-item-label">
+                  Topic:
+                </span>
                 <span className="student-analytics-modal-item-value">
-                  {new Date(sc.createdAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
+                  {sc.topicId?.name || `Topic ${i + 1}`}
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Score:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {sc.score || 0}/{sc.total || 10}
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Strengths:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {sc.strengths || "Not specified"}
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Weaknesses:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {sc.weaknesses || "Not specified"}
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Feedback:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {sc.feedback || "No feedback provided"}
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Date:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {new Date(sc.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
                   })}
                 </span>
               </div>
@@ -1404,59 +1583,96 @@ function renderModalContent(modalType, data, studentId) {
         </div>
       );
 
-    case 'fees':
-      if (data.length === 0) return <p className="student-analytics-modal-no-data">No fee data available</p>;
-      
+    case "fees":
+      if (data.length === 0)
+        return (
+          <p className="student-analytics-modal-no-data">
+            No fee data available
+          </p>
+        );
+
       const feeEntry = data[0]?.students?.find(
-  (s) => String(s.student?._id) === String(studentId)
-);
+        (s) => String(s.student?._id) === String(studentId),
+      );
 
-
-      if (!feeEntry) return <p className="student-analytics-modal-no-data">No fee data found for you</p>;
+      if (!feeEntry)
+        return (
+          <p className="student-analytics-modal-no-data">
+            No fee data found for you
+          </p>
+        );
 
       return (
         <div className="student-analytics-modal-list">
           <div className="student-analytics-modal-item">
             <div className="student-analytics-modal-item-row">
-              <span className="student-analytics-modal-item-label">Total Fee:</span>
-              <span className="student-analytics-modal-item-value">₹{feeEntry.totalFee || 0}</span>
+              <span className="student-analytics-modal-item-label">
+                Total Fee:
+              </span>
+              <span className="student-analytics-modal-item-value">
+                ₹{feeEntry.totalFee || 0}
+              </span>
             </div>
             <div className="student-analytics-modal-item-row">
-              <span className="student-analytics-modal-item-label">Paid Fee:</span>
-              <span className="student-analytics-modal-item-value">₹{feeEntry.paidFee || 0}</span>
+              <span className="student-analytics-modal-item-label">
+                Paid Fee:
+              </span>
+              <span className="student-analytics-modal-item-value">
+                ₹{feeEntry.paidFee || 0}
+              </span>
             </div>
             <div className="student-analytics-modal-item-row">
-              <span className="student-analytics-modal-item-label">Pending Fee:</span>
-              <span className="student-analytics-modal-item-value">₹{feeEntry.currentFee || 0}</span>
+              <span className="student-analytics-modal-item-label">
+                Pending Fee:
+              </span>
+              <span className="student-analytics-modal-item-value">
+                ₹{feeEntry.currentFee || 0}
+              </span>
             </div>
           </div>
 
           {feeEntry.paymentHistory?.length > 0 && (
             <>
-              <h3 style={{ margin: '24px 0 16px', color: '#2d3748' }}>Payment History</h3>
+              <h3 style={{ margin: "24px 0 16px", color: "#2d3748" }}>
+                Payment History
+              </h3>
               {feeEntry.paymentHistory.map((p, i) => (
                 <div key={i} className="student-analytics-modal-item">
                   <div className="student-analytics-modal-item-row">
-                    <span className="student-analytics-modal-item-label">Date:</span>
+                    <span className="student-analytics-modal-item-label">
+                      Date:
+                    </span>
                     <span className="student-analytics-modal-item-value">
-                      {new Date(p.paidOn).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
+                      {new Date(p.paidOn).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
                       })}
                     </span>
                   </div>
                   <div className="student-analytics-modal-item-row">
-                    <span className="student-analytics-modal-item-label">Amount:</span>
-                    <span className="student-analytics-modal-item-value">₹{p.amount || 0}</span>
+                    <span className="student-analytics-modal-item-label">
+                      Amount:
+                    </span>
+                    <span className="student-analytics-modal-item-value">
+                      ₹{p.amount || 0}
+                    </span>
                   </div>
                   <div className="student-analytics-modal-item-row">
-                    <span className="student-analytics-modal-item-label">Payment Mode:</span>
-                    <span className="student-analytics-modal-item-value">{p.paymentMode || "N/A"}</span>
+                    <span className="student-analytics-modal-item-label">
+                      Payment Mode:
+                    </span>
+                    <span className="student-analytics-modal-item-value">
+                      {p.paymentMode || "N/A"}
+                    </span>
                   </div>
                   <div className="student-analytics-modal-item-row">
-                    <span className="student-analytics-modal-item-label">Transaction ID:</span>
-                    <span className="student-analytics-modal-item-value">{p.transactionId || "N/A"}</span>
+                    <span className="student-analytics-modal-item-label">
+                      Transaction ID:
+                    </span>
+                    <span className="student-analytics-modal-item-value">
+                      {p.transactionId || "N/A"}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -1465,44 +1681,68 @@ function renderModalContent(modalType, data, studentId) {
         </div>
       );
 
-    case 'homework':
+    case "homework":
       return (
         <div className="student-analytics-modal-list">
           {data.map((hw, i) => (
             <div key={i} className="student-analytics-modal-item">
               <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Chapter:</span>
-                <span className="student-analytics-modal-item-value">{hw.homeworkId?.chapterName || `Assignment ${i + 1}`}</span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Chapter No:</span>
-                <span className="student-analytics-modal-item-value">{hw.homeworkId?.chapterNumber || i + 1}</span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Status:</span>
-                <span className={`student-analytics-modal-item-value ${hw.status?.toLowerCase() === 'completed' || hw.status?.toLowerCase() === 'graded' ? 'status-present' : 'status-absent'}`}>
-                  {hw.status || 'Pending'}
+                <span className="student-analytics-modal-item-label">
+                  Chapter:
                 </span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Marked By:</span>
-                <span className="student-analytics-modal-item-value">{hw.markedBy?.email || "Not Reviewed"}</span>
-              </div>
-              <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Marked At:</span>
                 <span className="student-analytics-modal-item-value">
-                  {hw.markedAt ? new Date(hw.markedAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  }) : "Not reviewed yet"}
+                  {hw.homeworkId?.chapterName || `Assignment ${i + 1}`}
                 </span>
               </div>
               <div className="student-analytics-modal-item-row">
-                <span className="student-analytics-modal-item-label">Description:</span>
-                <span className="student-analytics-modal-item-value">{hw.homeworkId?.description || "No description provided"}</span>
+                <span className="student-analytics-modal-item-label">
+                  Chapter No:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {hw.homeworkId?.chapterNumber || i + 1}
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Status:
+                </span>
+                <span
+                  className={`student-analytics-modal-item-value ${hw.status?.toLowerCase() === "completed" || hw.status?.toLowerCase() === "graded" ? "status-present" : "status-absent"}`}
+                >
+                  {hw.status || "Pending"}
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Marked By:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {hw.markedBy?.email || "Not Reviewed"}
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Marked At:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {hw.markedAt
+                    ? new Date(hw.markedAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
+                    : "Not reviewed yet"}
+                </span>
+              </div>
+              <div className="student-analytics-modal-item-row">
+                <span className="student-analytics-modal-item-label">
+                  Description:
+                </span>
+                <span className="student-analytics-modal-item-value">
+                  {hw.homeworkId?.description || "No description provided"}
+                </span>
               </div>
             </div>
           ))}
@@ -1510,6 +1750,8 @@ function renderModalContent(modalType, data, studentId) {
       );
 
     default:
-      return <p className="student-analytics-modal-no-data">No data available</p>;
+      return (
+        <p className="student-analytics-modal-no-data">No data available</p>
+      );
   }
 }
