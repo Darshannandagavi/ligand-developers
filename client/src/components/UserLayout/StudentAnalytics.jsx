@@ -3,7 +3,7 @@ import axios from "axios";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import Loader from "../StyleComponents/Loader";
 import { useAlert } from "../StyleComponents/AlertContext";
-
+import { QRCodeCanvas } from "qrcode.react";
 const API = "https://ligand-dev-7.onrender.com/api";
 
 // ----------------------------------------------------------
@@ -101,12 +101,7 @@ export default function StudentAnalytics() {
             if (isMobile) {
               window.location.href = upiLink;
             } else {
-              showAlert({
-                type: "info",
-                title: "Mobile Required",
-                message: "Please open this page on mobile to pay using UPI.",
-                confirmText: "OK",
-              });
+              setPaymentQR(upiLink);
             }
           },
         });
@@ -115,8 +110,6 @@ export default function StudentAnalytics() {
       console.error("Pending fee check failed", err);
     }
   };
-
-  
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -225,7 +218,13 @@ export default function StudentAnalytics() {
           Comprehensive overview of your academic performance and progress
         </p>
       </header>
-
+      {paymentQR && (
+        <div className="qr-modal">
+          <h3>Scan to Pay</h3>
+          <QRCodeCanvas value={paymentQR} size={220} />
+          <p>Scan this QR using PhonePe / GPay / Paytm</p>
+        </div>
+      )}
       {/* Stats Overview Cards */}
       <div className="student-analytics-stats-grid">
         <div className="student-analytics-stat-card student-analytics-stat-attendance">
