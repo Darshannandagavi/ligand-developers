@@ -220,18 +220,43 @@ export default function StudentAnalytics() {
         </p>
       </header>
       {paymentQR && (
-  <div className="qr-overlay">
-    <div className="qr-box">
-      <h3>Scan to Pay</h3>
+        <div className="qr-overlay">
+          <div className="qr-box">
+            <div style={{margin:"20px"}}>
+            <h3>Complete Payment</h3>
+            <div className="qr-subtitle">Scan QR code to pay</div>
 
-      <QRCodeCanvas value={paymentQR} size={220} />
+            <QRCodeCanvas value={paymentQR} size={200} />
 
-      <p>Scan this QR using PhonePe / GPay / Paytm</p>
+            <div className="payment-methods">
+              <span className="payment-method">PhonePe</span>
+              <span className="payment-method">GPay</span>
+              <span className="payment-method">Paytm</span>
+              <span className="payment-method">BHIM</span>
+            </div>
 
-      <button onClick={() => setPaymentQR(null)}>Close</button>
-    </div>
-  </div>
-)}
+            <p className="qr-instruction">
+              Open any UPI app and scan this QR code to complete your payment
+            </p>
+
+            <div className="qr-actions">
+              <button
+                className="qr-btn qr-btn-secondary"
+                onClick={() => setPaymentQR(null)}
+              >
+                Cancel
+              </button>
+              <button
+                className="qr-btn qr-btn-primary"
+                onClick={() => setPaymentQR(null)}
+              >
+                Done
+              </button>
+            </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Stats Overview Cards */}
       <div className="student-analytics-stats-grid">
         <div className="student-analytics-stat-card student-analytics-stat-attendance">
@@ -274,7 +299,7 @@ export default function StudentAnalytics() {
           </div>
         </div>
       </div>
-      
+
       {/* Main Analytics Grid */}
       <div className="student-analytics-grid">
         {/* Attendance Card */}
@@ -639,36 +664,218 @@ export default function StudentAnalytics() {
       )}
 
       {/* Internal CSS */}
-      <style jsx>{`
+      <style>{`
+        /* Payment QR Modal - Professional Modern Style */
 
-      .qr-overlay {
+        /* Payment QR Modal - Professional Clean Design */
+.qr-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(17, 24, 39, 0.75);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  z-index: 9999;
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .qr-box {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
   text-align: center;
-  width: 300px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+  animation: slideUp 0.25s ease-out;
+  border: 1px solid #f1f5f9;
 }
 
-.qr-box button {
-  margin-top: 15px;
-  padding: 8px 16px;
-  border: none;
-  background: #667eea;
-  color: white;
-  border-radius: 6px;
+.qr-box h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.5;
+}
+
+.qr-box .qr-subtitle {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin-bottom: 1.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.qr-box canvas {
+  margin: 0 auto 1.75rem auto;
+  padding: 0.875rem;
+  background: #f8fafc;
+  border-radius: 14px;
+  display: block;
+  width: 200px !important;
+  height: 200px !important;
+  border: 1px solid #e9eef2;
+}
+
+.qr-box .payment-methods {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.qr-box .payment-method {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #475569;
+  background: #f1f4f9;
+  padding: 0.375rem 1rem;
+  border-radius: 100px;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+
+.qr-box .qr-instruction {
+  margin: 0 0 1.75rem 0;
+  color: #475569;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  font-weight: 400;
+  background: #f8fafc;
+  padding: 0.875rem 1.25rem;
+  border-radius: 10px;
+  border: 1px solid #edf2f7;
+}
+
+.qr-box .qr-amount {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.qr-box .qr-amount-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.qr-box .qr-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.qr-box .qr-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
 }
 
+.qr-box .qr-btn-primary {
+  background: #2e6dff;
+  color: white;
+}
+
+.qr-box .qr-btn-primary:hover {
+  background: #1a468e;
+}
+
+.qr-box .qr-btn-primary:active {
+  background: #0b1120;
+}
+
+.qr-box .qr-btn-secondary {
+  background: #ffffff;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+.qr-box .qr-btn-secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.qr-box .qr-btn-secondary:active {
+  background: #f1f5f9;
+}
+
+
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .qr-overlay {
+    padding: 1rem;
+  }
+  
+  .qr-box {
+    padding: 1.5rem;
+  }
+  
+  .qr-box canvas {
+    width: 180px !important;
+    height: 180px !important;
+    margin-bottom: 1.5rem;
+  }
+  
+  .qr-box .payment-methods {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  
+  .qr-box .qr-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+}
+
+/* For tablets */
+@media (min-width: 481px) and (max-width: 768px) {
+  .qr-box {
+    max-width: 380px;
+    padding: 1.75rem;
+  }
+}
         /* Reset and Base Styles */
         .student-analytics-container * {
           margin: 0;
@@ -1811,5 +2018,3 @@ function renderModalContent(modalType, data, studentId) {
       );
   }
 }
-
-
