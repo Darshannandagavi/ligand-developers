@@ -72,7 +72,7 @@ const styles = `
   }
   .benefits-title em {
     font-style: normal;
-    font-family:syne;
+    font-family:roboto;
     background: linear-gradient(90deg, #4361ee 0%, #a855f7 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -153,7 +153,7 @@ const styles = `
   }
 
   .benefit-card-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: 0.98rem;
     font-weight: 700;
     color: #0f1117;

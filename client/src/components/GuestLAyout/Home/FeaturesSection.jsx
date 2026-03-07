@@ -73,7 +73,7 @@ const styles = `
   }
 
   .features-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: clamp(2.2rem, 4.5vw, 3.5rem);
     font-weight: 800;
     color: #0f1117;
@@ -264,7 +264,7 @@ const styles = `
 
   /* card text */
   .feat-card-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
     color: #0f1117;
@@ -312,7 +312,7 @@ const styles = `
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
-    font-family: 'Syne', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: 0.7rem;
     font-weight: 800;
     color: rgba(15,17,23,0.08);
@@ -705,7 +705,7 @@ const FeaturesSection = () => {
             </div>
 
             <h2 className="features-title">
-              <h2 style={{fontFamily:"DaughterOfFortune"}}>Everything</h2> you need<br />
+              <h2 style={{fontFamily:"DaughterOfFortune"}}>Everything</h2> you need
               to <span className="features-title-accent">succeed</span>
             </h2>
 

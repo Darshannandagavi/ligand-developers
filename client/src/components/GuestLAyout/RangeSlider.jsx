@@ -212,7 +212,7 @@ const RangeSlider = () => {
           margin-bottom: 2.5rem;
         }
         .rs-header h2 {
-          font-family: 'Syne', sans-serif;
+          font-family: 'roboto', sans-serif;
           font-size: clamp(1.5rem, 3vw, 2rem);
           color: #0f1117;
           font-weight: 800;
@@ -243,7 +243,7 @@ const RangeSlider = () => {
         }
 
         .rs-salary-num {
-          font-family: 'Syne', sans-serif;
+          font-family: 'roboto', sans-serif;
           font-size: 2.8rem;
           font-weight: 800;
           letter-spacing: -0.03em;
@@ -382,7 +382,7 @@ const RangeSlider = () => {
           transition: background 0.4s ease, border-color 0.4s ease;
         }
         .rs-company-text {
-          font-family: 'Syne', sans-serif;
+          font-family: 'roboto', sans-serif;
           font-size: 1rem;
           font-weight: 700;
           color: var(--rs-accent, #4361ee);
@@ -413,7 +413,7 @@ const RangeSlider = () => {
           padding: 1.5rem;
         }
         .rs-card-title {
-          font-family: 'Syne', sans-serif;
+          font-family: 'roboto', sans-serif;
           font-size: 0.85rem;
           font-weight: 700;
           color: #0f1117;
@@ -482,7 +482,7 @@ const RangeSlider = () => {
         }
 
         .rs-difficulty-label {
-          font-family: 'Syne', sans-serif;
+          font-family: 'roboto', sans-serif;
           font-size: 1.1rem;
           font-weight: 800;
           color: var(--rs-accent, #4361ee);
@@ -558,7 +558,7 @@ const RangeSlider = () => {
           flex-wrap: wrap;
         }
         .rs-cta-text h3 {
-          font-family: 'Syne', sans-serif;
+          font-family: 'roboto', sans-serif;
           font-size: 1.05rem;
           font-weight: 800;
           color: #0f1117;

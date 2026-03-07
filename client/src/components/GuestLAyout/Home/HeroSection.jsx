@@ -1,24 +1,240 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Zap } from "lucide-react";
-import { SiReact, SiNodedotjs, SiMongodb, SiExpress } from "react-icons/si";
 import { THEME } from "./theme";
-
+import { useState } from "react";
 import GridBackground from "./GridBackground";
 import HoliModal from "../../StyleComponents/HoliModal";
 import MagneticButton from "./MagneticButton";
 
-const techStack = [
-  { icon: <SiReact />, label: "React", url: "https://react.dev", color: "#61DAFB", desc: "UI Library" },
-  { icon: <SiNodedotjs />, label: "Node.js", url: "https://nodejs.org", color: "#68A063", desc: "Runtime" },
-  { icon: <SiMongodb />, label: "MongoDB", url: "https://www.mongodb.com", color: "#4DB33D", desc: "Database" },
-  { icon: <SiExpress />, label: "Express", url: "https://expressjs.com", color: "#AAAAAA", desc: "Framework" },
-];
+const ReactSVG = ({ hovered }) => (
+  <svg viewBox="0 0 100 100" width="46" height="46" fill="none">
+    <motion.circle
+      cx="50"
+      cy="50"
+      r="6"
+      fill="#61DAFB"
+      animate={hovered ? { r: [6, 9, 6] } : { r: 6 }}
+      transition={{ duration: 1, repeat: hovered ? Infinity : 0 }}
+    />
 
+    <motion.ellipse
+      cx="50"
+      cy="50"
+      rx="38"
+      ry="14"
+      stroke="#61DAFB"
+      strokeWidth="3"
+      fill="none"
+      style={{ transformOrigin: "50px 50px" }}
+      animate={hovered ? { rotate: [0, 360] } : { rotate: 0 }}
+      transition={{
+        duration: 2.5,
+        repeat: hovered ? Infinity : 0,
+        ease: "linear",
+      }}
+    />
+
+    <motion.ellipse
+      cx="50"
+      cy="50"
+      rx="38"
+      ry="14"
+      stroke="#61DAFB"
+      strokeWidth="3"
+      fill="none"
+      style={{ transformOrigin: "50px 50px", rotate: "60deg" }}
+      animate={hovered ? { rotate: ["60deg", "420deg"] } : { rotate: "60deg" }}
+      transition={{ duration: 2.5, repeat: hovered ? Infinity : 0 }}
+    />
+
+    <motion.ellipse
+      cx="50"
+      cy="50"
+      rx="38"
+      ry="14"
+      stroke="#61DAFB"
+      strokeWidth="3"
+      fill="none"
+      style={{ transformOrigin: "50px 50px", rotate: "120deg" }}
+      animate={
+        hovered ? { rotate: ["120deg", "480deg"] } : { rotate: "120deg" }
+      }
+      transition={{ duration: 2.5, repeat: hovered ? Infinity : 0 }}
+    />
+  </svg>
+);
+
+const NodeSVG = ({ hovered }) => (
+  <svg viewBox="0 0 100 100" width="46" height="46" fill="none">
+    <motion.path
+      d="M50 8 L86 29 L86 71 L50 92 L14 71 L14 29 Z"
+      stroke="#5FA04E"
+      strokeWidth="4.5"
+      fill="none"
+      animate={hovered ? { scale: [1, 1.06, 1] } : { scale: 1 }}
+      style={{ transformOrigin: "50px 50px" }}
+      transition={{ duration: 0.8, repeat: hovered ? Infinity : 0 }}
+    />
+
+    <motion.text
+      x="50"
+      y="60"
+      textAnchor="middle"
+      fill="#5FA04E"
+      fontSize="26"
+      fontWeight="700"
+      animate={hovered ? { opacity: [1, 0.5, 1] } : { opacity: 1 }}
+      transition={{ duration: 0.8, repeat: hovered ? Infinity : 0 }}
+    >
+      js
+    </motion.text>
+  </svg>
+);
+
+const MongoSVG = ({ hovered }) => (
+  <svg viewBox="0 0 100 100" width="46" height="46" fill="none">
+    <motion.path
+      d="M50 8 C50 8 28 28 28 55 C28 72 37 84 50 90 C63 84 72 72 72 55 C72 28 50 8 50 8 Z"
+      fill="#4DB33D"
+      animate={hovered ? { scale: [1, 1.05, 1] } : { scale: 1 }}
+      style={{ transformOrigin: "50px 50px" }}
+      transition={{ duration: 1.4, repeat: hovered ? Infinity : 0 }}
+    />
+  </svg>
+);
+
+const ExpressSVG = ({ hovered }) => (
+  <svg viewBox="0 0 100 60" width="68" height="40" fill="none">
+    <motion.text
+      x="50"
+      y="46"
+      textAnchor="middle"
+      fill="#AAAAAA"
+      fontSize="46"
+      fontWeight="300"
+      animate={
+        hovered
+          ? { fill: ["#AAAAAA", "#ffffff", "#AAAAAA"] }
+          : { fill: "#AAAAAA" }
+      }
+      transition={{ duration: 1.2, repeat: hovered ? Infinity : 0 }}
+    >
+      ex
+    </motion.text>
+
+    <motion.line
+      x1="12"
+      y1="52"
+      y2="52"
+      stroke="#888"
+      strokeWidth="2"
+      x2={12}
+      animate={hovered ? { x2: 88 } : { x2: 12 }}
+      transition={{ duration: 0.4 }}
+    />
+  </svg>
+);
+const techStack = [
+  {
+    id: "react",
+    label: "React",
+    desc: "UI Library",
+    color: "#61DAFB",
+    glow: "rgba(97,218,251,0.2)",
+    Icon: ReactSVG,
+  },
+  {
+    id: "node",
+    label: "Node.js",
+    desc: "Runtime",
+    color: "#5FA04E",
+    glow: "rgba(95,160,78,0.2)",
+    Icon: NodeSVG,
+  },
+  {
+    id: "mongo",
+    label: "MongoDB",
+    desc: "Database",
+    color: "#4DB33D",
+    glow: "rgba(77,179,61,0.2)",
+    Icon: MongoSVG,
+  },
+  {
+    id: "express",
+    label: "Express",
+    desc: "Framework",
+    color: "#CCCCCC",
+    glow: "rgba(200,200,200,0.14)",
+    Icon: ExpressSVG,
+  },
+];
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0 },
   transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1], delay },
 });
+
+const TechCard = ({ Icon, label, color, desc, glow, index }) => {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3 + index * 0.09, duration: 0.4 }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 10,
+        cursor: "pointer",
+      }}
+    >
+      <motion.div
+        animate={
+          hovered
+            ? { y: -6, scale: 1.06, boxShadow: `0 10px 30px ${color}33` }
+            : { y: 0, scale: 1, boxShadow: "none" }
+        }
+        transition={{ type: "spring", stiffness: 280, damping: 18 }}
+        style={{
+          width: 80,
+          height: 80,
+          borderRadius: 14,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "#373737",
+          border: "1px solid rgba(255,255,255,0.08)",
+        }}
+      >
+        <Icon hovered={hovered} />
+      </motion.div>
+
+      <div style={{ textAlign: "center" }}>
+        <div
+          style={{
+            fontSize: "0.78rem",
+            fontWeight: 600,
+            color: hovered ? color : "rgba(255,255,255,0.8)",
+          }}
+        >
+          {label}
+        </div>
+        <div
+          style={{
+            fontSize: "0.65rem",
+            color: "rgba(255,255,255,0.35)",
+          }}
+        >
+          {desc}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 const HeroSection = () => {
   return (
@@ -82,7 +298,6 @@ const HeroSection = () => {
                 textTransform: "uppercase",
                 border: `1px solid ${THEME.accent}1a`,
               }}
-              
             >
               <Zap size={11} strokeWidth={2.5} />
               Ligand Learning Platform
@@ -97,18 +312,17 @@ const HeroSection = () => {
               fontWeight: 800,
               letterSpacing: "-0.03em",
               marginBottom: "1rem",
-              fontFamily: "DaughterOfFortune, cursive" ,
-              color:"#2B2B2B"
+              fontFamily: "DaughterOfFortune, cursive",
+              color: "#2B2B2B",
             }}
-            
           >
             Build the Future with {"<"} Code {"/>"}
             <br />
             <span
               style={{
-                
-                fontFamily: "syne", 
-                fontSize:"2rem"
+                fontWeight: "600",
+                fontFamily: "roboto",
+                fontSize: "4rem",
               }}
               className="hero-text"
             >
@@ -150,7 +364,8 @@ const HeroSection = () => {
               borderRadius: 20,
               background: "#1e1e24",
               overflow: "hidden",
-              boxShadow: "0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)",
+              boxShadow:
+                "0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)",
             }}
           >
             {/* Gradient header bar */}
@@ -167,7 +382,12 @@ const HeroSection = () => {
               {["#ff5f57", "#ffbd2e", "#28c840"].map((c) => (
                 <div
                   key={c}
-                  style={{ width: 11, height: 11, borderRadius: "50%", background: c }}
+                  style={{
+                    width: 11,
+                    height: 11,
+                    borderRadius: "50%",
+                    background: c,
+                  }}
                 />
               ))}
             </div>
@@ -175,62 +395,14 @@ const HeroSection = () => {
             {/* Icon grid */}
             <div
               style={{
-                padding:"30px",
+                padding: "30px",
                 display: "grid",
                 gridTemplateColumns: "repeat(4, 1fr)",
                 gap: "1rem",
               }}
             >
               {techStack.map((tech, i) => (
-                <motion.a
-                  key={tech.label}
-                  href={tech.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + i * 0.08, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ y: -4, scale: 1.05 }}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 10,
-                    textDecoration: "none",
-                    cursor: "pointer",
-                  }}
-                >
-                  {/* Icon circle */}
-                  <div
-                    style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: 14,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      background: "#373737",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      color: tech.color,
-                      fontSize: "1.75rem",
-                      transition: "box-shadow 0.2s",
-                    }}
-                  >
-                    {tech.icon}
-                  </div>
-                  {/* Label */}
-                  <span
-                    style={{
-                      fontSize: "0.78rem",
-                      fontWeight: 600,
-                      color: "rgba(255,255,255,0.75)",
-                      fontFamily: "'Sora', sans-serif",
-                      letterSpacing: "-0.01em",
-                    }}
-                  >
-                    {tech.label}
-                  </span>
-                </motion.a>
+                <TechCard key={tech.label} {...tech} index={i} />
               ))}
             </div>
 

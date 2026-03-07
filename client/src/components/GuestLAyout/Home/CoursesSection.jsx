@@ -81,9 +81,9 @@ const styles = `
     letter-spacing: -0.02em;
   }
   .courses-title-accent {
-    background: linear-gradient(90deg, #4361ee 0%, #f97316 60%, #06d6a0 100%);
+    background: linear-gradient(90deg, #4361ee 0%, #e879f9 50%, #f97316 100%);
     -webkit-background-clip: text;
-    font-family: syne;
+    font-family: roboto;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     background-size: 200% 100%;
@@ -227,7 +227,7 @@ const styles = `
   }
 
   .course-card-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'roboto', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
     color: #0f1117;
