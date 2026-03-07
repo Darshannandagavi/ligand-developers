@@ -177,6 +177,7 @@ const Login = () => {
         }
 
         .login-header {
+
           text-align: center;
           margin-bottom: 30px;
         }
@@ -185,7 +186,8 @@ const Login = () => {
           color: #333;
           margin-bottom: 10px;
           font-weight: 700;
-          font-size: 28px;
+          font-size: 30px;
+          font-family:DaughterOfFortune;
         }
 
         .login-header p {

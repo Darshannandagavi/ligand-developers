@@ -55,7 +55,6 @@ import cloudinary from "../config/cloudinary.js";
 //   }
 // };
 
-
 export const register = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -72,8 +71,8 @@ export const register = async (req, res) => {
       password: hashedPassword,
       profilePic: req.file
         ? {
-            url: req.file.path,        // Cloudinary URL
-            publicId: req.file.filename // Cloudinary public_id
+            url: req.file.path, // Cloudinary URL
+            publicId: req.file.filename, // Cloudinary public_id
           }
         : null,
     });
@@ -88,8 +87,6 @@ export const register = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
 
 export const login = async (req, res) => {
   try {
@@ -115,19 +112,23 @@ export const login = async (req, res) => {
 
     // Create token
     const token = jwt.sign(
-      { id: user._id, role: user.role,collegeName: user.collegeName,
-    batch: user.batch,
-    programme: user.programName },
+      {
+        id: user._id,
+        role: user.role,
+        collegeName: user.collegeName,
+        batch: user.batch,
+        programme: user.programName,
+      },
       process.env.JWT_SECRET,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
     // Set HTTP-only cookie (browser will send this automatically with requests)
     res.cookie("token", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "None",
-});
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
 
     // Return user data (NO TOKEN in response)
     res.status(200).json({
@@ -146,8 +147,6 @@ export const login = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 
 // Get all users
 export const getAllUsers = async (req, res) => {
@@ -250,7 +249,7 @@ export const changePassword = async (req, res) => {
     await User.findByIdAndUpdate(
       userId,
       { password: hashedNewPassword },
-      { new: true }
+      { new: true },
     );
 
     //console.log("✅ Password updated successfully");
@@ -281,12 +280,12 @@ export const forgotPassword = async (req, res) => {
     // Setup nodemailer transporter
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // MUST be true
-  auth: {
-    user: process.env.EMAIL,          // full gmail address
-    pass: process.env.EMAIL_PASSWORD, // 16-char app password
-  },
+      port: 465,
+      secure: true, // MUST be true
+      auth: {
+        user: process.env.EMAIL, // full gmail address
+        pass: process.env.EMAIL_PASSWORD, // 16-char app password
+      },
     });
 
     // Email options
@@ -337,9 +336,6 @@ export const makeBatchPassout = async (req, res) => {
   }
 };
 
-
-
-
 // ADMIN: Approve / Unapprove a student
 export const toggleApproval = async (req, res) => {
   try {
@@ -348,29 +344,26 @@ export const toggleApproval = async (req, res) => {
 
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { $set: { isApproved } },   // update ONLY this field
-      { new: true, runValidators: false } // don't revalidate whole user
+      { $set: { isApproved } }, // update ONLY this field
+      { new: true, runValidators: false }, // don't revalidate whole user
     );
 
-    if (!updatedUser)
-      return res.status(404).json({ error: "User not found" });
+    if (!updatedUser) return res.status(404).json({ error: "User not found" });
 
     res.json({
       message: `Student marked as ${isApproved ? "Approved" : "Unapproved"}`,
-      user: updatedUser
+      user: updatedUser,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-
 export const approveByDate = async (req, res) => {
   try {
     const { date } = req.body;
 
-    if (!date)
-      return res.status(400).json({ error: "Date is required" });
+    if (!date) return res.status(400).json({ error: "Date is required" });
 
     const start = new Date(date);
     const end = new Date(date);
@@ -379,29 +372,22 @@ export const approveByDate = async (req, res) => {
     const result = await User.updateMany(
       {
         role: "student",
-        createdAt: { $gte: start, $lte: end }
+        createdAt: { $gte: start, $lte: end },
       },
-      { $set: { isApproved: true } }
+      { $set: { isApproved: true } },
     );
 
     res.json({
       message: `${result.modifiedCount} students approved for ${date}`,
-      modifiedCount: result.modifiedCount
+      modifiedCount: result.modifiedCount,
     });
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-
-
-
-
-
 export const getStudentProfile = async (req, res) => {
   try {
-  
     const userId = req.user.id; // from auth middleware
 
     const user = await User.findById(userId)
@@ -421,7 +407,6 @@ export const getStudentProfile = async (req, res) => {
   }
 };
 
-
 export const updateStudentProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -437,7 +422,7 @@ export const updateStudentProfile = async (req, res) => {
     if (typeof req.body.contact === "string" && req.body.contact.trim()) {
       user.contact = req.body.contact.trim();
     }
-console.log("REQ.FILE =", req.file);
+    console.log("REQ.FILE =", req.file);
 
     // Profile picture update
     if (req.file) {
@@ -490,4 +475,3 @@ export const logout = (req, res) => {
 
   return res.status(200).json({ message: "Logged out successfully" });
 };
-
